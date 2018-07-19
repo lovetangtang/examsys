@@ -268,5 +268,81 @@ util.checkUpdate = function (vm) {
         }
     });
 };
+util.getSubjectTypeName = function (val) {
+    switch (val) {
+        case 11:
+            return '单选';
+            break;
+        case 12:
+            return '多选';
+            break;
+        case 20:
+            return '判断';
+            break;
+        case 30:
+            return '填空';
+            break;
+        case 40:
+            return '问答';
+            break;
+        default:
+            break;
+    }
+};
+
+util.getSubjectModeName = function (val) {
+    switch (val) {
+        case 0:
+            return '模拟试题';
+            break;
+        case 1:
+            return '正式试题';
+            break;
+        default:
+            break;
+    }
+};
+util.getSubjectDegree = function (val) {
+    switch (val) {
+        case 0:
+            return '简单';
+            break;
+        case 1:
+            return '普通';
+            break;
+        case 2:
+            return '困难';
+            break;
+        default:
+            break;
+    }
+};
+util.getAboutBll = function (val) {
+    switch (val) {
+        case 'GN':
+            return '国内机票';
+            break;
+        case 'GJ':
+            return '国际机票';
+            break;
+        case 'JD':
+            return '酒店';
+            break;
+        case 'LY':
+            return '旅游';
+            break;
+        case 'CL':
+            return '差旅';
+            break;
+        case 'RS':
+            return '国内机票';
+            break;
+        case 'XZ':
+            return '国内机票';
+            break;
+        default:
+            break;
+    }
+};
 
 export default util;

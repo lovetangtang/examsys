@@ -7,9 +7,10 @@
         <Card>
             <div class="box-head">
                 <div class="head-btn">
-                    <Button @click="subjectmodal=true" type="primary" icon="android-add">添加试题</Button>
+                    <Button @click="subjectmodal=true" type="primary" icon="android-add">手动录入</Button>
+                    <Button @click="subjectmodal=true" type="primary" icon="android-add">批量录入</Button>
                     <Button type="warning" icon="android-delete">删除试题</Button>
-                    <Modal v-model="subjectmodal" width="900">
+                    <Modal v-model="subjectmodal" :styles="{top: '20px'}" width="900" @on-ok="handleSaveSubject">
                         <div class="model-subject">
                             <div class="subject-head">
                                 <Row :gutter="5">
@@ -60,7 +61,7 @@
                                             <span>这里填写题目描述</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <Input v-model="Interlocution.StemVal" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                            <Input v-model="Interlocution.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                         </div>
                                     </div>
                                     <div class="margin-top-10">
@@ -69,7 +70,7 @@
                                             <span>这里填写答案</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <Input v-model="Interlocution.rightVal" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                            <Input v-model="Interlocution.RightAnswer" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                         </div>
                                     </div>
                                     <div class="margin-top-10">
@@ -78,8 +79,27 @@
                                             <span>这里填写该问题对应的答案解释</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <Input v-model="Interlocution.analysisVal" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                            <Input v-model="Interlocution.Analysis" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                         </div>
+                                    </div>
+                                    <div class="margin-top-10">
+                                        <div>
+                                            <span>默认分值</span>
+                                        </div>
+                                        <div class="margin-top-4 width96-input">
+                                            <InputNumber v-model="Interlocution.DefaultScore"></InputNumber>
+                                        </div>
+                                    </div>
+                                    <div v-for="ia in Interlocution.CdeAnswerList" class="margin-top-10">
+                                        <div>
+                                            <span>{{ia.lable}}</span>
+                                        </div>
+                                        <div class="margin-top-4 width96-input">
+                                            <Input :ref="ia.val" :name="ia.val" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                        </div>
+                                    </div>
+                                    <div class="margin-top-10">
+                                        <Button @click="handleAddCde" type="info">添加候选答案</Button>
                                     </div>
                                 </div>
                                 <!-- 单选 -->
@@ -90,7 +110,7 @@
                                             <span>这里填写题目描述</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <Input v-model="Interlocution.StemVal" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                            <Input v-model="Interlocution.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                         </div>
                                     </div>
                                     <div class="margin-top-10">
@@ -99,7 +119,7 @@
                                             <span>这里填写答案</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <Input v-model="Interlocution.rightVal" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                            <Input v-model="Interlocution.RightAnswer" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                         </div>
                                     </div>
                                     <div class="margin-top-10">
@@ -108,7 +128,7 @@
                                             <span>这里填写该问题对应的答案解释</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <Input v-model="Interlocution.analysisVal" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                            <Input v-model="Interlocution.Analysis" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +140,7 @@
                                             <span>这里填写题目描述</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <Input v-model="Interlocution.StemVal" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                            <Input v-model="Interlocution.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                         </div>
                                     </div>
                                     <div class="margin-top-10">
@@ -129,7 +149,7 @@
                                             <span>这里填写答案</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <Input v-model="Interlocution.rightVal" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                            <Input v-model="Interlocution.RightAnswer" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                         </div>
                                     </div>
                                     <div class="margin-top-10">
@@ -138,7 +158,7 @@
                                             <span>这里填写该问题对应的答案解释</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <Input v-model="Interlocution.analysisVal" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                            <Input v-model="Interlocution.Analysis" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                         </div>
                                     </div>
                                 </div>
@@ -150,7 +170,7 @@
                                             <span>这里填写题目描述</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <Input v-model="Interlocution.StemVal" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                            <Input v-model="Interlocution.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                         </div>
                                     </div>
                                     <div class="margin-top-10">
@@ -159,7 +179,7 @@
                                             <span>这里填写答案</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <Input v-model="Interlocution.rightVal" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                            <Input v-model="Interlocution.RightAnswer" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                         </div>
                                     </div>
                                     <div class="margin-top-10">
@@ -168,7 +188,7 @@
                                             <span>这里填写该问题对应的答案解释</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <Input v-model="Interlocution.analysisVal" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                            <Input v-model="Interlocution.Analysis" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                         </div>
                                     </div>
                                 </div>
@@ -180,7 +200,7 @@
                                             <span>这里填写题目描述</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <Input v-model="Interlocution.StemVal" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                            <Input v-model="Interlocution.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                         </div>
                                     </div>
                                     <div class="margin-top-10">
@@ -189,7 +209,7 @@
                                             <span>这里填写答案</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <Input v-model="Interlocution.rightVal" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                            <Input v-model="Interlocution.RightAnswer" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                         </div>
                                     </div>
                                     <div class="margin-top-10">
@@ -198,7 +218,7 @@
                                             <span>这里填写该问题对应的答案解释</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <Input v-model="Interlocution.analysisVal" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                            <Input v-model="Interlocution.Analysis" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                         </div>
                                     </div>
                                 </div>
@@ -246,26 +266,33 @@
             </div>
             <div class="box-content">
                 <div class="tab-content">
-                    <Table highlight-row border :columns="columns1" :data="data1" ref="table" :height="tableHeight"></Table>
+                    <Table size="small" :loading="loading" highlight-row border :columns="columns" :data="data" ref="table" :height="tableHeight"></Table>
                 </div>
             </div>
-            <div class="box-bottom">
+            <div ref="bmpage" class="box-bottom">
                 <div class="page">
-                    <Page :total="40" @on-change="changePage" size="small" show-elevator show-sizer></Page>
+                    <Page :total="total" placement="top" @on-change="changePage" @on-page-size-change="onpagesizechange" size="small" show-total
+                        show-elevator show-sizer></Page>
                 </div>
             </div>
         </Card>
     </div>
 </template>
 <script>
+    import {
+        getList
+    } from '@/api/subject';
+    import util from '@/libs/util';
     export default {
         name: 'exam',
         components: {},
         data () {
             return {
+                loading: true,
                 tableHeight: 450,
-                subjectmodal: true,
+                subjectmodal: false,
                 SubjectClassMode: true,
+                total: null,
                 subjectType: 0,
                 SubjectTypeMode: 1,
                 AboutBllMode: 0,
@@ -279,9 +306,26 @@
                     filShow: 'none'
                 },
                 Interlocution: {
-                    StemVal: '',
-                    rightVal: '',
-                    analysisVal: ''
+                    Stem: '',
+                    CdeAnswerList: [{
+                        lable: '候选答案1',
+                        val: 'CdeAnswer1'
+                    }],
+                    DefaultScore: 0,
+                    RightAnswer: '',
+                    Analysis: ''
+                },
+                listQuery: {
+                    start: 0,
+                    limit: 10,
+                    pageindex: 1,
+                    action: 'getsubjectlist',
+                    keyword: '',
+                    importance: undefined,
+                    title: undefined,
+                    type: undefined,
+                    exportTime: '',
+                    state: ''
                 },
                 DegreeList: [{
                     value: 0,
@@ -363,27 +407,72 @@
                     input2: '',
                     input3: ''
                 },
-                columns1: [{
+                columns: [{
                     type: 'selection',
                     width: 60,
                     align: 'center'
                 }, {
-                    title: 'Name',
+                    title: '试题分类',
+                    width: 110,
                     sortable: true,
-                    key: 'name'
+                    key: 'SubjectType',
+                    render: (h, params) => {
+                        let sc = params.row.SubjectType;
+                        let v = util.getSubjectModeName(sc);
+                        return v;
+                    }
                 },
                 {
-                    title: 'Age',
+                    title: '题型',
+                    width: '78',
                     sortable: true,
-                    key: 'age'
+                    key: 'SubjecSubClass',
+                    render: (h, params) => {
+                        let sc = params.row.SubjecSubClass;
+                        let v = util.getSubjectTypeName(sc);
+                        return v;
+                    }
+                }, {
+                    title: '题目内容',
+                    width: '260',
+                    sortable: true,
+                    key: 'Stem'
+                }, {
+                    title: '难度',
+                    sortable: true,
+                    width: '78',
+                    key: 'Degree',
+                    render: (h, params) => {
+                        let sc = params.row.Degree;
+                        let v = util.getSubjectDegree(sc);
+                        return v;
+                    }
+                }, {
+                    title: '关联业务',
+                    sortable: true,
+                    key: 'AboutBll',
+                    render: (h, params) => {
+                        let sc = params.row.AboutBll;
+                        let v = util.getAboutBll(sc);
+                        return v;
+                    }
+                }, {
+                    title: '创建人工号',
+                    sortable: true,
+                    key: 'InsertID'
+                }, {
+                    title: '创建时间',
+                    sortable: true,
+                    width: '135',
+                    key: 'InsertTime',
+                    render: (h, params) => {
+                        let it = params.row.InsertTime;
+                        it = it.substring(it, it.length - 3);
+                        return it;
+                    }
                 },
                 {
-                    title: 'Address',
-                    sortable: true,
-                    key: 'address'
-                },
-                {
-                    title: 'Action',
+                    title: '操作',
                     key: 'action',
                     width: 150,
                     align: 'center',
@@ -399,7 +488,7 @@
                                 },
                                 on: {
                                     click: () => {
-                                        this.show(params.index);
+                                        this.showEdit(params.index);
                                     }
                                 }
                             }, '编辑'),
@@ -418,31 +507,7 @@
                     }
                 }
                 ],
-                data1: [{
-                    name: 'John Brown',
-                    age: 18,
-                    address: 'New York No. 1 Lake Park',
-                    date: '2016-10-03'
-                },
-                {
-                    name: 'Jim Green',
-                    age: 24,
-                    address: 'London No. 1 Lake Park',
-                    date: '2016-10-01'
-                },
-                {
-                    name: 'Joe Black',
-                    age: 30,
-                    address: 'Sydney No. 1 Lake Park',
-                    date: '2016-10-02'
-                },
-                {
-                    name: 'Jon Snow',
-                    age: 26,
-                    address: 'Ottawa No. 2 Lake Park',
-                    date: '2016-10-04'
-                }
-                ]
+                data: []
             };
         },
         mounted () {
@@ -458,17 +523,33 @@
 
             }
         },
+        created () {
+            this.fetchData();
+        },
         methods: {
+            // 初始化内容
             init () {
                 // 设置表格高度
-                this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 145;
-                this.$nextTick(() => {
-
-                });
+                this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 185;
+                this.$nextTick(() => {});
+            },
+            // 刷新数据
+            fetchData () {
+                try {
+                    this.loading = true;
+                    getList(this.listQuery).then(response => {
+                        this.data = response.data;
+                        this.loading = false;
+                        this.total = response.count;
+                    });
+                } catch (error) {
+                    console.log(error);
+                }
             },
             scrollHeightResize () {
                 this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 145;
             },
+            // 编辑题目监听题型变化
             onsbclasschange (v) {
                 switch (v) {
                     case 11:
@@ -510,16 +591,56 @@
                         break;
                 }
             },
-            changePage () {},
-            show (index) {
+            // 页面跳转
+            changePage (val) {
+                this.listQuery.start = this.listQuery.limit * (val - 1);
+                this.fetchData();
+            },
+            // 分页数量
+            onpagesizechange (val) {
+                if (this.listQuery.limit === val) {
+                    return;
+                }
+                this.listQuery.limit = val;
+                this.fetchData();
+            },
+            // 编辑闭幕
+            showEdit (index) {
                 this.$Modal.info({
                     title: 'User Info',
                     content: `Name：${this.data1[index].name}<br>Age：${this.data1[index].age}<br>Address：${this.data1[index].address}`
                 });
             },
+            // 保存题目
+            handleSaveSubject () {
+                this.$Modal.remove();
+                // this.Interlocution.CdeAnswerList = [{
+                //     val: ''
+                // },
+                // {
+                //     val: ''
+                // }];
+            },
+            // 添加候选答案
+            handleAddCde () {
+                let cdeAnsarr = this.Interlocution.CdeAnswerList;
+                if (cdeAnsarr.length >= 10) { return; };
+                let nowi = cdeAnsarr.length - 1;
+                let maxi = cdeAnsarr[nowi].lable;
+                let maxv = parseInt(maxi.substring(maxi.length - 1, maxi.length));
+                let maxName = '候选答案' + (maxv + 1);
+                let cdeArrAddJson = {
+                    'lable': maxName,
+                    'val': 'CdeAnswer' + (maxv + 1)
+                };
+                cdeAnsarr.push(cdeArrAddJson);
+                this.Interlocution.CdeAnswerList = cdeAnsarr;
+                // console.log(this.$refs.CdeAnswer2[0].$el.firstChild.value);
+            }, // 移除数据
             remove (index) {
-                this.data1.splice(index, 1);
+                this.data.splice(index, 1);
             }
         }
+    
     };
 </script>
