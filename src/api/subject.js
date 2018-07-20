@@ -1,56 +1,25 @@
 import request from '@/utils/request';
 
-export function AddTicketInfo (dtheader, dtdata) {
+export function SaveSubjectList (params) {
     return request({
-        url: '/Data/TicketReFund.ashx',
+        url: '/Data/subject/subjectinfo.ashx',
+        method: 'post',
+        params
+    });
+}
+
+export function DelSubjectList (keyids) {
+    return request({
+        url: '/Data/subject/subjectinfo.ashx',
         method: 'post',
         data: {
-            action: 'AddTicketInfo',
-            dtheader: JSON.stringify(dtheader),
-            dtdata: JSON.stringify(dtdata)
+            action: 'dellist',
+            keyids: keyids
         }
     });
 }
 
-export function ExportExcel (type, dtdata, exportTime, keyword, state) {
-    return request({
-        url: '/Data/TicketReFund.ashx',
-        method: 'post',
-        data: {
-            action: 'ExportExcel',
-            type: type,
-            dtdata: JSON.stringify(dtdata),
-            exportTime,
-            keyword,
-            state
-        }
-    });
-}
-
-export function ExecTicketRefund (type, dtdata) {
-    return request({
-        url: '/Data/TicketReFund.ashx',
-        method: 'post',
-        data: {
-            action: 'ExecRefund',
-            type: type,
-            dtdata: JSON.stringify(dtdata)
-        }
-    });
-}
-
-export function DelTicketInfo (dtdata) {
-    return request({
-        url: '/Data/TicketReFund.ashx',
-        method: 'post',
-        data: {
-            action: 'DelTicketInfo',
-            dtdata: JSON.stringify(dtdata)
-        }
-    });
-}
-
-export function getList (params) {
+export function GetList (params) {
     return request({
         url: '/Data/subject/subjectinfo.ashx',
         method: 'post',

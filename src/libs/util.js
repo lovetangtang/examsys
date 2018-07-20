@@ -345,4 +345,111 @@ util.getAboutBll = function (val) {
     }
 };
 
+// 难度集合
+util.DegreeList = [{
+    value: 0,
+    label: '简单'
+},
+{
+    value: 1,
+    label: '普通'
+},
+{
+    value: 2,
+    label: '困难'
+}
+];
+
+util.SubjectClassList = [{
+    value: 11,
+    label: '单选题'
+},
+{
+    value: 12,
+    label: '多选题'
+},
+{
+    value: 20,
+    label: '判断题'
+},
+{
+    value: 30,
+    label: '填空题'
+},
+{
+    value: 40,
+    label: '问答题'
+}
+];
+
+util.sCSearchList = [{
+    value: -1,
+    label: '全部'
+}, {
+    value: 11,
+    label: '单选题'
+},
+{
+    value: 12,
+    label: '多选题'
+},
+{
+    value: 20,
+    label: '判断题'
+},
+{
+    value: 30,
+    label: '填空题'
+},
+{
+    value: 40,
+    label: '问答题'
+}
+];
+
+util.SubjectTypeList = [{
+    value: -1,
+    label: '全部'
+}, {
+    value: 0,
+    label: '简单'
+},
+{
+    value: 1,
+    label: '普通'
+},
+{
+    value: 2,
+    label: '困难'
+}
+];
+
+util.AboutBllList = [{
+    value: 'GN',
+    label: '国内机票'
+}, {
+    value: 'GJ',
+    label: '国际机票'
+}, {
+    value: 'JD',
+    label: '酒店'
+}, {
+    value: 'LY',
+    label: '旅游'
+}, {
+    value: 'CL',
+    label: '差旅'
+}, {
+    value: 'RS',
+    label: '人事'
+}, {
+    value: 'XZ',
+    label: '行政'
+}, {
+    value: 'JS',
+    label: '技术'
+}, {
+    value: 'CW',
+    label: '财务'
+}];
 export default util;
