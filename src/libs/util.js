@@ -452,4 +452,37 @@ util.AboutBllList = [{
     value: 'CW',
     label: '财务'
 }];
+
+util.AboutBllSearchList = [{
+    value: -1,
+    label: '全部'
+}, {
+    value: 'GN',
+    label: '国内机票'
+}, {
+    value: 'GJ',
+    label: '国际机票'
+}, {
+    value: 'JD',
+    label: '酒店'
+}, {
+    value: 'LY',
+    label: '旅游'
+}, {
+    value: 'CL',
+    label: '差旅'
+}, {
+    value: 'RS',
+    label: '人事'
+}, {
+    value: 'XZ',
+    label: '行政'
+}, {
+    value: 'JS',
+    label: '技术'
+}, {
+    value: 'CW',
+    label: '财务'
+}];
+
 export default util;
