@@ -382,7 +382,7 @@
     } from '@/api/subject';
     import util from '@/libs/util';
     export default {
-        name: 'exam',
+        name: 'subject',
         components: {},
         data () {
             return {

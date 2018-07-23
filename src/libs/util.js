@@ -17,8 +17,8 @@ util.title = function (title, vm) {
 const ajaxUrl = env === 'development'
     ? 'http://127.0.0.1:8888'
     : env === 'production'
-        ? 'https://www.url.com'
-        : 'https://debug.url.com';
+    ? 'https://www.url.com'
+    : 'https://debug.url.com';
 
 util.ajax = axios.create({
     baseURL: ajaxUrl,
@@ -101,25 +101,22 @@ util.setCurrentPath = function (vm, name) {
     });
     let currentPathArr = [];
     if (name === 'home_index') {
-        currentPathArr = [
-            {
-                title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_index')),
-                path: '',
-                name: 'home_index'
-            }
-        ];
+        currentPathArr = [{
+            title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_index')),
+            path: '',
+            name: 'home_index'
+        }];
     } else if ((name.indexOf('_index') >= 0 || isOtherRouter) && name !== 'home_index') {
-        currentPathArr = [
-            {
-                title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_index')),
-                path: '/home',
-                name: 'home_index'
-            },
-            {
-                title: title,
-                path: '',
-                name: name
-            }
+        currentPathArr = [{
+            title: util.handleTitle(vm, util.getRouterObjByName(vm.$store.state.app.routers, 'home_index')),
+            path: '/home',
+            name: 'home_index'
+        },
+        {
+            title: title,
+            path: '',
+            name: name
+        }
         ];
     } else {
         let currentPathObj = vm.$store.state.app.routers.filter(item => {
@@ -139,46 +136,42 @@ util.setCurrentPath = function (vm, name) {
             }
         })[0];
         if (currentPathObj.children.length <= 1 && currentPathObj.name === 'home') {
-            currentPathArr = [
-                {
-                    title: '首页',
-                    path: '',
-                    name: 'home_index'
-                }
-            ];
+            currentPathArr = [{
+                title: '首页',
+                path: '',
+                name: 'home_index'
+            }];
         } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== 'home') {
-            currentPathArr = [
-                {
-                    title: '首页',
-                    path: '/home',
-                    name: 'home_index'
-                },
-                {
-                    title: currentPathObj.title,
-                    path: '',
-                    name: name
-                }
+            currentPathArr = [{
+                title: '首页',
+                path: '/home',
+                name: 'home_index'
+            },
+            {
+                title: currentPathObj.title,
+                path: '',
+                name: name
+            }
             ];
         } else {
             let childObj = currentPathObj.children.filter((child) => {
                 return child.name === name;
             })[0];
-            currentPathArr = [
-                {
-                    title: '首页',
-                    path: '/home',
-                    name: 'home_index'
-                },
-                {
-                    title: currentPathObj.title,
-                    path: '',
-                    name: currentPathObj.name
-                },
-                {
-                    title: childObj.title,
-                    path: currentPathObj.path + '/' + childObj.path,
-                    name: name
-                }
+            currentPathArr = [{
+                title: '首页',
+                path: '/home',
+                name: 'home_index'
+            },
+            {
+                title: currentPathObj.title,
+                path: '',
+                name: currentPathObj.name
+            },
+            {
+                title: childObj.title,
+                path: currentPathObj.path + '/' + childObj.path,
+                name: name
+            }
             ];
         }
     }
@@ -297,6 +290,45 @@ util.getSubjectModeName = function (val) {
             break;
         case 1:
             return '正式试题';
+            break;
+        default:
+            break;
+    }
+};
+util.getExamModeName = function (val) {
+    switch (val) {
+        case 0:
+            return '模拟考试';
+            break;
+        case 1:
+            return '正式考试';
+            break;
+        default:
+            break;
+    }
+};
+util.getPaperModeName = function (val) {
+    switch (val) {
+        case 0:
+            return '模拟试卷';
+            break;
+        case 1:
+            return '正式试卷';
+            break;
+        default:
+            break;
+    }
+};
+util.getAssemblyType = function (val) {
+    switch (val) {
+        case 10:
+            return '手工编排';
+            break;
+        case 20:
+            return '定向随机';
+            break;
+        case 30:
+            return '系统随机';
             break;
         default:
             break;

@@ -1,16 +1,16 @@
 import request from '@/utils/request';
 
-export function SaveSubjectList (params) {
+export function SavePaperList (params) {
     return request({
-        url: '/Data/Exam/subjectinfo.ashx',
+        url: '/Data/exam/paperinfo.ashx',
         method: 'post',
         params
     });
 }
 
-export function DelSubjectList (keyids) {
+export function DelPaperList (keyids) {
     return request({
-        url: '/Data/Exam/subjectinfo.ashx',
+        url: '/Data/exam/paperinfo.ashx',
         method: 'post',
         data: {
             action: 'dellist',
@@ -21,7 +21,7 @@ export function DelSubjectList (keyids) {
 
 export function GetList (params) {
     return request({
-        url: '/Data/Exam/subjectinfo.ashx',
+        url: '/Data/exam/paperinfo.ashx',
         method: 'post',
         params
     });
