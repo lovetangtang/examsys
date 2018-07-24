@@ -11,6 +11,7 @@ const app = {
         openedSubmenuArr: [], // 要展开的菜单数组
         menuTheme: 'dark', // 主题
         themeColor: '',
+        itemList: JSON.parse(localStorage.itemList || []),
         pageOpenedList: [{
             title: '首页',
             path: '',
@@ -36,6 +37,15 @@ const app = {
     mutations: {
         setTagsList (state, list) {
             state.tagsList.push(...list);
+        },
+        // 设置字典信息
+        setItemList (state, list) {
+            state.itemList = list;
+            localStorage.itemList = JSON.stringify(state.itemList);
+        },
+        // 获取字典信息
+        getItemList (state, itemNo) {
+            return state.itemList;
         },
         updateMenulist (state) {
             let accessCode = parseInt(Cookies.get('access'));

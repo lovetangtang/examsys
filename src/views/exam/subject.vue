@@ -40,13 +40,15 @@
                                     </Select>
                                     </Col>
                                     <Col span="6">
-                                    <label for="">知识分类：</label>
-                                    <Input size="small" v-model="subjectComSaveList.LoreType" placeholder="如生活、天文、地理。" style="width:110px"></Input>
+                                    <label for="">试题分类：</label>
+                                    <Select size="small" v-model="subjectComSaveList.LoreType" style="width:110px">
+                                        <Option v-for="item in LoreTypeList" :value="item.ItemNo" :key="item.ItemNo">{{ item.ItemName }}</Option>
+                                    </Select>
                                     </Col>
                                     <Col span="6">
                                     <label for="">关联业务：</label>
                                     <Select size="small" v-model="subjectComSaveList.AboutBllMode" style="width:110px">
-                                        <Option v-for="item in AboutBllList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                        <Option v-for="item in AboutBllList" :value="item.ItemNo" :key="item.ItemNo">{{ item.ItemName }}</Option>
                                     </Select>
                                     </Col>
                                 </Row>
@@ -315,7 +317,7 @@
                                 </FormItem>
                                 </Col>
                                 <Col span="8">
-                                <FormItem label="试题分类" :label-width="90">
+                                <FormItem label="试题类型" :label-width="90">
                                     <RadioGroup @on-change="fetchData" v-model="listQuery.SubjectType">
                                         <Radio label="-1">全部</Radio>
                                         <Radio label="0">模拟试题</Radio>
@@ -331,19 +333,21 @@
                         </Col>
                         <Col span="2" class="ft-cs">
                         <div>
-                            <Dropdown >
+                            <Dropdown>
                                 <a href="javascript:void(0)">
                                     高级搜索
                                     <Icon type="arrow-down-b"></Icon>
                                 </a>
-                                <DropdownMenu  style="width:600px;" slot="list">
+                                <DropdownMenu style="width:600px;" slot="list">
                                     <Form style="margin:20px" :model="formItem" :label-width="60">
-                                        <FormItem label="知识分类">
-                                            <Input @on-enter="fetchData" style="width:260px" v-model="listQuery.LoreType" placeholder=""></Input>
+                                        <FormItem label="试题分类">
+                                            <Select @on-change="fetchData" v-model="listQuery.LoreType" style="width:260px">
+                                                <Option v-for="item in LoreTypeSearchList" :value="item.ItemNo" :key="item.ItemNo">{{ item.ItemName }}</Option>
+                                            </Select>
                                         </FormItem>
                                         <FormItem label="关联业务">
                                             <Select @on-change="fetchData" v-model="listQuery.AboutBll" style="width:260px">
-                                                <Option v-for="item in AboutBllSearchList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                                <Option v-for="item in AboutBllSearchList" :value="item.ItemNo" :key="item.ItemNo">{{ item.ItemName }}</Option>
                                             </Select>
                                         </FormItem>
                                         <Button type="primary" icon="ios-search" @click="fetchData">搜索</Button>
@@ -473,8 +477,10 @@
                 SubjectClassList: util.SubjectClassList, // 题型集合
                 sCSearchList: util.sCSearchList, // 题型查询集合
                 SubjectTypeList: util.SubjectTypeList, // 试题分类集合
-                AboutBllList: util.AboutBllList, // 关联业务集合
-                AboutBllSearchList: util.AboutBllSearchList,
+                AboutBllList: [], // 关联业务集合
+                LoreTypeList: [], // 试题分类集合
+                AboutBllSearchList: [],
+                LoreTypeSearchList: [],
                 formSearch: {
                     input1: '',
                     input2: '',
@@ -485,7 +491,7 @@
                     width: 60,
                     align: 'center'
                 }, {
-                    title: '试题分类',
+                    title: '试题类型',
                     width: 110,
                     sortable: true,
                     key: 'SubjectType',
@@ -526,8 +532,7 @@
                     key: 'AboutBll',
                     render: (h, params) => {
                         let sc = params.row.AboutBll;
-                        let v = util.getAboutBll(sc);
-                        return v;
+                        return util.GetItemValue(this, '100002', sc);
                     }
                 }, {
                     title: '创建人',
@@ -607,6 +612,19 @@
         methods: {
             // 初始化内容
             init () {
+                // 下拉数据源赋值
+                util.GetItemList('100002', '', false).then(dt => {
+                    this.AboutBllList = dt;
+                    return util.GetItemList('100002', '', true);
+                }).then(lt => {
+                    this.AboutBllSearchList = lt;
+                    return util.GetItemList('100003', '', true);
+                }).then(dt3 => {
+                    this.LoreTypeSearchList = dt3;
+                    return util.GetItemList('100003', '', false);
+                }).then(dt4 => {
+                    this.LoreTypeList = dt4;
+                });
                 // 设置表格高度
                 this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 185;
                 this.$nextTick(() => {});

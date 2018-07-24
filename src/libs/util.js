@@ -2,6 +2,7 @@ import axios from 'axios';
 import env from '../../build/env';
 import semver from 'semver';
 import packjson from '../../package.json';
+import {GetItem} from '@/api/iteminfo';
 
 let util = {
 
@@ -17,8 +18,8 @@ util.title = function (title, vm) {
 const ajaxUrl = env === 'development'
     ? 'http://127.0.0.1:8888'
     : env === 'production'
-    ? 'https://www.url.com'
-    : 'https://debug.url.com';
+        ? 'https://www.url.com'
+        : 'https://debug.url.com';
 
 util.ajax = axios.create({
     baseURL: ajaxUrl,
@@ -516,5 +517,36 @@ util.AboutBllSearchList = [{
     value: 'CW',
     label: '财务'
 }];
+
+util.GetItemList = function (typeNo, itemNo, isAll) {
+    return new Promise(function (resolve, reject) {
+        GetItem(typeNo, itemNo).then(response => {
+            let list = [];
+            if (response.data !== null) {
+                list = response.data;
+                if (isAll) {
+                    list.unshift({
+                        ItemNo: '-1',
+                        ItemName: '全部'
+                    });
+                };
+            } else {
+                list = [];
+            }
+            resolve(list);
+        });
+    });
+};
+
+util.GetItemValue = function (vm, typeNo, itemNo) {
+    let itemlist = vm.$store.state.app.itemList;
+    let value = itemNo;
+    for (let i = 0; i < itemlist.length; i++) {
+        if (itemlist[i].ItemType === typeNo && itemlist[i].ItemNo === itemNo) {
+            value = itemlist[i].ItemName;
+        }
+    }
+    return value;
+};
 
 export default util;
