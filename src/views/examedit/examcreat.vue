@@ -150,7 +150,7 @@
                     <Col span="17">
                     <div class="threebox-right">
                         <div class="trebox-head tx-center">
-                            <p>{{examrqParam.PaperName}}</p>
+                            <h1>{{examrqParam.PaperName}}</h1>
                             <div class="div_line margin-top-10"></div>
                         </div>
                         <div :style="{display:trboxStatus.show1}" class="trebox-content tx-center">
@@ -173,35 +173,232 @@
                             <div class="div_line margin-top-10"></div>
                         </div>
                         <div :style="{display:trboxStatus.show2}" class="trebox-content">
-                            <div class="trebox-ct2">
-                                <div class="tre-title">
-                                    <Row>
-                                        <Col span="8">
-                                        <Input size="small" placeholder="" style="width: 180px"></Input>
-                                        </Col>
-                                        <Col span="16">
-                                        <span>每题</span>
-                                        <Input size="small" placeholder="" style="width: 70px;margin-left:6px"></Input>
-                                        <span style="margin-left:6px">分</span>
-                                        <Checkbox style="margin-left:6px">试题乱序</Checkbox>
-                                        <Checkbox>选项乱序</Checkbox><Icon class="cursor" type="help-circled"></Icon>
-                                        </Col>
-                                    </Row>
-                                </div>
-                                <div class="tre-sel margin-top-10">
-                                     <Button type="ghost">选择试题</Button>
-                                </div>
-                                <div class="tre-subject">
-                                    <div class="tresbcont">
-                                        sdfds
-                                        sdfds
-                                        sdfw
-                                        dfdf
+                            <template v-for="tk in subjectTitleSel">
+                                <div class="trebox-ct2">
+                                    <div class="tre-title">
+                                        <Row>
+                                            <Col span="8">
+                                            <Input size="small" placeholder="" style="width: 180px"></Input>
+                                            </Col>
+                                            <Col span="16">
+                                            <span>每题</span>
+                                            <InputNumber v-model="tk.Score" size="small" style="width: 70px;margin-left:6px"></InputNumber>
+                                            <span style="margin-left:6px">分</span>
+                                            <Checkbox v-model="tk.Disorder" style="margin-left:6px">试题乱序</Checkbox>
+                                            <Checkbox v-model="tk.OptionOrder" v-if="tk.SubjecSubClass===11 ||tk.SubjecSubClass===12">选项乱序</Checkbox>
+                                            <Icon class="cursor" type="help-circled"></Icon>
+                                            <Checkbox style="margin-left:6px" v-model="tk.Isleak" v-if="tk.SubjecSubClass===30">选项乱序</Checkbox>
+                                            </Col>
+                                        </Row>
                                     </div>
+                                    <div class="tre-sel margin-top-10">
+                                        <Button @click="handleSelSubject(tk.SubjecSubClass)" type="ghost">选择试题</Button>
+                                    </div>
+                                    <div class="tx-center">
+                                        <h3>{{tk.SubjecSubClassName}}</h3>
+                                    </div>
+
+                                    <!-- 单选题 -->
+                                    <template v-if="tk.SubjecSubClass===11">
+                                        <template v-for="sb in examrqParam.SubjectData.danxList">
+                                            <div class="tre-subject">
+                                                <div class="tresbcont">
+                                                    <Row class="tresbbox">
+                                                        <Col span="19">
+                                                        <div class="tresbleft">
+                                                            <p>{{sb.Stem}}</p>
+                                                            <template v-for="(se, index) in sb.SelectionOption">
+                                                                <p class="margin-top-10 checkColor">{{Letter[index]}}.{{se}}</p>
+                                                            </template>
+                                                            <p class="margin-top-20">答案：{{sb.RightAnswer}}</p>
+                                                            <p class="margin-top-10">解析：{{sb.Analysis}}</p>
+                                                        </div>
+                                                        </Col>
+                                                        <Col span="5">
+                                                        <div class="tresbright">
+                                                            <div>
+                                                                <InputNumber v-model="sb.DefaultScore" size="small" style="width: 70px;"></InputNumber>分</div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="edit">编辑</Button>
+                                                            </div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="trash-a">删除</Button>
+                                                            </div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="chevron-up">上移</Button>
+                                                            </div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="chevron-down">下移</Button>
+                                                            </div>
+                                                        </div>
+                                                        </Col>
+                                                    </Row>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </template>
+
+                                    <!-- 多选题 -->
+                                    <template v-else-if="tk.SubjecSubClass===12">
+                                        <template v-for="sb in examrqParam.SubjectData.duoxList">
+                                            <div class="tre-subject">
+                                                <div class="tresbcont">
+                                                    <Row class="tresbbox">
+                                                        <Col span="19">
+                                                        <div class="tresbleft">
+                                                            <p>{{sb.Stem}}</p>
+                                                            <template v-for="(se, index) in sb.SelectionOption">
+                                                                <p class="margin-top-10 checkColor">{{Letter[index]}}.{{se}}</p>
+                                                            </template>
+                                                            <p class="margin-top-20">答案：{{sb.RightAnswer}}</p>
+                                                            <p class="margin-top-10">解析：{{sb.Analysis}}</p>
+                                                        </div>
+                                                        </Col>
+                                                        <Col span="5">
+                                                        <div class="tresbright">
+                                                            <div>
+                                                                <InputNumber v-model="sb.DefaultScore" size="small" style="width: 70px;"></InputNumber>分</div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="edit">编辑</Button>
+                                                            </div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="trash-a">删除</Button>
+                                                            </div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="chevron-up">上移</Button>
+                                                            </div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="chevron-down">下移</Button>
+                                                            </div>
+                                                        </div>
+                                                        </Col>
+                                                    </Row>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </template>
+
+                                    <!-- 判断题 -->
+                                    <template v-else-if="tk.SubjecSubClass===20">
+                                        <template v-for="sb in examrqParam.SubjectData.pdList">
+                                            <div class="tre-subject">
+                                                <div class="tresbcont">
+                                                    <Row class="tresbbox">
+                                                        <Col span="19">
+                                                        <div class="tresbleft">
+                                                            <p>{{sb.Stem}}</p>
+                                                            <p class="margin-top-10 checkColor">
+                                                                <Icon type="checkmark"></Icon> 正确</p>
+                                                            <p class="margin-top-10">
+                                                                <Icon type="close-round"></Icon> 错误</p>
+                                                            <p class="margin-top-20">答案：{{sb.RightAnswer}}</p>
+                                                            <p class="margin-top-10">解析：{{sb.Analysis}}</p>
+                                                        </div>
+                                                        </Col>
+                                                        <Col span="5">
+                                                        <div class="tresbright">
+                                                            <div>
+                                                                <InputNumber v-model="sb.DefaultScore" size="small" style="width: 70px;"></InputNumber>分</div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="edit">编辑</Button>
+                                                            </div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="trash-a">删除</Button>
+                                                            </div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="chevron-up">上移</Button>
+                                                            </div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="chevron-down">下移</Button>
+                                                            </div>
+                                                        </div>
+                                                        </Col>
+                                                    </Row>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </template>
+
+                                    <!-- 填空题 -->
+                                    <template v-else-if="tk.SubjecSubClass===30">
+                                        <template v-for="sb in examrqParam.SubjectData.tkList">
+                                            <div class="tre-subject">
+                                                <div class="tresbcont">
+                                                    <Row class="tresbbox">
+                                                        <Col span="19">
+                                                        <div class="tresbleft">
+                                                            <p>{{sb.Stem}}</p>
+                                                            <p class="margin-top-20">答案： {{sb.CdeAnswer1}} {{sb.CdeAnswer2}} {{sb.CdeAnswer3}} {{sb.CdeAnswer4}}
+                                                                {{sb.CdeAnswer5}} {{sb.CdeAnswer6}} {{sb.CdeAnswer7}} {{sb.CdeAnswer8}}
+                                                                {{sb.CdeAnswer9}} {{sb.CdeAnswer10}}
+                                                                <p class="margin-top-10">解析：{{sb.Analysis}}</p>
+                                                        </div>
+                                                        </Col>
+                                                        <Col span="5">
+                                                        <div class="tresbright">
+                                                            <div>
+                                                                <InputNumber v-model="sb.DefaultScore" size="small" style="width: 70px;"></InputNumber>分</div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="edit">编辑</Button>
+                                                            </div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="trash-a">删除</Button>
+                                                            </div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="chevron-up">上移</Button>
+                                                            </div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="chevron-down">下移</Button>
+                                                            </div>
+                                                        </div>
+                                                        </Col>
+                                                    </Row>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </template>
+
+                                    <!-- 问答题 -->
+                                    <template v-else-if="tk.SubjecSubClass===40">
+                                        <template v-for="sb in examrqParam.SubjectData.wdList">
+                                            <div class="tre-subject">
+                                                <div class="tresbcont">
+                                                    <Row class="tresbbox">
+                                                        <Col span="19">
+                                                        <div class="tresbleft">
+                                                            <p>{{sb.Stem}}</p>
+                                                            <p class="margin-top-20">答案：{{sb.RightAnswer}}</p>
+                                                            <p class="margin-top-10">解析：{{sb.Analysis}}</p>
+                                                        </div>
+                                                        </Col>
+                                                        <Col span="5">
+                                                        <div class="tresbright">
+                                                            <div>
+                                                                <InputNumber v-model="sb.DefaultScore" size="small" style="width: 70px;"></InputNumber>分</div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="edit">编辑</Button>
+                                                            </div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="trash-a">删除</Button>
+                                                            </div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="chevron-up">上移</Button>
+                                                            </div>
+                                                            <div class="margin-top-10">
+                                                                <Button type="ghost" icon="chevron-down">下移</Button>
+                                                            </div>
+                                                        </div>
+                                                        </Col>
+                                                    </Row>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </template>
                                 </div>
-                            </div>
+                            </template>
+
                             <div class="tre-botom">
-                                <Dropdown @on-click="handleTxMenu" class="margin-top-20">
+                                <Dropdown @on-click="handleTxMenu" placement="top" class="margin-top-20">
                                     <Button type="ghost">
                                         添加试题
                                         <Icon type="arrow-down-b"></Icon>
@@ -225,6 +422,10 @@
                 </Row>
             </div>
         </div>
+
+        <Modal @on-cancel="handlecancel" ok-text="确定" v-model="subjectmodal" :styles="{top: '20px'}" width="900" @on-ok="handleSaveSubject">
+            <subjectcmpts :SubjecSubClass="SubjecSubClass" ref="subjectcmpts"></subjectcmpts>
+        </Modal>
     </div>
 </template>
 <script>
@@ -233,21 +434,37 @@
         DelPaperList
     } from '@/api/paper';
     import util from '@/libs/util';
+    import subjectcmpts from './components/subjectcmpts';
     export default {
         name: 'examedit',
-        components: {},
+        components: {
+            subjectcmpts
+        },
         data () {
             return {
-                current: 0,
+                current: 2,
                 creatType: 0,
                 formItem: {}, // 表单数据源
                 data: [],
+                Letter: util.Letter,
+                subjectmodal: false, // 题库窗口打开状态
+                SubjecSubClass: -1,
+                EditModeloading: true, // 编辑窗口确定按钮加载状态
                 PaperTypeList: [], // 试卷分类集合
+                checkSubjectData: [], // 所选择的试题库
+                subjectTitleSel: [],
                 examrqParam: {
                     PaperName: '', // 试卷名称
                     PaperType: '', // 试卷分类
                     AssemblyType: '', // 组卷方式
-                    PaperMode: '' // 试卷类型
+                    PaperMode: '', // 试卷类型
+                    SubjectData: { // 题库数据
+                        danxList: [], // 单选集合
+                        duoxList: [], // 多选集合
+                        tkList: [], // 填空集合
+                        pdList: [], // 判断集合
+                        wdList: [] // 问答集合
+                    }
                 },
                 trboxStatus: { // 第三步盒子显示状态
                     show1: 'block',
@@ -296,6 +513,7 @@
                 util.GetItemList('100001', '', false).then(dt => {
                     this.PaperTypeList = dt;
                 });
+                this.showView();
                 this.$nextTick(() => {});
             },
             // 跳转当前
@@ -355,9 +573,47 @@
             },
             // 判断提醒菜单点击
             handleTxMenu (name) {
+                let json = {
+                    SubjecSubClassName: util.getSubjectTypeName(parseInt(name)),
+                    Score: 0, // 分数
+                    SubjecSubClass: parseInt(name), // 题型
+                    Disorder: false, // 试题排序方式
+                    OptionOrder: false,
+                    StemRk: '', // 题干描述
+                    Isleak: false // 多选题是否允许漏选
+                };
+                this.subjectTitleSel.push(json);
+                console.log(this.subjectTitleSel);
                 this.trboxStatus.show1 = 'none';
                 this.trboxStatus.show2 = 'block';
                 console.log(name);
+            },
+            // 选择试题
+            handleSelSubject (v) {
+                this.subjectmodal = true;
+                this.SubjecSubClass = parseInt(v);
+                let checkdata = this.examrqParam.SubjectData;
+                let ids = '';
+                let debarids = '';
+                for (let i = 0; i < checkdata.danxList.length; i++) {
+                    ids += checkdata.danxList[i].KeyID + ',';
+                }
+                for (let i = 0; i < checkdata.duoxList.length; i++) {
+                    ids += checkdata.duoxList[i].KeyID + ',';
+                }
+                for (let i = 0; i < checkdata.pdList.length; i++) {
+                    ids += checkdata.pdList[i].KeyID + ',';
+                }
+                for (let i = 0; i < checkdata.tkList.length; i++) {
+                    ids += checkdata.tkList[i].KeyID + ',';
+                }
+                for (let i = 0; i < checkdata.wdList.length; i++) {
+                    ids += checkdata.wdList[i].KeyID + ',';
+                }
+                debarids = ids.substring(0, ids.length - 1);
+                setTimeout(() => {
+                    this.$refs.subjectcmpts.refresh(v, debarids);
+                }, 100);
             },
             scrollHeightResize () {
 
@@ -405,7 +661,50 @@
             // 选择试卷
             handleSelectPaper () {
 
+            },
+            // 选取题目并加载到当前页面
+            handleSaveSubject () {
+                console.log(this.$refs.subjectcmpts.chekcData);
+                this.checkSubjectData = this.$refs.subjectcmpts.chekcData;
+                let checkSubjectData = this.checkSubjectData;
+                // 对选择的数据进行筛选处理
+                switch (parseInt(this.SubjecSubClass)) {
+                    case 11:
+                        for (let i = 0; i < checkSubjectData.length; i++) {
+                            checkSubjectData[i].SelectionOption = checkSubjectData[i].SelectionOption.split('|');
+                            this.examrqParam.SubjectData.danxList.push(checkSubjectData[i]);
+                        }
+                        break;
+                    case 12:
+                        for (let i = 0; i < checkSubjectData.length; i++) {
+                            checkSubjectData[i].SelectionOption = checkSubjectData[i].SelectionOption.split('|');
+                            this.examrqParam.SubjectData.duoxList.push(checkSubjectData[i]);
+                        }
+                        break;
+                    case 20:
+                        for (let i = 0; i < checkSubjectData.length; i++) {
+                            this.examrqParam.SubjectData.pdList.push(checkSubjectData[i]);
+                        }
+                        break;
+                    case 30:
+                        for (let i = 0; i < checkSubjectData.length; i++) {
+                            this.examrqParam.SubjectData.tkList.push(checkSubjectData[i]);
+                        }
+                        break;
+                    case 40:
+                        for (let i = 0; i < checkSubjectData.length; i++) {
+                            this.examrqParam.SubjectData.wdList.push(checkSubjectData[i]);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            },
+            // 关闭窗口
+            handlecancel () {
+                this.$refs.subjectcmpts.clearData();
             }
+
         }
     };
 </script>

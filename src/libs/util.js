@@ -538,6 +538,8 @@ util.GetItemList = function (typeNo, itemNo, isAll) {
     });
 };
 
+util.Letter = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
 util.GetItemValue = function (vm, typeNo, itemNo) {
     let itemlist = vm.$store.state.app.itemList;
     let value = itemNo;
