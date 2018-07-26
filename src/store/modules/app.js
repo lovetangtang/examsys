@@ -11,7 +11,7 @@ const app = {
         openedSubmenuArr: [], // 要展开的菜单数组
         menuTheme: 'dark', // 主题
         themeColor: '',
-        itemList: JSON.parse(localStorage.itemList || []),
+        itemList: JSON.parse(localStorage.itemList || null),
         pageOpenedList: [{
             title: '首页',
             path: '',

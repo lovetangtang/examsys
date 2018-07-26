@@ -265,19 +265,19 @@ util.checkUpdate = function (vm) {
 util.getSubjectTypeName = function (val) {
     switch (val) {
         case 11:
-            return '单选';
+            return '单选题';
             break;
         case 12:
-            return '多选';
+            return '多选题';
             break;
         case 20:
-            return '判断';
+            return '判断题';
             break;
         case 30:
-            return '填空';
+            return '填空题';
             break;
         case 40:
-            return '问答';
+            return '问答题';
             break;
         default:
             break;
@@ -538,7 +538,7 @@ util.GetItemList = function (typeNo, itemNo, isAll) {
     });
 };
 
-util.Letter = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+util.Letter = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
 util.GetItemValue = function (vm, typeNo, itemNo) {
     let itemlist = vm.$store.state.app.itemList;
