@@ -1,44 +1,23 @@
 <template>
-  <div>
+  <Row :gutter="50" style="margin:20px">
+    <Col span="12">
     <Form :model="subjectComSaveList" :label-width="80">
-      <FormItem label="试题类型：">
-        <RadioGroup @on-change="fetchData" v-model="subjectComSaveList.SubjectType">
-          <Radio label="0">模拟试题</Radio>
-          <Radio label="1">正式试题</Radio>
-        </RadioGroup>
+      <FormItem label="考试名称：">
+        <Input placeholder=""></Input>
       </FormItem>
-
-      <Row :gutter="5">
-        <Col span="8">
-        <FormItem label="试题分类：">
-          <Select @on-change="fetchData" size="small" v-model="subjectComSaveList.LoreType" style="width:110px">
-            <Option v-for="item in LoreTypeList" :value="item.ItemNo" :key="item.ItemNo">{{ item.ItemName }}</Option>
-          </Select>
-        </FormItem>
-        </Col>
-        <Col span="8">
-        <FormItem label="关联业务：">
-          <Select @on-change="fetchData"  size="small" v-model="subjectComSaveList.AboutBllMode" style="width:110px">
-            <Option v-for="item in AboutBllList" :value="item.ItemNo" :key="item.ItemNo">{{ item.ItemName }}</Option>
-          </Select>
-        </FormItem>
-        </Col>
-      </Row>
-
-      <FormItem label="简单：">
-        <InputNumber v-model="subjectComSaveList.SimpleTkSum" :min="0" :max="SimpleMaxSum" placeholder=""></InputNumber>
-        <label for=""> /{{SimpleMaxSum}}</label>
+      <FormItem label="考试分类：">
+        <Input placeholder=""></Input>
       </FormItem>
-      <FormItem label="普通：">
-        <InputNumber v-model="subjectComSaveList.UsualTkSum" :min="0" :max="UsualMaxSum" placeholder=""></InputNumber>
-        <label for=""> /{{UsualMaxSum}}</label>
+      <FormItem label="考试时间：">
+        <Input placeholder=""></Input>
       </FormItem>
-      <FormItem label="困难：">
-        <InputNumber v-model="subjectComSaveList.HardTkSum" :min="0" :max="HardMaxSum" placeholder=""></InputNumber>
-        <label for=""> /{{HardMaxSum}}</label>
+      <FormItem label="考试时间：">
+        <Input placeholder=""></Input>
       </FormItem>
     </Form>
-  </div>
+    </Col>
+    <Col span="12">试卷名称</Col>
+  </Row>
 </template>
 <script>
   import {
@@ -46,7 +25,7 @@
   } from '@/api/subject';
   import util from '@/libs/util';
   export default {
-      name: 'rdmgrouprule',
+      name: 'examcmpts',
       props: {
 
       },

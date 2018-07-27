@@ -21,9 +21,9 @@
                                 </FormItem>
                                 </Col>
                                 <Col span="4">
-                                <FormItem label="试题分类" :label-width="70">
-                                    <Select @on-change="fetchData" v-model="listQuery.SubjecSubClass" style="width:110px">
-                                        <Option v-for="item in sCSearchList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                <FormItem label="试卷分类" :label-width="70">
+                                    <Select @on-change="fetchData" v-model="listQuery.PaperType" style="width:110px">
+                                        <Option v-for="item in PaperTypeList" :value="item.ItemNo" :key="item.ItemNo">{{ item.ItemName }}</Option>
                                     </Select>
                                 </FormItem>
                                 </Col>
@@ -95,6 +95,7 @@
                 disable: true, // 禁用删除按钮
                 EditModeloading: true, // 编辑窗口确定按钮加载状态
                 chekcData: [], // 表格选中项
+                PaperTypeList: [], // 试卷分类集合
                 total: null, // 表格数据总条数
                 formItem: {}, // 表单数据源
                 listQuery: { // 查询条件
@@ -107,7 +108,6 @@
                     action: 'getpapelist',
                     PaperName: ''
                 },
-                sCSearchList: util.sCSearchList, // 题型查询集合
                 columns: [{
                     type: 'selection',
                     width: 60,
@@ -122,9 +122,8 @@
                     sortable: true,
                     key: 'PaperType',
                     render: (h, params) => {
-                        let sc = params.row.SubjecSubClass;
-                        let v = util.getExamModeName(sc);
-                        return v;
+                        let sc = params.row.PaperType;
+                        return util.GetItemValue(this, '100001', sc);
                     }
                 }, {
                     title: '试卷类型',
@@ -132,8 +131,8 @@
                     width: 110,
                     key: 'PaperMode',
                     render: (h, params) => {
-                        let sc = params.row.SubjecSubClass;
-                        let v = util.getPaperModeName(sc);
+                        let sc = params.row.PaperMode;
+                        let v = util.getPaperModeName(parseInt(sc));
                         return v;
                     }
                 }, {
@@ -142,7 +141,7 @@
                     width: 110,
                     key: 'AssemblyType',
                     render: (h, params) => {
-                        let sc = params.row.SubjecSubClass;
+                        let sc = params.row.AssemblyType;
                         let v = util.getAssemblyType(sc);
                         return v;
                     }
@@ -228,6 +227,10 @@
         methods: {
             // 初始化内容
             init () {
+                // 下拉数据源赋值
+                util.GetItemList('100001', '', true).then(dt => {
+                    this.PaperTypeList = dt;
+                });
                 // 设置表格高度
                 this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 185;
                 this.$nextTick(() => {});

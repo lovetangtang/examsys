@@ -149,7 +149,7 @@
                                     <p class="margin-top-10">共
                                         <span>{{tv.sTSelSum}}</span> 题</p>
                                     <p class="margin-top-10">每题
-                                        <InputNumber v-model="tv.Score" style="width: 70px;margin-left:6px"></InputNumber> 分</p>
+                                        <InputNumber :min="0" v-model="tv.Score" style="width: 70px;margin-left:6px"></InputNumber> 分</p>
                                     </Col>
                                     <Col span="4">
                                     <div class="margin-top-10" @click="removeSbTSel(tk)">
@@ -218,7 +218,7 @@
                                             </Col>
                                             <Col span="16">
                                             <span>每题</span>
-                                            <InputNumber v-model="tk.Score" size="small" style="width: 70px;margin-left:6px"></InputNumber>
+                                            <InputNumber :min="0" v-model="tk.Score" size="small" style="width: 70px;margin-left:6px"></InputNumber>
                                             <span style="margin-left:6px">分</span>
                                             <Checkbox v-model="tk.Disorder" style="margin-left:6px">试题乱序</Checkbox>
                                             <template v-if="tk.SubjecSubClass===11 ||tk.SubjecSubClass===12">
@@ -235,6 +235,7 @@
                                             </Col>
                                         </Row>
                                     </div>
+                                    <!-- 选题组卷 -->
                                     <div :style="{display:groupStatus.xzStatus}">
                                         <div class="tre-sel margin-top-10">
                                             <Button @click="handleSelSubject(tk.SubjecSubClass,tkkey)" type="ghost">选择试题</Button>
@@ -263,7 +264,7 @@
                                                             <Col span="5">
                                                             <div class="tresbright">
                                                                 <div>
-                                                                    <InputNumber v-model="sb.DefaultScore" size="small" style="width: 70px;"></InputNumber>分</div>
+                                                                    <InputNumber :min="0" v-model="sb.DefaultScore" size="small" style="width: 70px;"></InputNumber>分</div>
                                                                 <div class="margin-top-10">
                                                                     <Button type="ghost" icon="edit">编辑</Button>
                                                                 </div>
@@ -304,7 +305,7 @@
                                                             <Col span="5">
                                                             <div class="tresbright">
                                                                 <div>
-                                                                    <InputNumber v-model="sb.DefaultScore" size="small" style="width: 70px;"></InputNumber>分</div>
+                                                                    <InputNumber :min="0" v-model="sb.DefaultScore" size="small" style="width: 70px;"></InputNumber>分</div>
                                                                 <div class="margin-top-10">
                                                                     <Button type="ghost" icon="edit">编辑</Button>
                                                                 </div>
@@ -345,7 +346,7 @@
                                                             <Col span="5">
                                                             <div class="tresbright">
                                                                 <div>
-                                                                    <InputNumber v-model="sb.DefaultScore" size="small" style="width: 70px;"></InputNumber>分</div>
+                                                                    <InputNumber :min="0" v-model="sb.DefaultScore" size="small" style="width: 70px;"></InputNumber>分</div>
                                                                 <div class="margin-top-10">
                                                                     <Button type="ghost" icon="edit">编辑</Button>
                                                                 </div>
@@ -385,7 +386,7 @@
                                                             <Col span="5">
                                                             <div class="tresbright">
                                                                 <div>
-                                                                    <InputNumber v-model="sb.DefaultScore" size="small" style="width: 70px;"></InputNumber>分</div>
+                                                                    <InputNumber :min="0" v-model="sb.DefaultScore" size="small" style="width: 70px;"></InputNumber>分</div>
                                                                 <div class="margin-top-10">
                                                                     <Button type="ghost" icon="edit">编辑</Button>
                                                                 </div>
@@ -422,7 +423,7 @@
                                                             <Col span="5">
                                                             <div class="tresbright">
                                                                 <div>
-                                                                    <InputNumber v-model="sb.DefaultScore" size="small" style="width: 70px;"></InputNumber>分</div>
+                                                                    <InputNumber :min="0" v-model="sb.DefaultScore" size="small" style="width: 70px;"></InputNumber>分</div>
                                                                 <div class="margin-top-10">
                                                                     <Button type="ghost" icon="edit">编辑</Button>
                                                                 </div>
@@ -443,6 +444,7 @@
                                             </template>
                                         </template>
                                     </div>
+                                    <!-- 随机组卷 -->
                                     <div :style="{display:groupStatus.sjStatus}">
                                         <div class="tx-center margin-top-10">
                                             <h3>{{tk.SubjecSubClassName}}</h3>
@@ -476,7 +478,7 @@
                         </div>
                         <div class="trebox-bom">
                             <div class="margin-top-10">
-                                <Button style="width:200px" @click="next" type="primary">下一步</Button>
+                                <Button style="width:200px" @click="handlepapersave" type="primary">下一步</Button>
                             </div>
                         </div>
                     </div>
@@ -484,33 +486,41 @@
                 </Row>
             </div>
         </div>
+        <!-- 第四步 -->
+        <div :style="{ display:stepsStatus.four}">
+            <examcmpts></examcmpts>
+        </div>
         <!-- 题库选择窗口 -->
-        <Modal @on-cancel="handlecancel" ok-text="确定" v-model="subjectmodal" :styles="{top: '20px'}" width="900" @on-ok="handleSaveSubject">
+        <Modal :mask-closable="false" @on-cancel="handlecancel" ok-text="确定" v-model="subjectmodal" :styles="{top: '20px'}" width="900"
+            @on-ok="handleSaveSubject">
             <subjectcmpts :SubjecSubClass="SubjecSubClass" ref="subjectcmpts"></subjectcmpts>
         </Modal>
         <!-- 组卷方式窗口 -->
-        <Modal @on-cancel="handlecancelGroup" ok-text="确定" v-model="rdmmodal" width="600" @on-ok="handleSaveSubjectRule">
-            <rdmgrouprule ref="rdmgrouprule"></rdmgrouprule>
+        <Modal :mask-closable="false" @on-cancel="handlecancelGroup" ok-text="确定" v-model="rdmmodal" width="600" @on-ok="handleSaveSubjectRule">
+            <rdmgrouprule class="margin-top-20" ref="rdmgrouprule"></rdmgrouprule>
         </Modal>
     </div>
 </template>
 <script>
     import {
         GetList,
-        DelPaperList
+        DelPaperList,
+        SavePaperList
     } from '@/api/paper';
     import util from '@/libs/util';
     import subjectcmpts from './components/subjectcmpts';
     import rdmgrouprule from './components/rdmgrouprule';
+    import examcmpts from './components/examcmpts';
     export default {
         name: 'examedit',
         components: {
             subjectcmpts,
-            rdmgrouprule
+            rdmgrouprule,
+            examcmpts
         },
         data () {
             return {
-                current: 2,
+                current: 3,
                 creatType: 0,
                 tkkey: -1,
                 formItem: {}, // 表单数据源
@@ -522,25 +532,20 @@
                 EditModeloading: true, // 编辑窗口确定按钮加载状态
                 PaperTypeList: [], // 试卷分类集合
                 checkSubjectData: [], // 所选择的试题库
-                subjectTitleSel: [],
+                subjectTitleSel: [], // 题库(需要传入后台)
                 groupStatus: {
                     xzStatus: 'none',
                     sjStatus: 'none'
                 },
-                examrqParam: {
+                examrqParam: { // 需要传入后台的参数
                     PaperName: '', // 试卷名称
+                    action: 'save',
                     PaperType: '', // 试卷分类
                     TotalScore: 0, // 总分
                     SubjectNum: 0, // 总题数
                     AssemblyType: -1, // 组卷方式
                     PaperMode: '', // 试卷类型
-                    SubjectData: { // 题库数据
-                        danxList: [], // 单选集合
-                        duoxList: [], // 多选集合
-                        tkList: [], // 填空集合
-                        pdList: [], // 判断集合
-                        wdList: [] // 问答集合
-                    }
+                    SubjectData: [] // 题库数据
                 },
                 trboxStatus: { // 第三步盒子显示状态
                     show1: 'block',
@@ -567,14 +572,15 @@
                 handler (val, oldVal) {
                     let score = 0; // 总分数
                     let sbsum = 0; // 总题数
-                    let rdmscore = 0;//
+                    let rdmscore = 0; //
                     for (let k = 0; k < val.length; k++) {
                         let sum = val[k].danxList.length + val[k].duoxList.length + val[k].pdList.length + val[k].tkList
                             .length + val[k].wdList.length;
                         sbsum += sum;
                         val[k].sTSelSum = sum;
                         if (val[k].sbgroupList && val[k].sbgroupList.SimpleTkSum) {
-                            rdmscore += (val[k].Score * val[k].sbgroupList.SimpleTkSum) + (val[k].Score * val[k].sbgroupList.UsualTkSum) + (val[k].Score * val[k].sbgroupList.HardTkSum);
+                            rdmscore += (val[k].Score * val[k].sbgroupList.SimpleTkSum) + (val[k].Score * val[k].sbgroupList
+                                .UsualTkSum) + (val[k].Score * val[k].sbgroupList.HardTkSum);
                         }
                         for (let i = 0; i < val[k].danxList.length; i++) {
                             score += val[k].danxList[i].DefaultScore;
@@ -728,8 +734,8 @@
                     Score: 0, // 分数
                     SubjecSubClass: parseInt(name), // 题型
                     Disorder: false, // 试题排序方式
-                    OptionOrder: false,
-                    sTSelSum: 0,
+                    OptionOrder: false, // 选项排序
+                    sTSelSum: 0, // 每个大类题型有好多题
                     StemRk: util.getSubjectTypeName(parseInt(name)), // 题干描述
                     Isleak: false // 多选题是否允许漏选
                 };
@@ -964,8 +970,11 @@
                 this.rdmmodal = true;
                 this.tkkey = tkkey;
                 this.SubjecSubClass = parseInt(v);
-                if (this.subjectTitleSel[tkkey].sbgroupList.length > 0) {
-                    this.$refs.rdmgrouprule.setsubjectComSaveList(this.subjectTitleSel[tkkey].sbgroupList);
+                this.$refs.rdmgrouprule.setSumData(this.SubjecSubClass);
+                if (this.subjectTitleSel[tkkey].sbgroupList && this.subjectTitleSel[tkkey].sbgroupList.SimpleTkSum) {
+                    setTimeout(() => {
+                        this.$refs.rdmgrouprule.setsubjectComSaveList(this.subjectTitleSel[tkkey].sbgroupList);
+                    }, 100);
                 }
             },
             // 关闭窗口
@@ -976,6 +985,55 @@
             handleSaveSubjectRule () {
                 let rdmgroupdata = this.$refs.rdmgrouprule.subjectComSaveList;
                 this.subjectTitleSel[this.tkkey].sbgroupList = rdmgroupdata;
+                this.$refs.rdmgrouprule.clearData();
+            },
+            // 试卷保存
+            handlepapersave () {
+                for (let i = 0; i < this.subjectTitleSel.length; i++) {
+                    for (let j = 0; j < this.subjectTitleSel[i].danxList.length; j++) {
+                        let json = {
+                            KeyID: this.subjectTitleSel[i].danxList[j].KeyID,
+                            DefaultScore: this.subjectTitleSel[i].danxList[j].DefaultScore
+                        };
+                        this.subjectTitleSel[i].danxList[j] = json;
+                    }
+                    for (let j = 0; j < this.subjectTitleSel[i].duoxList.length; j++) {
+                        let json = {
+                            KeyID: this.subjectTitleSel[i].duoxList[j].KeyID,
+                            DefaultScore: this.subjectTitleSel[i].duoxList[j].DefaultScore
+                        };
+                        this.subjectTitleSel[i].duoxList[j] = json;
+                    }
+                    for (let j = 0; j < this.subjectTitleSel[i].pdList.length; j++) {
+                        let json = {
+                            KeyID: this.subjectTitleSel[i].pdList[j].KeyID,
+                            DefaultScore: this.subjectTitleSel[i].pdList[j].DefaultScore
+                        };
+                        this.subjectTitleSel[i].pdList[j] = json;
+                    }
+                    for (let j = 0; j < this.subjectTitleSel[i].tkList.length; j++) {
+                        let json = {
+                            KeyID: this.subjectTitleSel[i].tkList[j].KeyID,
+                            DefaultScore: this.subjectTitleSel[i].tkList[j].DefaultScore
+                        };
+                        this.subjectTitleSel[i].tkList[j] = json;
+                    }
+                    for (let j = 0; j < this.subjectTitleSel[i].wdList.length; j++) {
+                        let json = {
+                            KeyID: this.subjectTitleSel[i].wdList[j].KeyID,
+                            DefaultScore: this.subjectTitleSel[i].wdList[j].DefaultScore
+                        };
+                        this.subjectTitleSel[i].wdList[j] = json;
+                    }
+                }
+                this.examrqParam.SubjectData = JSON.stringify(this.subjectTitleSel);
+                SavePaperList(this.examrqParam).then(response => {
+                    this.$Notice.success({
+                        title: response.msg,
+                        desc: '',
+                        duration: 2
+                    });
+                });
             }
         }
     };

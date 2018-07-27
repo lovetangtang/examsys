@@ -26,3 +26,11 @@ export function GetList (params) {
         params
     });
 }
+
+export function GetDegreeSum (params) {
+    return request({
+        url: '/Data/Exam/subjectinfo.ashx',
+        method: 'post',
+        params
+    });
+}

@@ -323,13 +323,16 @@ util.getPaperModeName = function (val) {
 util.getAssemblyType = function (val) {
     switch (val) {
         case 10:
-            return '手工编排';
+            return '选题组卷';
             break;
         case 20:
-            return '定向随机';
+            return '抽题组卷';
             break;
         case 30:
-            return '系统随机';
+            return '随机组卷';
+            break;
+        case 40:
+            return '定向组卷';
             break;
         default:
             break;
