@@ -488,7 +488,7 @@
         </div>
         <!-- 第四步 -->
         <div :style="{ display:stepsStatus.four}">
-            <examcmpts></examcmpts>
+            <examcmpts ref="examcmpts"></examcmpts>
         </div>
         <!-- 题库选择窗口 -->
         <Modal :mask-closable="false" @on-cancel="handlecancel" ok-text="确定" v-model="subjectmodal" :styles="{top: '20px'}" width="900"
@@ -533,6 +533,7 @@
                 PaperTypeList: [], // 试卷分类集合
                 checkSubjectData: [], // 所选择的试题库
                 subjectTitleSel: [], // 题库(需要传入后台)
+                paperinfo: [],
                 groupStatus: {
                     xzStatus: 'none',
                     sjStatus: 'none'
@@ -544,7 +545,7 @@
                     TotalScore: 0, // 总分
                     SubjectNum: 0, // 总题数
                     AssemblyType: -1, // 组卷方式
-                    PaperMode: '', // 试卷类型
+                    PaperMode: '0', // 试卷类型
                     SubjectData: [] // 题库数据
                 },
                 trboxStatus: { // 第三步盒子显示状态
@@ -1027,12 +1028,15 @@
                     }
                 }
                 this.examrqParam.SubjectData = JSON.stringify(this.subjectTitleSel);
+
                 SavePaperList(this.examrqParam).then(response => {
                     this.$Notice.success({
                         title: response.msg,
                         desc: '',
                         duration: 2
                     });
+                    this.$refs.examcmpts.setPaperinfo(response.data);
+                    this.next();
                 });
             }
         }

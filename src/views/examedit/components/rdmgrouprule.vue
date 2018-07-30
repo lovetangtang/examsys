@@ -102,7 +102,6 @@
           },
           // 设置表单数据
           setsubjectComSaveList (data) {
-              console.log(data);
               this.subjectComSaveList = data;
           },
           // 刷新数据
