@@ -1,6 +1,7 @@
 <style lang="less">
     @import '../../styles/common.less';
     @import "./subject.less";
+    @import "../examedit/examcreat.less";
 </style>
 <template>
     <div>
@@ -79,6 +80,8 @@
                         ref="table" :height="tableHeight"></Table>
                 </div>
             </div>
+
+
             <div ref="bmpage" class="box-bottom">
                 <div class="page">
                     <Page :total="total" placement="top" @on-change="changePage" @on-page-size-change="onpagesizechange" size="small" show-total
@@ -86,6 +89,10 @@
                 </div>
             </div>
         </Card>
+        <Modal :loading="EditModeloading" @on-cancel="handlecancel" ok-text="保存" v-model="examMode" :styles="{top: '20px'}" width="1200"
+            @on-ok="handleSaveExam">
+            <examcmpts ref="examcmpts"></examcmpts>
+        </Modal>
     </div>
 </template>
 <script>
@@ -94,15 +101,19 @@
         DelExamList
     } from '@/api/exam';
     import util from '@/libs/util';
+    import examcmpts from '../examedit/components/examcmpts';
     export default {
         name: 'exam_set',
-        components: {},
+        components: {
+            examcmpts
+        },
         data () {
             return {
                 loading: true, // 表格加载状态
                 tableHeight: 450, // 表格高度
+                examMode: false,
                 disable: true, // 禁用删除按钮
-                EditModeloading: true, // 编辑窗口确定按钮加载状态
+                EditModeloading: false, // 编辑窗口确定按钮加载状态
                 chekcData: [], // 表格选中项
                 total: null, // 表格数据总条数
                 formItem: {}, // 表单数据源
@@ -182,7 +193,7 @@
                     title: '创建时间',
                     sortable: true,
                     width: 135,
-                    key: 'InsertTime',
+                    key: 'ExmInsertTime',
                     render: (h, params) => {
                         let it = params.row.InsertTime;
                         it = it.substring(it, it.length - 3);
@@ -267,7 +278,10 @@
                     this.loading = true;
                     this.listQuery.ExamBeginTime = JSON.stringify(this.ExamBeginTime);
                     console.log(this.ExamBeginTime);
-                    if (this.ExamBeginTime.length === 0 || this.ExamBeginTime[0] === null || this.ExamBeginTime[1] === null) { this.listQuery.ExamBeginTime = ''; };
+                    if (this.ExamBeginTime.length === 0 || this.ExamBeginTime[0] === null || this.ExamBeginTime[1] ===
+                        null) {
+                        this.listQuery.ExamBeginTime = '';
+                    };
                     GetList(this.listQuery).then(response => {
                         this.data = response.data;
                         this.loading = false;
@@ -284,7 +298,8 @@
             },
             // 展开编辑窗体
             showEdit (params) {
-
+                this.examMode = true;
+                this.$refs.examcmpts.setExaminfo(params.row);
             },
             // 移除数据
             remove (params) {
@@ -363,6 +378,14 @@
                 this.$Modal.info({
                     content: '正在开发...'
                 });
+            },
+            // 取消
+            handlecancel () {
+
+            },
+            // 保存考试信息
+            handleSaveExam () {
+                this.$refs.examcmpts.handleSaveExam();
             }
         }
     };

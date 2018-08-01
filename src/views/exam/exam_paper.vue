@@ -82,18 +82,21 @@
 <script>
     import {
         GetList,
-        DelPaperList
+        DelPaperList,
+        GetPaperSubject
     } from '@/api/paper';
     import util from '@/libs/util';
+    import papersubject from '../examedit/components/papersubject';
     export default {
         name: 'exam_paper',
-        components: {},
+        components: {
+            papersubject
+        },
         data () {
             return {
                 loading: true, // 表格加载状态
                 tableHeight: 450, // 表格高度
                 disable: true, // 禁用删除按钮
-                EditModeloading: true, // 编辑窗口确定按钮加载状态
                 chekcData: [], // 表格选中项
                 PaperTypeList: [], // 试卷分类集合
                 total: null, // 表格数据总条数
@@ -256,7 +259,21 @@
             },
             // 展开编辑窗体
             showEdit (params) {
-
+                var rq = {
+                    action: 'getpapersubject',
+                    KeyID: params.row.KeyID
+                };
+                GetPaperSubject(rq).then(response => {
+                    this.$router.push({
+                        name: 'paperedit',
+                        params: {
+                            type: params.row.AssemblyType,
+                            pdata: response.data,
+                            row: params.row
+                        }
+                    });
+                    // this.$refs.papersubject.setPaperSubject(params.row.AssemblyType, response.data);
+                });
             },
             // 移除数据
             remove (params) {
@@ -331,6 +348,12 @@
                 this.$Modal.info({
                     content: '正在开发...'
                 });
+            },
+            // 取消
+            handlecancel () {},
+            // 修改保存试卷
+            handleSavePaper () {
+                this.$refs.papersubject.setPaperSubject();
             }
         }
     };

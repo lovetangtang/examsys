@@ -26,3 +26,11 @@ export function GetList (params) {
         params
     });
 }
+
+export function GetPaperSubject (params) {
+    return request({
+        url: '/Data/exam/paperinfo.ashx',
+        method: 'post',
+        params
+    });
+}

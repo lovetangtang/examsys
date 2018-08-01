@@ -75,7 +75,7 @@ module.exports = merge(webpackBaseConfig, {
             ]
         }),
         new HtmlWebpackPlugin({
-            title: 'iView admin v' + package.version,
+            title: '在线考试系统' + package.version,
             favicon: './td_icon.ico',
             filename: './index.html',
             template: '!!ejs-loader!./src/template/index.ejs',

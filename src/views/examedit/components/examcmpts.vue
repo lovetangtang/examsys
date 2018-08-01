@@ -42,7 +42,7 @@
                         <Row>
                             <Col class="row-pd0" span="11">
                             <FormItem prop="date">
-                                <DatePicker type="date" v-model="examrqparams.ExamEndDate"  placeholder="Select date"></DatePicker>
+                                <DatePicker type="date" v-model="examrqparams.ExamEndDate" placeholder="Select date"></DatePicker>
                             </FormItem>
                             </Col>
                             <Col class="row-pd0" span="2" style="text-align: center">-</Col>
@@ -89,12 +89,12 @@
                     <Row>
                         <Col class="row-pd0" span="12">
                         <FormItem label="答卷时长：">
-                            <InputNumber v-model="examrqparams.AnsweTime" :max="10" :min="0"></InputNumber> 分钟
+                            <InputNumber v-model="examrqparams.AnsweTime" :min="0"></InputNumber> 分钟
                         </FormItem>
                         </Col>
                         <Col class="row-pd0" span="12">
                         <FormItem label="及格分数：">
-                            <InputNumber v-model="examrqparams.PassScore" :max="10" :min="0"></InputNumber>
+                            <InputNumber v-model="examrqparams.PassScore" :min="0"></InputNumber>
                         </FormItem>
                         </Col>
                     </Row>
@@ -139,25 +139,31 @@
                         </Col>
                         <Col class="row-pd0" span="12">
                         <FormItem label="监考人工号：">
-                            <Input v-model="examrqparams.InvigilatorID"  placeholder=""></Input>
+                            <Input v-model="examrqparams.InvigilatorID" placeholder=""></Input>
                         </FormItem>
                         </Col>
                     </Row>
 
                     <FormItem label="可考部门：">
-                        <Input v-model="examrqparams.AllowExamDepart"  placeholder=""></Input>
+                        <Input v-model="examrqparams.AllowExamDepart" placeholder=""></Input>
                     </FormItem>
-                    <FormItem label="可考人员：">
+                    <FormItem label="可考人员工号：">
                         <Input v-model="examrqparams.AllowExamUser" placeholder=""></Input>
+                        <Tooltip placement="bottom">
+                            <Icon class="cursor" type="help-circled"></Icon>
+                            <div slot="content">
+                                <p>多个人员用|号隔开，否则不生效</p>
+                            </div>
+                        </Tooltip>
                     </FormItem>
                     <FormItem label="答题次数：">
-                        <InputNumber v-model="examrqparams.AnsweNumLimit" :max="10" :min="0"></InputNumber> (-1默认不限制)
+                        <InputNumber v-model="examrqparams.AnsweNumLimit" :min="0"></InputNumber> (-1默认不限制)
                     </FormItem>
                     <FormItem label="切换页面超过：">
-                        <InputNumber v-model="examrqparams.SwitchNumLimit" :max="10" :min="0"></InputNumber> 次强制交卷，-1默认不限制
+                        <InputNumber v-model="examrqparams.SwitchNumLimit" :min="0"></InputNumber> 次强制交卷，-1默认不限制
                     </FormItem>
                     <FormItem label="单题答题时间：">
-                        <InputNumber v-model="examrqparams.OneAnsweSecond" :max="10" :min="0"></InputNumber>
+                        <InputNumber v-model="examrqparams.OneAnsweSecond" :min="0"></InputNumber>
                         <Tooltip placement="bottom">
                             <Icon class="cursor" type="help-circled"></Icon>
                             <div slot="content">
@@ -181,7 +187,10 @@
             <Col span="12">
             <!-- 试卷信息 -->
             <Card>
-                <p slot="title">试卷信息</p>
+                <p slot="title">试卷信息
+                    <span class="span-edit-ft">编辑</span>
+
+                </p>
                 <div class="">
                     <div>
                         <label for="">试卷名称：</label>
@@ -197,7 +206,7 @@
                     </div>
                     <div class="margin-top-10">
                         <label for="">创建日期：</label>
-                       <span>{{paperinfo.InsertTime}}</span>
+                        <span>{{paperinfo.InsertTime}}</span>
                     </div>
                 </div>
             </Card>
@@ -219,12 +228,14 @@
                     </div>
                     <div class="margin-top-10">
                         <label for="">考试结束语：</label>
-                        <Input v-model="examrqparams.EndTag" class="margin-top-10" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="加油，欢迎下次再来" :rows="4"></Input>
+                        <Input v-model="examrqparams.EndTag" class="margin-top-10" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="加油，欢迎下次再来"
+                            :rows="4"></Input>
                     </div>
                 </Form>
             </Card>
 
-            <Button @click="handleSaveExam" class="margin-top-20" type="success" long>发布考试</Button>
+
+            <Button :style="{display:showbtn}" @click="handleSaveExam" class="margin-top-20" type="success" long>发布考试</Button>
             </Col>
         </Row>
 
@@ -244,6 +255,7 @@
                 SimpleMaxSum: 0,
                 UsualMaxSum: 0,
                 HardMaxSum: 0,
+                showbtn: 'block',
                 paperinfo: {
                     'KeyID': 0,
                     'PaperName': '',
@@ -304,7 +316,7 @@
         },
         // 模板渲染成html前调用，初始化属性
         created () {
-    
+
         },
         // 自定义方法
         methods: {
@@ -322,13 +334,47 @@
                 this.paperinfo = p;
                 this.examrqparams.PaperID = p.KeyID;
             },
+            // 设置考试信息
+            setExaminfo (em) {
+                this.examrqparams = em;
+                this.examrqparams.ExamBeginDate = em.ExamBeginTime;
+                this.examrqparams.ExamBeginTime = this.getTimes(em.ExamBeginTime);
+
+                this.examrqparams.ExamEndDate = em.ExamEndTime;
+                this.examrqparams.ExamEndTime = this.getTimes(em.ExamEndTime);
+
+                this.examrqparams.LateDate = em.LateTime;
+                this.examrqparams.LateTime = this.getTimes(em.LateTime);
+
+                this.examrqparams.AdHandoverDate = em.AdHandoverTime;
+                this.examrqparams.AdHandoverTime = this.getTimes(em.AdHandoverTime);
+
+                this.examrqparams.action = 'save';
+                this.paperinfo = em;
+
+                this.showbtn = 'none';
+            },
+            getTimes (times) {
+                let dt = new Date(times);
+                let time = dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds();
+                return time;
+            },
             refresh (v, d) {
-    
+
             },
             // 发布考试
             handleSaveExam () {
                 SaveExamList(this.examrqparams).then(response => {
-    
+                    this.$Notice.success({
+                        title: response.msg,
+                        desc: '',
+                        duration: 2
+                    });
+                    this.$store.commit('removeTag', 'examcreat');
+                    this.$store.commit('closePage', 'examcreat');
+                    this.$router.push({
+                        name: 'exam_set'
+                    });
                 });
             },
             // 重置数据

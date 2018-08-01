@@ -520,7 +520,7 @@
         },
         data () {
             return {
-                current: 3,
+                current: 0,
                 creatType: 0,
                 tkkey: -1,
                 formItem: {}, // 表单数据源
@@ -568,6 +568,9 @@
             };
         },
         watch: {
+            '$route': function (to, from) {
+                console.log(to);
+            },
             'subjectTitleSel': {
                 // 深度监听，可监听到对象、数组分值，总题数的变化
                 handler (val, oldVal) {

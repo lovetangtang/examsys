@@ -62,7 +62,8 @@ export const otherRouter = {
         { path: 'shopping', title: '购物详情', name: 'shopping', component: () => import('@/views/advanced-router/component/shopping-info.vue') }, // 用于展示带参路由
         { path: 'message', title: '消息中心', name: 'message_index', component: () => import('@/views/message/message.vue') },
         { path: 'examedit', title: '编辑考试', name: 'examedit', component: () => import('@/views/examedit/examedit.vue') },
-        { path: 'examcreat', title: '创建考试', name: 'examcreat', component: () => import('@/views/examedit/examcreat.vue') }
+        { path: 'examcreat', title: '创建考试', name: 'examcreat', component: () => import('@/views/examedit/examcreat.vue') },
+        { path: 'paperedit', title: '试卷编辑', name: 'paperedit', component: () => import('@/views/examedit/paperedit.vue') }
     ]
 };
 
