@@ -266,7 +266,7 @@
                 GetPaperSubject(rq).then(response => {
                     this.$router.push({
                         name: 'paperedit',
-                        params: {
+                        query: {
                             type: params.row.AssemblyType,
                             pdata: response.data,
                             row: params.row

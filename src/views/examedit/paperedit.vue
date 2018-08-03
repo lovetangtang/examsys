@@ -503,7 +503,7 @@
       // 模板渲染成html前调用，初始化属性
       created () {
           this.$nextTick(() => {
-              const routerParams = this.$route.params;
+              const routerParams = this.$route.query;
               const row = routerParams.row;
               console.log(routerParams);
               this.setPaperSubject(routerParams.type, routerParams.pdata, row);
@@ -569,7 +569,7 @@
                           case 11:
                               for (let j = 0; j < dt[i].subjectlist.length; j++) {
                                   let danx = dt[i].subjectlist[j];
-                                  danx.SelectionOption = danx.SelectionOption.split('|');
+                                  if (!util.isArrayFn(danx.SelectionOption)) { danx.SelectionOption = danx.SelectionOption.split('|'); }
                                   danxList.push(danx);
                               }
                               json['danxList'] = danxList;
@@ -577,16 +577,16 @@
                           case 12:
                               for (let j = 0; j < dt[i].subjectlist.length; j++) {
                                   let danx = dt[i].subjectlist[j];
-                                  danx.SelectionOption = danx.SelectionOption.split('|');
+                                  if (!util.isArrayFn(danx.SelectionOption)) { danx.SelectionOption = danx.SelectionOption.split('|'); }
                                   duoxList.push(danx);
                               }
                               json['duoxList'] = duoxList;
                               break;
                           case 20:
-                              json['tkList'] = dt[i].subjectlist;
+                              json['pdList'] = dt[i].subjectlist;
                               break;
                           case 30:
-                              json['pdList'] = dt[i].subjectlist;
+                              json['tkList'] = dt[i].subjectlist;
                               break;
                           case 40:
                               json['wdList'] = dt[i].subjectlist;

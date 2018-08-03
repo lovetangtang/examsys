@@ -554,4 +554,12 @@ util.GetItemValue = function (vm, typeNo, itemNo) {
     return value;
 };
 
+util.isArrayFn = function (value) {
+    if (typeof Array.isArray === 'function') {
+        return Array.isArray(value);
+    } else {
+        return Object.prototype.toString.call(value) === '[object Array]';
+    }
+};
+
 export default util;

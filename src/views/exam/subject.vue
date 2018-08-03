@@ -88,7 +88,7 @@
                                             <span>默认分值</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <InputNumber  :min="0" v-model="SubjectParam.DefaultScore"></InputNumber>
+                                            <InputNumber :min="0" v-model="SubjectParam.DefaultScore"></InputNumber>
                                         </div>
                                     </div>
                                     <div v-for="ia in CdeAnswerList" class="margin-top-10">
@@ -144,7 +144,7 @@
                                             <span>默认分值</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <InputNumber  :min="0" v-model="SubjectParam.DefaultScore"></InputNumber>
+                                            <InputNumber :min="0" v-model="SubjectParam.DefaultScore"></InputNumber>
                                         </div>
                                     </div>
                                     <div class="margin-top-10">
@@ -201,7 +201,7 @@
                                             <span>默认分值</span>
                                         </div>
                                         <div class="margin-top-4 width96-input">
-                                            <InputNumber  :min="0" v-model="SubjectParam.DefaultScore"></InputNumber>
+                                            <InputNumber :min="0" v-model="SubjectParam.DefaultScore"></InputNumber>
                                         </div>
                                     </div>
                                     <div class="margin-top-10">
@@ -239,6 +239,14 @@
                                                     <span>错误</span>
                                                 </Radio>
                                             </RadioGroup>
+                                        </div>
+                                    </div>
+                                    <div class="margin-top-10">
+                                        <div>
+                                            <span>默认分值</span>
+                                        </div>
+                                        <div class="margin-top-4 width96-input">
+                                            <InputNumber :min="0" v-model="SubjectParam.DefaultScore"></InputNumber>
                                         </div>
                                     </div>
                                     <div class="margin-top-10">
