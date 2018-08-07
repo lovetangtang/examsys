@@ -145,7 +145,9 @@
                     </Row>
 
                     <FormItem label="可考部门：">
-                        <Input v-model="examrqparams.AllowExamDepart" placeholder=""></Input>
+                           <Tree ref="AllowExamDepart" :data="departTreeData" show-checkbox></Tree>
+                        <!-- <Button type="ghost" @click="handleopendepart">选择部门</Button> -->
+                        <!-- <Input v-model="examrqparams.AllowExamDepart" placeholder=""></Input> -->
                     </FormItem>
                     <FormItem label="可考人员工号：">
                         <Input v-model="examrqparams.AllowExamUser" placeholder=""></Input>
@@ -238,12 +240,11 @@
             <Button :style="{display:showbtn}" @click="handleSaveExam" class="margin-top-20" type="success" long>发布考试</Button>
             </Col>
         </Row>
-
     </div>
 </template>
 <script>
     import {
-        SaveExamList
+        SaveExamList, GetDepartTree
     } from '@/api/exam';
     import util from '@/libs/util';
     export default {
@@ -255,7 +256,9 @@
                 SimpleMaxSum: 0,
                 UsualMaxSum: 0,
                 HardMaxSum: 0,
+                departMode: false,
                 showbtn: 'block',
+                departTreeData: [],
                 paperinfo: {
                     'KeyID': 0,
                     'PaperName': '',
@@ -333,6 +336,7 @@
             setPaperinfo (p) {
                 this.paperinfo = p;
                 this.examrqparams.PaperID = p.KeyID;
+                this.setdepartTreeData();
             },
             // 设置考试信息
             setExaminfo (em) {
@@ -353,6 +357,15 @@
                 this.paperinfo = em;
 
                 this.showbtn = 'none';
+                this.setdepartTreeData();
+            },
+            // 设置部门树数据
+            setdepartTreeData () {
+                let UseDept = this.examrqparams.AllowExamDepart;
+                let rq = {action: 'getDepartTree', UseDept: UseDept};
+                GetDepartTree(rq).then(response => {
+                    this.departTreeData = response;
+                });
             },
             getTimes (times) {
                 let dt = new Date(times);
@@ -364,6 +377,12 @@
             },
             // 发布考试
             handleSaveExam () {
+                let checknode = this.$refs.AllowExamDepart.getCheckedNodes();
+                let AllowExamDepart = '';
+                for (let i = 0; i < checknode.length; i++) {
+                    AllowExamDepart += checknode[i].value + '|';
+                }
+                this.examrqparams.AllowExamDepart = AllowExamDepart;
                 SaveExamList(this.examrqparams).then(response => {
                     this.$Notice.success({
                         title: response.msg,
@@ -381,8 +400,19 @@
             clearData () {
                 console.log('清空');
                 this.examrqparams = this.$options.data().examrqparams;
-            }
+            },
+            // 取消部门
+            handlecanceldepart () {
 
+            },
+            // 保存部门
+            handleSaveDepart () {
+
+            },
+            // 打开部门
+            handleopendepart () {
+                // this.departMode = true;
+            }
         }
     };
 </script>

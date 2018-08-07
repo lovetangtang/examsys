@@ -3,7 +3,7 @@
     @import './examcreat.less';
 </style>
 <template>
-    <div class="margin-top-30">
+    <div class="margin-top-20">
         <Steps :current="current">
             <Step @click.native="leapcurrent(0)" class="stepte" title="第一步：创建试卷"></Step>
             <Step @click.native="leapcurrent(1)" class="stepte" title="第二步：组卷方式"></Step>
@@ -503,7 +503,6 @@
 </template>
 <script>
     import {
-        GetList,
         DelPaperList,
         SavePaperList
     } from '@/api/paper';
@@ -716,13 +715,7 @@
             },
             // 刷新数据
             fetchData () {
-                try {
-                    GetList(this.listQuery).then(response => {
-                        this.data = response.data;
-                    });
-                } catch (error) {
-                    console.log(error);
-                }
+    
             },
             // 判断提醒菜单点击
             handleTxMenu (name) {

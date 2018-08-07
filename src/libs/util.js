@@ -2,7 +2,9 @@ import axios from 'axios';
 import env from '../../build/env';
 import semver from 'semver';
 import packjson from '../../package.json';
-import {GetItem} from '@/api/iteminfo';
+import {
+    GetItem
+} from '@/api/iteminfo';
 
 let util = {
 
@@ -262,6 +264,7 @@ util.checkUpdate = function (vm) {
         }
     });
 };
+// 题型名称
 util.getSubjectTypeName = function (val) {
     switch (val) {
         case 11:
@@ -283,7 +286,7 @@ util.getSubjectTypeName = function (val) {
             break;
     }
 };
-
+// 试题类型
 util.getSubjectModeName = function (val) {
     switch (val) {
         case 0:
@@ -296,6 +299,7 @@ util.getSubjectModeName = function (val) {
             break;
     }
 };
+// 考试类型
 util.getExamModeName = function (val) {
     switch (val) {
         case 0:
@@ -308,6 +312,7 @@ util.getExamModeName = function (val) {
             break;
     }
 };
+// 试卷类型
 util.getPaperModeName = function (val) {
     switch (val) {
         case 0:
@@ -320,6 +325,7 @@ util.getPaperModeName = function (val) {
             break;
     }
 };
+// 组卷类型
 util.getAssemblyType = function (val) {
     switch (val) {
         case 10:
@@ -338,6 +344,7 @@ util.getAssemblyType = function (val) {
             break;
     }
 };
+// 难度
 util.getSubjectDegree = function (val) {
     switch (val) {
         case 0:
@@ -353,6 +360,7 @@ util.getSubjectDegree = function (val) {
             break;
     }
 };
+// 关联业务名称
 util.getAboutBll = function (val) {
     switch (val) {
         case 'GN':
@@ -375,6 +383,52 @@ util.getAboutBll = function (val) {
             break;
         case 'XZ':
             return '国内机票';
+            break;
+        default:
+            break;
+    }
+};
+
+// 及格名称
+util.getPassName = function (val) {
+    switch (val) {
+        case false:
+            return '未及格';
+            break;
+        case true:
+            return '及格';
+            break;
+        default:
+            break;
+    }
+};
+
+// 人工判分名称
+util.getIsJudgmentName = function (val) {
+    console.log(val);
+    switch (val) {
+        case false:
+            return '未判分';
+            break;
+        case true:
+            return '已判分';
+            break;
+        default:
+            break;
+    }
+};
+
+// 系统判分名称
+util.getJudgmentStatusName = function (val) {
+    switch (val) {
+        case 0:
+            return '未判分';
+            break;
+        case 1:
+            return '已判分';
+            break;
+        case 2:
+            return '判分失败';
             break;
         default:
             break;

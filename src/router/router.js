@@ -118,11 +118,11 @@ export const appRouter = [
                 component: () => import('@/views/exam/exam_paper.vue')
             },
             {
-                path: 'draggable-list',
+                path: 'exam_mark',
                 icon: 'arrow-move',
-                name: 'draggable-list',
+                name: 'exam_mark',
                 title: '成绩查询批改',
-                component: () => import('@/views/my-components/draggable-list/draggable-list.vue')
+                component: () => import('@/views/exam/exam_mark.vue')
             },
             {
                 path: 'area-linkage',

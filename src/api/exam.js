@@ -26,3 +26,11 @@ export function GetList (params) {
         params
     });
 }
+
+export function GetDepartTree (params) {
+    return request({
+        url: '/Data/System/systeminfo.ashx',
+        method: 'post',
+        params
+    });
+}
