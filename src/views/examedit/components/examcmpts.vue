@@ -6,10 +6,10 @@
             <!-- 考试信息 -->
             <Card>
                 <p slot="title">考试信息</p>
-                <Form :model="examrqparams" :label-width="100">
+                <Form :model="examrqparams" ref="examform" :label-width="100" :rules="ruleValidate">
                     <Row>
                         <Col span="12" class="row-pd0">
-                        <FormItem label="考试名称：">
+                        <FormItem label="考试名称：" prop="ExamName">
                             <Input v-model="examrqparams.ExamName" placeholder=""></Input>
                         </FormItem>
                         </Col>
@@ -110,7 +110,7 @@
                         <RadioGroup v-model="examrqparams.AnsweMode">
                             <Radio label="10">练习模式</Radio>
                             <Radio label="20">逐题模式</Radio>
-                            <Radio label="30">考试模式</Radio>
+                            <Radio label="30">整卷模式</Radio>
                         </RadioGroup>
                     </FormItem>
                     <FormItem label="考试说明：">
@@ -130,15 +130,15 @@
             <!-- 考试限制 -->
             <Card class="margin-top-20">
                 <p slot="title">考试限制</p>
-                <Form :model="examrqparams" :label-width="100">
+                <Form ref="examform"  :model="examrqparams" :label-width="100" :rules="ruleValidate">
                     <Row>
                         <Col span="12" class="row-pd0">
-                        <FormItem label="监考人姓名：">
+                        <FormItem label="监考人姓名："  prop="">
                             <Input v-model="examrqparams.Invigilator" placeholder=""></Input>
                         </FormItem>
                         </Col>
                         <Col class="row-pd0" span="12">
-                        <FormItem label="监考人工号：">
+                        <FormItem label="监考人工号："  prop="">
                             <Input v-model="examrqparams.InvigilatorID" placeholder=""></Input>
                         </FormItem>
                         </Col>
@@ -270,6 +270,35 @@
                     'InsertID': '',
                     'InsertTime': ''
                 },
+                ruleValidate: {
+                    ExamName: [
+                        { required: true, message: '不允许为空', trigger: 'blur' }
+                    ],
+                    Invigilator: [
+                        { required: true, message: '不允许为空', trigger: 'blur' }
+                    ],
+                    InvigilatorID: [
+                        { required: true, message: '不允许为空', trigger: 'blur' }
+                    ],
+                    ExamBeginDate: [
+                        { required: true, type: 'date', message: '请选择日期', trigger: 'change' }
+                    ],
+                    ExamBeginTime: [
+                        { required: true, type: 'string', message: '请选择时间', trigger: 'change' }
+                    ],
+                    ExamEndDate: [
+                        { required: true, type: 'date', message: '请选择日期', trigger: 'change' }
+                    ],
+                    ExamEndTime: [
+                        { required: true, type: 'string', message: '请选择时间', trigger: 'change' }
+                    ],
+                    LateDate: [
+                        { required: true, type: 'date', message: '请选择日期', trigger: 'change' }
+                    ],
+                    LateTime: [
+                        { required: true, type: 'string', message: '请选择时间', trigger: 'change' }
+                    ]
+                },
                 examrqparams: { // 编辑录入后台的通用参数
                     ExamName: '', // 考试名称
                     ExamType: -1, // 考试分类
@@ -286,7 +315,7 @@
                     PassScore: 0,
                     ExamMode: '0',
                     PaperID: '',
-                    AnsweMode: '10',
+                    AnsweMode: '20',
                     ExamExplain: '',
                     Invigilator: '',
                     InvigilatorID: '',
@@ -377,23 +406,29 @@
             },
             // 发布考试
             handleSaveExam () {
-                let checknode = this.$refs.AllowExamDepart.getCheckedNodes();
-                let AllowExamDepart = '';
-                for (let i = 0; i < checknode.length; i++) {
-                    AllowExamDepart += checknode[i].value + '|';
-                }
-                this.examrqparams.AllowExamDepart = AllowExamDepart;
-                SaveExamList(this.examrqparams).then(response => {
-                    this.$Notice.success({
-                        title: response.msg,
-                        desc: '',
-                        duration: 2
-                    });
-                    this.$store.commit('removeTag', 'examcreat');
-                    this.$store.commit('closePage', 'examcreat');
-                    this.$router.push({
-                        name: 'exam_set'
-                    });
+                this.$refs['examform'].validate((valid) => {
+                    if (valid) {
+                        let checknode = this.$refs.AllowExamDepart.getCheckedNodes();
+                        let AllowExamDepart = '';
+                        for (let i = 0; i < checknode.length; i++) {
+                            AllowExamDepart += checknode[i].value + '|';
+                        }
+                        this.examrqparams.AllowExamDepart = AllowExamDepart;
+                        SaveExamList(this.examrqparams).then(response => {
+                            this.$Notice.success({
+                                title: response.msg,
+                                desc: '',
+                                duration: 2
+                            });
+                            this.$store.commit('removeTag', 'examcreat');
+                            this.$store.commit('closePage', 'examcreat');
+                            this.$router.push({
+                                name: 'exam_set'
+                            });
+                        });
+                    } else {
+                        this.$Message.error('请验证表单数据是否正确!');
+                    }
                 });
             },
             // 重置数据

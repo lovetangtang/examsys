@@ -538,6 +538,7 @@
                     sjStatus: 'none'
                 },
                 examrqParam: { // 需要传入后台的参数
+                    KeyID: 0,
                     PaperName: '', // 试卷名称
                     action: 'save',
                     PaperType: '', // 试卷分类
@@ -670,11 +671,55 @@
             },
             // 跳转当前
             leapcurrent (v) {
+                if (v >= this.current) return;
+                if (this.validcontent(v)) {
+                    return;
+                };
                 this.current = v;
                 this.showView();
             },
+            // 验证表单
+            validcontent (val) {
+                switch (val) {
+                    case 0:
+                        if (this.examrqParam.PaperName === '') {
+                            this.$Message.error('请填写试卷名称');
+                            return true;
+                        }
+                        if (this.examrqParam.PaperType === '') {
+                            this.$Message.error('请选择试卷分类');
+                            return true;
+                        }
+                        break;
+                    case 1:
+                        if (this.examrqParam.AssemblyType === -1) {
+                            this.$Message.error('请选择组卷方式');
+                            return true;
+                        }
+                        break;
+                    case 2:
+                        if (this.subjectTitleSel.length === 0 || (this.subjectTitleSel[0].danxList.length === 0 &&
+                                this.subjectTitleSel[0].duoxList.length === 0 &&
+                                this.subjectTitleSel[0].tkList.length === 0 &&
+                                this.subjectTitleSel[0].pdList.length === 0 &&
+                                this.subjectTitleSel[0].sbgroupList && this.subjectTitleSel[0].sbgroupList.SimpleTkSum)) {
+                            this.$Message.error('请选择题库');
+                            return true;
+                        }
+                        break;
+                    case 3:
+
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            },
             // 下一步
             next () {
+                if (this.validcontent(this.current)) {
+                    return;
+                };
                 if (this.current === 3) {
                     this.current = 0;
                 } else {
@@ -715,7 +760,7 @@
             },
             // 刷新数据
             fetchData () {
-    
+
             },
             // 判断提醒菜单点击
             handleTxMenu (name) {
@@ -1024,13 +1069,16 @@
                     }
                 }
                 this.examrqParam.SubjectData = JSON.stringify(this.subjectTitleSel);
-
+                if (this.validcontent(this.current)) {
+                    return;
+                }
                 SavePaperList(this.examrqParam).then(response => {
                     this.$Notice.success({
                         title: response.msg,
                         desc: '',
                         duration: 2
                     });
+                    this.examrqParam.KeyID = response.value;
                     this.$refs.examcmpts.setPaperinfo(response.data);
                     this.next();
                 });

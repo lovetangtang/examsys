@@ -87,9 +87,19 @@
                                 </div>
                                 </Col>
                                 <Col span="12" class="tx-r">
-                                   <span>{{item.ExamNum}}人已考</span>
+                                <span>{{item.ExamNum}}人已考</span>
                                 </Col>
                             </Row>
+                        </div>
+                    </Card>
+                    </Col>
+                </template>
+                <template v-if="examnowlist.length===0">
+                    <Col :md="11" :style="{marginBottom: '10px'}">
+                    <Card class="bd-left-true box-amt paper-bg">
+                        <b class="card-user-infor-name"></b>
+                        <div class="pd-home-sj">
+                            暂无正在进行的考试
                         </div>
                     </Card>
                     </Col>
@@ -185,6 +195,16 @@
                                 <span>{{item.ExamNum}}人已考</span>
                                 </Col>
                             </Row>
+                        </div>
+                    </Card>
+                    </Col>
+                </template>
+                 <template v-if="examlately.length===0">
+                    <Col :md="11" :style="{marginBottom: '10px'}">
+                    <Card class="bd-left-true box-amt paper-bg">
+                        <b class="card-user-infor-name"></b>
+                        <div class="pd-home-sj">
+                            暂无添加的考试
                         </div>
                     </Card>
                     </Col>
