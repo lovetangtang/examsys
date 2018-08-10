@@ -702,7 +702,8 @@
                                 this.subjectTitleSel[0].duoxList.length === 0 &&
                                 this.subjectTitleSel[0].tkList.length === 0 &&
                                 this.subjectTitleSel[0].pdList.length === 0 &&
-                                this.subjectTitleSel[0].sbgroupList && this.subjectTitleSel[0].sbgroupList.SimpleTkSum)) {
+                                !(this.subjectTitleSel[0].sbgroupList && this.subjectTitleSel[0].sbgroupList.SimpleTkSum)
+                        )) {
                             this.$Message.error('请选择题库');
                             return true;
                         }

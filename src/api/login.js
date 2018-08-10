@@ -1,13 +1,14 @@
 import request from '@/utils/request';
 
-export function login (username, password, type) {
+export function login (username, password, type, channel) {
     return request({
         url: '/Data/Login.ashx',
         method: 'post',
         data: {
-            username,
-            password,
-            type,
+            userName: username,
+            pwd: password,
+            type: type,
+            channel: channel,
             action: 'userLogin'
         }
     });

@@ -9,10 +9,10 @@ import {
 
 // 创建axios实例
 const service = axios.create({
-    baseURL: 'http://192.168.0.97:51984', // 'http://' + window.location.host, // process.env.BASE_API, // 'http://192.168.0.97:51984', // api的base_url
-    headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-    },
+    baseURL: 'http://' + window.location.host, // 'http://' + window.location.host, // process.env.BASE_API, // 'http://192.168.0.97:51984', // api的base_url
+    // headers: {
+    //     'Content-Type': 'application/x-www-form-urlencoded'
+    // },
     withCredentials: true, // 允许携带cookie
     timeout: 150000 // 请求超时时间
 });
@@ -46,14 +46,14 @@ service.interceptors.response.use(
                 duration: 5
             });
             // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
-            if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+            if (res.code === 50008 || res.code === 50012 || res.code === 50014 || res.msg === '{expired:true}') {
                 Modal.confirm({
                     title: '确定登出',
                     content: '你已被登出，可以取消继续留在该页面，或者重新登录',
                     okText: '重新登录',
                     cancelText: '取消',
                     onOk: () => {
-                        this.$store.commit('logout', this);
+                        store.commit('logout', this);
                         location.reload();
                     },
                     onCancel: () => {}

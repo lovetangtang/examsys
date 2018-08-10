@@ -152,30 +152,11 @@ export const appRouter = [
         title: '系统管理',
         component: Main,
         children: [
+            { path: 'loginauthority', title: '登录权限管理', name: 'loginauthority', icon: 'arrow-move', component: () => import('@/views/authority/loginauthority.vue') },
             { path: 'dragableTable', title: '人员管理', name: 'dragable-table', icon: 'arrow-move', component: () => import('@/views/tables/dragable-table.vue') },
+            { path: 'dragableTable1', title: '字典管理', name: 'dragable-table1', icon: 'arrow-move', component: () => import('@/views/tables/dragable-table.vue') },
             { path: 'editableTable', title: '角色权限', name: 'editable-table', icon: 'edit', component: () => import('@/views/tables/editable-table.vue') },
             { path: 'searchableTable', title: '操作记录', name: 'searchable-table', icon: 'search', component: () => import('@/views/tables/searchable-table.vue') }
-        ]
-    },
-    {
-        path: '/advanced-router',
-        icon: 'ios-infinite',
-        name: 'advanced-router',
-        title: '高级路由',
-        component: Main,
-        children: [
-            { path: 'mutative-router', title: '动态路由', name: 'mutative-router', icon: 'link', component: () => import('@/views/advanced-router/mutative-router.vue') },
-            { path: 'argument-page', title: '带参页面', name: 'argument-page', icon: 'android-send', component: () => import('@/views/advanced-router/argument-page.vue') }
-        ]
-    },
-    {
-        path: '/error-page',
-        icon: 'android-sad',
-        title: '错误页面',
-        name: 'errorpage',
-        component: Main,
-        children: [
-            { path: 'index', title: '错误页面', name: 'errorpage_index', component: () => import('@/views/error-page/error-page.vue') }
         ]
     }
 ];

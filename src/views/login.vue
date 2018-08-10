@@ -30,7 +30,7 @@
                             <Button @click="handleSubmit" type="primary" long>登录</Button>
                         </FormItem>
                     </Form>
-                    <p class="login-tip">输入任意用户名和密码即可</p>
+                    <p class="login-tip">请输入RTX账号登录</p>
                 </div>
             </Card>
         </div>
@@ -40,11 +40,12 @@
 <script>
 import Cookies from 'js-cookie';
 import {GetItem} from '@/api/iteminfo';
+import {login} from '@/api/login';
 export default {
     data () {
         return {
             form: {
-                userName: 'iview_admin',
+                userName: '',
                 password: ''
             },
             rules: {
@@ -61,25 +62,26 @@ export default {
         handleSubmit () {
             this.$refs.loginForm.validate((valid) => {
                 if (valid) {
-                    Cookies.set('user', this.form.userName);
-                    Cookies.set('password', this.form.password);
-                    GetItem().then(response => {
+                    let _self = this;
+                    login(this.form.userName, this.form.password, 'RTX', 'sys').then(response => {
+                        Cookies.set('sysuser', _self.form.userName);
+                        this.$router.push({
+                            name: 'home_index'
+                        });
+                        return GetItem();
+                    }).then(response => {
                         let list = [];
                         if (response.data !== null) {
                             list = response.data;
                         }
                         this.$store.commit('setItemList', list);
                     });
-
                     this.$store.commit('setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg');
                     if (this.form.userName === 'iview_admin') {
                         Cookies.set('access', 0);
                     } else {
                         Cookies.set('access', 1);
                     }
-                    this.$router.push({
-                        name: 'home_index'
-                    });
                 }
             });
         }

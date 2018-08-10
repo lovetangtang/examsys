@@ -924,6 +924,26 @@
             },
             // 保存题目
             handleSaveSubject () {
+                if (this.subjectComSaveList.LoreType === '') {
+                    this.$Message.error('请选择试题分类');
+                    setTimeout(() => {
+                        this.EditModeloading = false;
+                        this.$nextTick(() => {
+                            this.EditModeloading = true;
+                        });
+                    }, 1000);
+                    return false;
+                }
+                if (this.SubjectParam.RightAnswer === '') {
+                    this.$Message.error('正确答案不能为空');
+                    setTimeout(() => {
+                        this.EditModeloading = false;
+                        this.$nextTick(() => {
+                            this.EditModeloading = true;
+                        });
+                    }, 1000);
+                    return false;
+                }
                 this.EditModeloading = true;
                 // 问答题等题型才有候选答案
                 if (this.subjectComSaveList.SubjectClassMode === 40 || this.subjectComSaveList.SubjectClassMode === 30) {

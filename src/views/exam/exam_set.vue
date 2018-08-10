@@ -113,7 +113,7 @@
                 tableHeight: 450, // 表格高度
                 examMode: false,
                 disable: true, // 禁用删除按钮
-                EditModeloading: false, // 编辑窗口确定按钮加载状态
+                EditModeloading: true, // 编辑窗口确定按钮加载状态
                 chekcData: [], // 表格选中项
                 total: null, // 表格数据总条数
                 formItem: {}, // 表单数据源
@@ -385,7 +385,19 @@
             },
             // 保存考试信息
             handleSaveExam () {
-                this.$refs.examcmpts.handleSaveExam();
+                this.EditModeloading = true;
+                this.$refs.examcmpts.handleSaveExam().then(status => {
+                    if (!status) {
+                        setTimeout(() => {
+                            this.EditModeloading = false;
+                            this.$nextTick(() => {
+                                this.EditModeloading = true;
+                            });
+                        }, 1000);
+                    } else {
+                        this.EditModeloading = true;
+                    }
+                });
             }
         }
     };

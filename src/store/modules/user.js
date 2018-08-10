@@ -22,7 +22,7 @@ const user = {
             state.roles = roles;
         },
         logout (state, vm) {
-            Cookies.remove('user');
+            Cookies.remove('sysuser');
             Cookies.remove('password');
             Cookies.remove('access');
             // 恢复默认样式

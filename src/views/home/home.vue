@@ -69,7 +69,7 @@
                             <Row>
                                 <Col span="24">
                                 <div>
-                                    提前交卷时间：{{fun_gettimev(item.AdHandoverTime)}}
+                                    提前交卷时间：{{item.AdHandoverTime}}
                                 </div>
                                 </Col>
                             </Row>
@@ -174,7 +174,7 @@
                             <Row>
                                 <Col span="24">
                                 <div>
-                                    提前交卷时间：{{fun_gettimev(item.AdHandoverTime)}}
+                                    提前交卷时间：{{item.AdHandoverTime}}
                                 </div>
                                 </Col>
                             </Row>

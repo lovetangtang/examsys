@@ -25,13 +25,13 @@
                     <FormItem label="考试开始时间：">
                         <Row>
                             <Col class="row-pd0" span="11">
-                            <FormItem prop="date">
+                            <FormItem prop="ExamBeginDate">
                                 <DatePicker v-model="examrqparams.ExamBeginDate" type="date" placeholder="Select date"></DatePicker>
                             </FormItem>
                             </Col>
                             <Col class="row-pd0" span="2" style="text-align: center">-</Col>
                             <Col class="row-pd0" span="11">
-                            <FormItem prop="time">
+                            <FormItem prop="">
                                 <TimePicker v-model="examrqparams.ExamBeginTime" type="time" placeholder="Select time"></TimePicker>
                             </FormItem>
                             </Col>
@@ -41,13 +41,13 @@
                     <FormItem label="考试结束时间：">
                         <Row>
                             <Col class="row-pd0" span="11">
-                            <FormItem prop="date">
+                            <FormItem prop="ExamEndDate">
                                 <DatePicker type="date" v-model="examrqparams.ExamEndDate" placeholder="Select date"></DatePicker>
                             </FormItem>
                             </Col>
                             <Col class="row-pd0" span="2" style="text-align: center">-</Col>
                             <Col class="row-pd0" span="11">
-                            <FormItem prop="time">
+                            <FormItem prop="">
                                 <TimePicker v-model="examrqparams.ExamEndTime" type="time" placeholder="Select time"></TimePicker>
                             </FormItem>
                             </Col>
@@ -57,34 +57,38 @@
                     <FormItem label="最晚迟到时间：">
                         <Row>
                             <Col class="row-pd0" span="11">
-                            <FormItem prop="date">
+                            <FormItem prop="LateDate">
                                 <DatePicker v-model="examrqparams.LateDate" type="date" placeholder="Select date"></DatePicker>
                             </FormItem>
                             </Col>
                             <Col class="row-pd0" span="2" style="text-align: center">-</Col>
                             <Col class="row-pd0" span="11">
-                            <FormItem prop="time">
+                            <FormItem prop="">
                                 <TimePicker v-model="examrqparams.LateTime" type="time" placeholder="Select time"></TimePicker>
                             </FormItem>
                             </Col>
                         </Row>
                     </FormItem>
 
-                    <FormItem label="提前交卷时间：">
+                    <FormItem label="允许提前：">
+                        <InputNumber v-model="examrqparams.AdHandoverTime" :min="0"></InputNumber> 分钟交卷 (-1默认不限制)
+                    </FormItem>
+
+                    <!-- <FormItem label="允许提前交卷时间：">
                         <Row>
                             <Col class="row-pd0" span="11">
-                            <FormItem prop="date">
+                            <FormItem prop="AdHandoverDate">
                                 <DatePicker v-model="examrqparams.AdHandoverDate" type="date" placeholder="Select date"></DatePicker>
                             </FormItem>
                             </Col>
                             <Col class="row-pd0" span="2" style="text-align: center">-</Col>
                             <Col class="row-pd0" span="11">
-                            <FormItem prop="time">
+                            <FormItem prop="">
                                 <TimePicker v-model="examrqparams.AdHandoverTime" type="time" placeholder="Select time"></TimePicker>
                             </FormItem>
                             </Col>
                         </Row>
-                    </FormItem>
+                    </FormItem> -->
 
                     <Row>
                         <Col class="row-pd0" span="12">
@@ -130,22 +134,22 @@
             <!-- 考试限制 -->
             <Card class="margin-top-20">
                 <p slot="title">考试限制</p>
-                <Form ref="examform"  :model="examrqparams" :label-width="100" :rules="ruleValidate">
+                <Form :model="examrqparams" :label-width="100">
                     <Row>
                         <Col span="12" class="row-pd0">
-                        <FormItem label="监考人姓名："  prop="">
+                        <FormItem label="监考人姓名：" prop="">
                             <Input v-model="examrqparams.Invigilator" placeholder=""></Input>
                         </FormItem>
                         </Col>
                         <Col class="row-pd0" span="12">
-                        <FormItem label="监考人工号："  prop="">
+                        <FormItem label="监考人工号：" prop="">
                             <Input v-model="examrqparams.InvigilatorID" placeholder=""></Input>
                         </FormItem>
                         </Col>
                     </Row>
 
                     <FormItem label="可考部门：">
-                           <Tree ref="AllowExamDepart" :data="departTreeData" show-checkbox></Tree>
+                        <Tree ref="AllowExamDepart" :data="departTreeData" show-checkbox></Tree>
                         <!-- <Button type="ghost" @click="handleopendepart">选择部门</Button> -->
                         <!-- <Input v-model="examrqparams.AllowExamDepart" placeholder=""></Input> -->
                     </FormItem>
@@ -244,7 +248,8 @@
 </template>
 <script>
     import {
-        SaveExamList, GetDepartTree
+        SaveExamList,
+        GetDepartTree
     } from '@/api/exam';
     import util from '@/libs/util';
     export default {
@@ -271,33 +276,69 @@
                     'InsertTime': ''
                 },
                 ruleValidate: {
-                    ExamName: [
-                        { required: true, message: '不允许为空', trigger: 'blur' }
-                    ],
-                    Invigilator: [
-                        { required: true, message: '不允许为空', trigger: 'blur' }
-                    ],
-                    InvigilatorID: [
-                        { required: true, message: '不允许为空', trigger: 'blur' }
-                    ],
-                    ExamBeginDate: [
-                        { required: true, type: 'date', message: '请选择日期', trigger: 'change' }
-                    ],
-                    ExamBeginTime: [
-                        { required: true, type: 'string', message: '请选择时间', trigger: 'change' }
-                    ],
-                    ExamEndDate: [
-                        { required: true, type: 'date', message: '请选择日期', trigger: 'change' }
-                    ],
-                    ExamEndTime: [
-                        { required: true, type: 'string', message: '请选择时间', trigger: 'change' }
-                    ],
-                    LateDate: [
-                        { required: true, type: 'date', message: '请选择日期', trigger: 'change' }
-                    ],
-                    LateTime: [
-                        { required: true, type: 'string', message: '请选择时间', trigger: 'change' }
-                    ]
+                    ExamName: [{
+                        required: true,
+                        message: '不允许为空',
+                        trigger: 'blur'
+                    }],
+                    Invigilator: [{
+                        required: true,
+                        message: '不允许为空',
+                        trigger: 'blur'
+                    }],
+                    InvigilatorID: [{
+                        required: true,
+                        message: '不允许为空',
+                        trigger: 'blur'
+                    }],
+                    ExamBeginDate: [{
+                        required: true,
+                        type: 'date',
+                        message: '请选择日期',
+                        trigger: 'change'
+                    }],
+                    ExamBeginTime: [{
+                        required: true,
+                        type: 'string',
+                        message: '请选择时间',
+                        trigger: 'change'
+                    }],
+                    ExamEndDate: [{
+                        required: true,
+                        type: 'date',
+                        message: '请选择日期',
+                        trigger: 'change'
+                    }],
+                    ExamEndTime: [{
+                        required: true,
+                        type: 'string',
+                        message: '请选择时间',
+                        trigger: 'change'
+                    }],
+                    LateDate: [{
+                        required: true,
+                        type: 'date',
+                        message: '请选择日期',
+                        trigger: 'change'
+                    }],
+                    LateTime: [{
+                        required: true,
+                        type: 'string',
+                        message: '请选择时间',
+                        trigger: 'change'
+                    }],
+                    AdHandoverDate: [{
+                        required: true,
+                        type: 'date',
+                        message: '请选择日期',
+                        trigger: 'change'
+                    }],
+                    AdHandoverTime: [{
+                        required: true,
+                        type: 'string',
+                        message: '请选择时间',
+                        trigger: 'change'
+                    }]
                 },
                 examrqparams: { // 编辑录入后台的通用参数
                     ExamName: '', // 考试名称
@@ -309,7 +350,7 @@
                     action: 'save',
                     LateDate: '',
                     LateTime: '',
-                    AdHandoverTime: '',
+                    AdHandoverTime: -1,
                     AdHandoverDate: '',
                     AnsweTime: 0,
                     PassScore: 0,
@@ -379,8 +420,8 @@
                 this.examrqparams.LateDate = em.LateTime;
                 this.examrqparams.LateTime = this.getTimes(em.LateTime);
 
-                this.examrqparams.AdHandoverDate = em.AdHandoverTime;
-                this.examrqparams.AdHandoverTime = this.getTimes(em.AdHandoverTime);
+                // this.examrqparams.AdHandoverDate = em.AdHandoverTime;
+                // this.examrqparams.AdHandoverTime = this.getTimes(em.AdHandoverTime);
 
                 this.examrqparams.action = 'save';
                 this.paperinfo = em;
@@ -391,7 +432,10 @@
             // 设置部门树数据
             setdepartTreeData () {
                 let UseDept = this.examrqparams.AllowExamDepart;
-                let rq = {action: 'getDepartTree', UseDept: UseDept};
+                let rq = {
+                    action: 'getDepartTree',
+                    UseDept: UseDept
+                };
                 GetDepartTree(rq).then(response => {
                     this.departTreeData = response;
                 });
@@ -406,29 +450,48 @@
             },
             // 发布考试
             handleSaveExam () {
-                this.$refs['examform'].validate((valid) => {
-                    if (valid) {
-                        let checknode = this.$refs.AllowExamDepart.getCheckedNodes();
-                        let AllowExamDepart = '';
-                        for (let i = 0; i < checknode.length; i++) {
-                            AllowExamDepart += checknode[i].value + '|';
+                let _this = this;
+                return new Promise(function (resolve, reject) {
+                    _this.$refs['examform'].validate((valid) => {
+                        if (valid) {
+                            let checknode = _this.$refs.AllowExamDepart.getCheckedNodes();
+                            if (_this.examrqparams.ExamType === -1) {
+                                _this.$Message.error('请选择试卷分类');
+                                resolve(false);
+                                return false;
+                            }
+                            if (checknode.length === 0) {
+                                _this.$Message.error('请选择可考部门');
+                                resolve(false);
+                                return false;
+                            }
+                            let AllowExamDepart = '';
+                            for (let i = 0; i < checknode.length; i++) {
+                                AllowExamDepart += checknode[i].value + '|';
+                            }
+                            _this.examrqparams.AllowExamDepart = AllowExamDepart;
+                            SaveExamList(_this.examrqparams).then(response => {
+                                _this.$Notice.success({
+                                    title: response.msg,
+                                    desc: '',
+                                    duration: 2
+                                });
+                                resolve(true);
+                                _this.$store.commit('removeTag', 'examcreat');
+                                _this.$store.commit('closePage', 'examcreat');
+                                _this.$router.push({
+                                    name: 'exam_set'
+                                });
+                            }).catch(ex => {
+                                resolve(false);
+                                return false;
+                            });
+                        } else {
+                            this.$Message.error('请验证表单数据是否正确!');
+                            resolve(false);
+                            return false;
                         }
-                        this.examrqparams.AllowExamDepart = AllowExamDepart;
-                        SaveExamList(this.examrqparams).then(response => {
-                            this.$Notice.success({
-                                title: response.msg,
-                                desc: '',
-                                duration: 2
-                            });
-                            this.$store.commit('removeTag', 'examcreat');
-                            this.$store.commit('closePage', 'examcreat');
-                            this.$router.push({
-                                name: 'exam_set'
-                            });
-                        });
-                    } else {
-                        this.$Message.error('请验证表单数据是否正确!');
-                    }
+                    });
                 });
             },
             // 重置数据
