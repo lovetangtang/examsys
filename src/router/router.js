@@ -37,12 +37,6 @@ export const page500 = {
     component: () => import('@/views/error-page/500.vue')
 };
 
-export const preview = {
-    path: '/preview',
-    name: 'preview',
-    component: () => import('@/views/form/article-publish/preview.vue')
-};
-
 export const locking = {
     path: '/locking',
     name: 'locking',
@@ -140,9 +134,9 @@ export const appRouter = [
         title: '学习',
         component: Main,
         children: [
-            { path: 'artical-publish', title: '学习资料', name: 'artical-publish', icon: 'compose', component: () => import('@/views/form/article-publish/article-publish.vue') },
-            { path: 'workflow', title: '课程管理', name: 'workflow', icon: 'arrow-swap', component: () => import('@/views/form/work-flow/work-flow.vue') },
-            { path: 'workflow', title: '学习记录', name: 'workflow', icon: 'arrow-swap', component: () => import('@/views/form/work-flow/work-flow.vue') }
+            { path: 'artical-publish', title: '学习资料', name: 'artical-publish', icon: 'compose', component: () => import('@/views/error-page/404.vue') },
+            { path: 'workflow', title: '课程管理', name: 'workflow', icon: 'arrow-swap', component: () => import('@/views/error-page/404.vue') },
+            { path: 'workflow', title: '学习记录', name: 'workflow', icon: 'arrow-swap', component: () => import('@/views/error-page/404.vue') }
         ]
     },
     {
@@ -152,11 +146,11 @@ export const appRouter = [
         title: '系统管理',
         component: Main,
         children: [
-            { path: 'loginauthority', title: '登录权限管理', name: 'loginauthority', icon: 'arrow-move', component: () => import('@/views/authority/loginauthority.vue') },
-            { path: 'dragableTable', title: '人员管理', name: 'dragable-table', icon: 'arrow-move', component: () => import('@/views/tables/dragable-table.vue') },
-            { path: 'dragableTable1', title: '字典管理', name: 'dragable-table1', icon: 'arrow-move', component: () => import('@/views/tables/dragable-table.vue') },
-            { path: 'editableTable', title: '角色权限', name: 'editable-table', icon: 'edit', component: () => import('@/views/tables/editable-table.vue') },
-            { path: 'searchableTable', title: '操作记录', name: 'searchable-table', icon: 'search', component: () => import('@/views/tables/searchable-table.vue') }
+            { path: 'loginauthority', title: '登录权限管理', name: 'loginauthority', icon: 'arrow-move', component: () => import('@/views/system/loginauthority.vue') },
+            { path: 'dragableTable', title: '人员管理', name: 'error', icon: 'arrow-move', component: () => import('@/views/error-page/404.vue') },
+            { path: 'iteminfo', title: '字典管理', name: 'iteminfo', icon: 'arrow-move', component: () => import('@/views/system/iteminfo.vue') },
+            { path: 'editableTable', title: '角色权限', name: 'editable-table', icon: 'edit', component: () => import('@/views/error-page/404.vue') },
+            { path: 'searchableTable', title: '操作记录', name: 'searchable-table', icon: 'search', component: () => import('@/views/error-page/404.vue') }
         ]
     }
 ];
@@ -166,7 +160,6 @@ export const appRouter = [
 export const routers = [
     loginRouter,
     otherRouter,
-    preview,
     locking,
     ...appRouter,
     page500,

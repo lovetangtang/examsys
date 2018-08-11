@@ -112,7 +112,7 @@
                 }, {
                     title: '创建时间',
                     sortable: true,
-                    width: '135',
+                    width: 135,
                     key: 'InsertTime',
                     render: (h, params) => {
                         let it = params.row.InsertTime;
@@ -278,6 +278,15 @@
             // 取消
             handlecancel () {
                 this.saveData = this.$options.data().saveData;
+            },
+            // 监听选中项
+            handleRowChange (option) {
+                this.chekcData = option;
+                if (option.length > 0) {
+                    this.disable = false;
+                } else {
+                    this.disable = true;
+                }
             },
             // 修改保存试卷
             handleSave () {
