@@ -263,7 +263,7 @@
                                 <div class="margin-top-10">
                                     <div>
                                         <span>题干</span>
-                                        <span>这里填写题目描述</span>
+                                        <span>这里填写题目描述 <span style="color:#ff9900">(需要填写的答案用()表示，注意()数量要与答案一致)</span></span>
                                     </div>
                                     <div class="margin-top-4 width96-input">
                                         <Input v-model="SubjectParam.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
@@ -411,7 +411,7 @@
                 moreSelRightAnswer: [],
                 subjectComSaveList: { // 编辑录入后台的通用参数
                     SubjectClassMode: 11, // 题型下拉框绑定值
-                    SubjectType: 0, // 试题分类绑定值
+                    SubjectType: '0', // 试题分类绑定值
                     LoreType: '', // 知识分类绑定值
                     AboutBllMode: 'GN', // 关联业务下拉框绑定值
                     action: 'save',
