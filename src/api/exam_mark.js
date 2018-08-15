@@ -26,3 +26,11 @@ export function GetList (params) {
         params
     });
 }
+
+export function GetAwExamList (params) {
+    return request({
+        url: '/Data/AnswerPaper/exam.ashx',
+        method: 'post',
+        params
+    });
+}

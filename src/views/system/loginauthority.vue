@@ -5,12 +5,12 @@
 <template>
     <div>
         <Card>
+            <div class="head-btn">
+                <Button @click="handleAddUser" type="primary" icon="android-add">新增</Button>
+                <Button @click="handleExport" type="primary" icon="ios-upload-outline">导出信息</Button>
+                <Button type="warning" @click="handleDelSubject" icon="android-delete" :disabled="disable">删除</Button>
+            </div>
             <div class="box-head">
-                <div class="head-btn">
-                    <Button @click="handleAddUser" type="primary" icon="android-add">新增</Button>
-                    <Button @click="handleExport" type="primary" icon="ios-upload-outline">导出信息</Button>
-                    <Button type="warning" @click="handleDelSubject" icon="android-delete" :disabled="disable">删除</Button>
-                </div>
                 <div class="head-search">
                     <Row>
                         <Col span="22">
@@ -45,10 +45,9 @@
                         show-elevator show-sizer></Page>
                 </div>
             </div>
-            <Modal title="编辑" :loading="EditModeloading" @on-cancel="handlecancel" ok-text="保存" v-model="autMode" width="400"
-                @on-ok="handleSave">
-                <Form :model="saveData" :label-width="80">
-                    <FormItem label="用户工号：">
+            <Modal title="编辑" :loading="EditModeloading" @on-cancel="handlecancel" ok-text="保存" v-model="autMode" width="400" @on-ok="handleSave">
+                <Form :model="saveData" :rules="rules" :label-width="100">
+                    <FormItem label="用户工号：" prop="UserID">
                         <Input v-model="saveData.UserID" placeholder=""></Input>
                     </FormItem>
                     <FormItem label="备注：">
@@ -87,6 +86,13 @@
                     pageindex: 1,
                     UserID: '',
                     action: 'getloginauthority'
+                },
+                rules: {
+                    UserID: [{
+                        required: true,
+                        message: '用户工号不能为空',
+                        trigger: 'blur'
+                    }]
                 },
                 saveData: {
                     action: 'save',
@@ -300,18 +306,19 @@
                         SaveLoginAuthority(this.saveData).then(response => {
                             this.$Modal.remove();
                             this.autMode = false;
-                            this.fetchData();
                             this.handlecancel();
                             this.$Notice.success({
                                 title: response.msg,
                                 desc: '',
                                 duration: 2
                             });
+                            this.fetchData();
                         });
                     },
                     onCancel: () => {
                         this.EditModeloading = false;
                         this.saveData = this.$options.data().saveData;
+                        this.fetchData();
                     }
                 });
             }

@@ -5,11 +5,12 @@
 <template>
     <div>
         <Card>
+            <div class="head-btn">
+                <Button @click="handleExport" type="primary" icon="ios-upload-outline">导出信息</Button>
+                <Button type="warning" @click="handleDelSubject" icon="android-delete" :disabled="disable">删除</Button>
+            </div>
             <div class="box-head">
-                <div class="head-btn">
-                    <Button @click="handleExport" type="primary" icon="ios-upload-outline">导出信息</Button>
-                    <Button type="warning" @click="handleDelSubject" icon="android-delete" :disabled="disable">删除</Button>
-                </div>
+
                 <div class="head-search">
                     <Row>
                         <Col span="22">

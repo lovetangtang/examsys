@@ -169,7 +169,7 @@
                         <InputNumber v-model="examrqparams.SwitchNumLimit" :min="0"></InputNumber> 次强制交卷，-1默认不限制
                     </FormItem>
                     <FormItem label="单题答题时间：">
-                        <InputNumber v-model="examrqparams.OneAnsweSecond" :min="0"></InputNumber>
+                        <InputNumber v-model="examrqparams.OneAnsweSecond" :min="0"></InputNumber> 分钟
                         <Tooltip placement="bottom">
                             <Icon class="cursor" type="help-circled"></Icon>
                             <div slot="content">
@@ -476,6 +476,7 @@
                                     desc: '',
                                     duration: 2
                                 });
+                                _this.clearData();
                                 resolve(true);
                                 _this.$store.commit('removeTag', 'examcreat');
                                 _this.$store.commit('closePage', 'examcreat');

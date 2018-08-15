@@ -57,7 +57,8 @@ export const otherRouter = {
         { path: 'message', title: '消息中心', name: 'message_index', component: () => import('@/views/message/message.vue') },
         { path: 'examedit', title: '编辑考试', name: 'examedit', component: () => import('@/views/examedit/examedit.vue') },
         { path: 'examcreat', title: '创建考试', name: 'examcreat', component: () => import('@/views/examedit/examcreat.vue') },
-        { path: 'paperedit', title: '试卷编辑', name: 'paperedit', component: () => import('@/views/examedit/paperedit.vue') }
+        { path: 'paperedit', title: '试卷编辑', name: 'paperedit', component: () => import('@/views/examedit/paperedit.vue') },
+        { path: 'mypaper', title: '判分', name: 'mypaper', component: () => import('@/views/exam/components/mypapermark.vue') }
     ]
 };
 
@@ -150,7 +151,7 @@ export const appRouter = [
             { path: 'dragableTable', title: '人员管理', name: 'error', icon: 'arrow-move', component: () => import('@/views/error-page/404.vue') },
             { path: 'iteminfo', title: '字典管理', name: 'iteminfo', icon: 'arrow-move', component: () => import('@/views/system/iteminfo.vue') },
             { path: 'editableTable', title: '角色权限', name: 'editable-table', icon: 'edit', component: () => import('@/views/error-page/404.vue') },
-            { path: 'searchableTable', title: '操作记录', name: 'searchable-table', icon: 'search', component: () => import('@/views/error-page/404.vue') }
+            { path: 'syslog', title: '操作记录', name: 'syslog', icon: 'search', component: () => import('@/views/system/syslog.vue') }
         ]
     }
 ];

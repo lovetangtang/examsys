@@ -5,301 +5,302 @@
 <template>
     <div>
         <Card>
-            <div class="box-head">
-                <div class="head-btn">
-                    <Button @click="handleOpenEidtWindow" type="primary" icon="android-add">手动录入</Button>
-                    <Button @click="handleMoreExport" type="primary" icon="android-add">批量录入</Button>
-                    <Button type="warning" @click="handleDelSubject" icon="android-delete" :disabled="disable">删除试题</Button>
-                    <Modal :loading="EditModeloading" @on-cancel="handlecancel" ok-text="保存" v-model="subjectmodal" :styles="{top: '20px'}" width="900"
-                        @on-ok="handleSaveSubject">
-                        <div class="model-subject">
-                            <div class="subject-head">
-                                <Row :gutter="5">
-                                    <Col span="12">
-                                    <Form :model="formItem" :label-width="80">
-                                        <FormItem label="试题类型：">
-                                            <RadioGroup v-model="subjectComSaveList.SubjectType">
-                                                <Radio label="0">模拟试题</Radio>
-                                                <Radio label="1">正式试题</Radio>
-                                            </RadioGroup>
-                                        </FormItem>
-                                    </Form>
-                                    </Col>
-                                </Row>
-                                <Row :gutter="5" class="sb-top1">
-                                    <Col span="6">
-                                    <label for="">试题难度：</label>
-                                    <Select size="small" v-model="subjectComSaveList.DegreeMode" style="width:110px">
-                                        <Option v-for="item in DegreeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                                    </Select>
-                                    </Col>
-                                    <Col span="6">
-                                    <label for="">试题题型：</label>
-                                    <Select @on-change="onsbclasschange" size="small" v-model="subjectComSaveList.SubjectClassMode" style="width:110px">
-                                        <Option v-for="item in SubjectClassList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                                    </Select>
-                                    </Col>
-                                    <Col span="6">
-                                    <label for="">试题分类：</label>
-                                    <Select size="small" v-model="subjectComSaveList.LoreType" style="width:110px">
-                                        <Option v-for="item in LoreTypeList" :value="item.ItemNo" :key="item.ItemNo">{{ item.ItemName }}</Option>
-                                    </Select>
-                                    </Col>
-                                    <Col span="6">
-                                    <label for="">关联业务：</label>
-                                    <Select size="small" v-model="subjectComSaveList.AboutBllMode" style="width:110px">
-                                        <Option v-for="item in AboutBllList" :value="item.ItemNo" :key="item.ItemNo">{{ item.ItemName }}</Option>
-                                    </Select>
-                                    </Col>
-                                </Row>
-                            </div>
-                            <div class="question-content">
-                                <!-- 问答题 -->
-                                <div v-bind:style="{ display:showStauts.iinShow}" class="">
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>题干</span>
-                                            <span>这里填写题目描述</span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <Input v-model="SubjectParam.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
-                                        </div>
+            <div class="head-btn">
+                <Button @click="handleOpenEidtWindow" type="primary" icon="android-add">手动录入</Button>
+                <Button @click="handleMoreExport" type="primary" icon="android-add">批量录入</Button>
+                <Button type="warning" @click="handleDelSubject" icon="android-delete" :disabled="disable">删除试题</Button>
+                <Modal :loading="EditModeloading" @on-cancel="handlecancel" ok-text="保存" v-model="subjectmodal" :styles="{top: '20px'}" width="900"
+                    @on-ok="handleSaveSubject">
+                    <div class="model-subject">
+                        <div class="subject-head">
+                            <Row :gutter="5">
+                                <Col span="12">
+                                <Form :model="formItem" :label-width="80">
+                                    <FormItem label="试题类型：">
+                                        <RadioGroup v-model="subjectComSaveList.SubjectType">
+                                            <Radio label="0">模拟试题</Radio>
+                                            <Radio label="1">正式试题</Radio>
+                                        </RadioGroup>
+                                    </FormItem>
+                                </Form>
+                                </Col>
+                            </Row>
+                            <Row :gutter="5" class="sb-top1">
+                                <Col span="6">
+                                <label for="">试题难度：</label>
+                                <Select size="small" v-model="subjectComSaveList.DegreeMode" style="width:110px">
+                                    <Option v-for="item in DegreeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                </Select>
+                                </Col>
+                                <Col span="6">
+                                <label for="">试题题型：</label>
+                                <Select @on-change="onsbclasschange" size="small" v-model="subjectComSaveList.SubjectClassMode" style="width:110px">
+                                    <Option v-for="item in SubjectClassList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                </Select>
+                                </Col>
+                                <Col span="6">
+                                <label for="">试题分类：</label>
+                                <Select size="small" v-model="subjectComSaveList.LoreType" style="width:110px">
+                                    <Option v-for="item in LoreTypeList" :value="item.ItemNo" :key="item.ItemNo">{{ item.ItemName }}</Option>
+                                </Select>
+                                </Col>
+                                <Col span="6">
+                                <label for="">关联业务：</label>
+                                <Select size="small" v-model="subjectComSaveList.AboutBllMode" style="width:110px">
+                                    <Option v-for="item in AboutBllList" :value="item.ItemNo" :key="item.ItemNo">{{ item.ItemName }}</Option>
+                                </Select>
+                                </Col>
+                            </Row>
+                        </div>
+                        <div class="question-content">
+                            <!-- 问答题 -->
+                            <div v-bind:style="{ display:showStauts.iinShow}" class="">
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>题干</span>
+                                        <span>这里填写题目描述</span>
                                     </div>
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>答案</span>
-                                            <span>这里填写答案</span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <Input v-model="SubjectParam.RightAnswer" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
-                                        </div>
-                                    </div>
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>解析</span>
-                                            <span>这里填写该问题对应的答案解释</span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <Input v-model="SubjectParam.Analysis" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
-                                        </div>
-                                    </div>
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>默认分值</span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <InputNumber :min="0" v-model="SubjectParam.DefaultScore"></InputNumber>
-                                        </div>
-                                    </div>
-                                    <div v-for="ia in CdeAnswerList" class="margin-top-10">
-                                        <div>
-                                            <span>{{ia.lable}}</span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <Input :ref="ia.val" v-model="ia.vmode" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
-                                            <Icon class="subject-icon" @click.native="handleDelCde(ia.val)" type="close"></Icon>
-                                        </div>
-                                    </div>
-                                    <div class="margin-top-10">
-                                        <Button @click="handleAddCde" type="info">添加候选答案</Button>
+                                    <div class="margin-top-4 width96-input">
+                                        <Input v-model="SubjectParam.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                     </div>
                                 </div>
-                                <!-- 单选 -->
-                                <div v-bind:style="{ display:showStauts.oneSeShow}" class="">
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>题干</span>
-                                            <span>这里填写题目描述</span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <Input v-model="SubjectParam.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
-                                        </div>
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>答案</span>
+                                        <span>这里填写答案</span>
                                     </div>
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>选项 单/多选题的选项范围从 2 到 8 </span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <RadioGroup class="width96-input" vertical v-model="SubjectParam.RightAnswer">
-                                                <template v-for="sv in selectOptionList">
-                                                    <Row :gutter="20">
-                                                        <Col span="22">
-                                                        <Radio class="margin-top-10" :label="sv.lable">
-                                                            <Input v-model="sv.vmode"></Input>
-                                                        </Radio>
-                                                        </Col>
-                                                        <Col span="2" class="padding-top-18 cursor">
-                                                        <Icon @click.native="handleDelOption(sv.val)" type="close"></Icon>
-                                                        </Col>
-                                                    </Row>
-                                                </template>
-                                            </RadioGroup>
-                                        </div>
-                                        <div class="margin-top-10">
-                                            <Button @click="handleAddSelectOption" type="info">添加一个选项</Button>
-                                        </div>
-                                    </div>
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>默认分值</span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <InputNumber :min="0" v-model="SubjectParam.DefaultScore"></InputNumber>
-                                        </div>
-                                    </div>
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>解析</span>
-                                            <span>这里填写该问题对应的答案解释</span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <Input v-model="SubjectParam.Analysis" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
-                                        </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <Input v-model="SubjectParam.RightAnswer" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                     </div>
                                 </div>
-                                <!-- 多选 -->
-                                <div v-bind:style="{ display:showStauts.moreSeShow}" class="">
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>题干</span>
-                                            <span>这里填写题目描述</span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <Input v-model="SubjectParam.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
-                                        </div>
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>解析</span>
+                                        <span>这里填写该问题对应的答案解释</span>
                                     </div>
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>选项 单/多选题的选项范围从 2 到 8 </span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <CheckboxGroup class="width96-input" v-model="moreSelRightAnswer">
-                                                <template v-for="sv in selectOptionList">
-                                                    <Row :gutter="20">
-                                                        <Col span="22">
-                                                        <div>
-                                                            <Checkbox class="margin-top-10 max-width" :label="sv.lable">
-                                                                <div class="sb-moresel-input">
-                                                                    <Input v-model="sv.vmode"></Input>
-                                                                </div>
-                                                            </Checkbox>
-                                                        </div>
-                                                        </Col>
-                                                        <Col span="2" class="padding-top-18 cursor">
-                                                        <Icon @click.native="handleDelOption(sv.val)" type="close"></Icon>
-                                                        </Col>
-                                                    </Row>
-                                                </template>
-                                            </CheckboxGroup>
-                                        </div>
-                                        <div class="margin-top-10">
-                                            <Button @click="handleAddSelectOption" type="info">添加一个选项</Button>
-                                        </div>
-                                    </div>
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>默认分值</span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <InputNumber :min="0" v-model="SubjectParam.DefaultScore"></InputNumber>
-                                        </div>
-                                    </div>
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>解析</span>
-                                            <span>这里填写该问题对应的答案解释</span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <Input v-model="SubjectParam.Analysis" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
-                                        </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <Input v-model="SubjectParam.Analysis" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                     </div>
                                 </div>
-                                <!-- 判断 -->
-                                <div v-bind:style="{ display:showStauts.judShow}" class="">
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>题干</span>
-                                            <span>这里填写题目描述</span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <Input v-model="SubjectParam.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
-                                        </div>
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>默认分值</span>
                                     </div>
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>答案</span>
-                                            <span>这里填写答案</span>
-                                        </div>
-                                        <div class="margin-top-10 width96-input">
-                                            <RadioGroup v-model="SubjectParam.RightAnswer">
-                                                <Radio label="true">
-                                                    <span>正确</span>
-                                                </Radio>
-                                                <Radio label="false">
-                                                    <span>错误</span>
-                                                </Radio>
-                                            </RadioGroup>
-                                        </div>
-                                    </div>
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>默认分值</span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <InputNumber :min="0" v-model="SubjectParam.DefaultScore"></InputNumber>
-                                        </div>
-                                    </div>
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>解析</span>
-                                            <span>这里填写该问题对应的答案解释</span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <Input v-model="SubjectParam.Analysis" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
-                                        </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <InputNumber :min="0" v-model="SubjectParam.DefaultScore"></InputNumber>
                                     </div>
                                 </div>
-                                <!-- 填空 -->
-                                <div v-bind:style="{ display:showStauts.filShow}" class="">
-                                    <div class="margin-top-10">
-                                        <div>
-                                            <span>题干</span>
-                                            <span>这里填写题目描述</span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <Input v-model="SubjectParam.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
-                                        </div>
-                                    </div>
-                                    <div v-for="ia in CdeAnswerList" class="margin-top-10">
+                                <div v-for="ia in CdeAnswerList" class="margin-top-10">
+                                    <div>
                                         <span>{{ia.lable}}</span>
-                                        <div class="margin-top-4 width96-input">
-                                            <Row>
-                                                <Col span="23">
-                                                <Input :ref="ia.val" v-model="ia.vmode"></Input>
-                                                </Col>
-                                                <Col span="1" class="sb-ft-icon">
-                                                <Icon class="subject-icon" @click.native="handleDelCde(ia.val)" type="close"></Icon>
-                                                </Col>
-                                            </Row>
-                                        </div>
+                                    </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <Input :ref="ia.val" v-model="ia.vmode" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                        <Icon class="subject-icon" @click.native="handleDelCde(ia.val)" type="close"></Icon>
+                                    </div>
+                                </div>
+                                <div class="margin-top-10">
+                                    <Button @click="handleAddCde" type="info">添加候选答案</Button>
+                                </div>
+                            </div>
+                            <!-- 单选 -->
+                            <div v-bind:style="{ display:showStauts.oneSeShow}" class="">
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>题干</span>
+                                        <span>这里填写题目描述</span>
+                                    </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <Input v-model="SubjectParam.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                    </div>
+                                </div>
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>选项 单/多选题的选项范围从 2 到 8 </span>
+                                    </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <RadioGroup class="width96-input" vertical v-model="SubjectParam.RightAnswer">
+                                            <template v-for="sv in selectOptionList">
+                                                <Row :gutter="20">
+                                                    <Col span="22">
+                                                    <Radio class="margin-top-10" :label="sv.lable">
+                                                        <Input v-model="sv.vmode"></Input>
+                                                    </Radio>
+                                                    </Col>
+                                                    <Col span="2" class="padding-top-18 cursor">
+                                                    <Icon @click.native="handleDelOption(sv.val)" type="close"></Icon>
+                                                    </Col>
+                                                </Row>
+                                            </template>
+                                        </RadioGroup>
                                     </div>
                                     <div class="margin-top-10">
-                                        <Button @click="handleAddCde" type="info">添加填空</Button>
+                                        <Button @click="handleAddSelectOption" type="info">添加一个选项</Button>
+                                    </div>
+                                </div>
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>默认分值</span>
+                                    </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <InputNumber :min="0" v-model="SubjectParam.DefaultScore"></InputNumber>
+                                    </div>
+                                </div>
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>解析</span>
+                                        <span>这里填写该问题对应的答案解释</span>
+                                    </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <Input v-model="SubjectParam.Analysis" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 多选 -->
+                            <div v-bind:style="{ display:showStauts.moreSeShow}" class="">
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>题干</span>
+                                        <span>这里填写题目描述</span>
+                                    </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <Input v-model="SubjectParam.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                    </div>
+                                </div>
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>选项 单/多选题的选项范围从 2 到 8 </span>
+                                    </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <CheckboxGroup class="width96-input" v-model="moreSelRightAnswer">
+                                            <template v-for="sv in selectOptionList">
+                                                <Row :gutter="20">
+                                                    <Col span="22">
+                                                    <div>
+                                                        <Checkbox class="margin-top-10 max-width" :label="sv.lable">
+                                                            <div class="sb-moresel-input">
+                                                                <Input v-model="sv.vmode"></Input>
+                                                            </div>
+                                                        </Checkbox>
+                                                    </div>
+                                                    </Col>
+                                                    <Col span="2" class="padding-top-18 cursor">
+                                                    <Icon @click.native="handleDelOption(sv.val)" type="close"></Icon>
+                                                    </Col>
+                                                </Row>
+                                            </template>
+                                        </CheckboxGroup>
                                     </div>
                                     <div class="margin-top-10">
-                                        <div>
-                                            <span>解析</span>
-                                            <span>这里填写该问题对应的答案解释</span>
-                                        </div>
-                                        <div class="margin-top-4 width96-input">
-                                            <Input v-model="SubjectParam.Analysis" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
-                                        </div>
+                                        <Button @click="handleAddSelectOption" type="info">添加一个选项</Button>
+                                    </div>
+                                </div>
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>默认分值</span>
+                                    </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <InputNumber :min="0" v-model="SubjectParam.DefaultScore"></InputNumber>
+                                    </div>
+                                </div>
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>解析</span>
+                                        <span>这里填写该问题对应的答案解释</span>
+                                    </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <Input v-model="SubjectParam.Analysis" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 判断 -->
+                            <div v-bind:style="{ display:showStauts.judShow}" class="">
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>题干</span>
+                                        <span>这里填写题目描述</span>
+                                    </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <Input v-model="SubjectParam.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                    </div>
+                                </div>
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>答案</span>
+                                        <span>这里填写答案</span>
+                                    </div>
+                                    <div class="margin-top-10 width96-input">
+                                        <RadioGroup v-model="SubjectParam.RightAnswer">
+                                            <Radio label="true">
+                                                <span>正确</span>
+                                            </Radio>
+                                            <Radio label="false">
+                                                <span>错误</span>
+                                            </Radio>
+                                        </RadioGroup>
+                                    </div>
+                                </div>
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>默认分值</span>
+                                    </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <InputNumber :min="0" v-model="SubjectParam.DefaultScore"></InputNumber>
+                                    </div>
+                                </div>
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>解析</span>
+                                        <span>这里填写该问题对应的答案解释</span>
+                                    </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <Input v-model="SubjectParam.Analysis" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 填空 -->
+                            <div v-bind:style="{ display:showStauts.filShow}" class="">
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>题干</span>
+                                        <span>这里填写题目描述</span>
+                                    </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <Input v-model="SubjectParam.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
+                                    </div>
+                                </div>
+                                <div v-for="ia in CdeAnswerList" class="margin-top-10">
+                                    <span>{{ia.lable}}</span>
+                                    <div class="margin-top-4 width96-input">
+                                        <Row>
+                                            <Col span="23">
+                                            <Input :ref="ia.val" v-model="ia.vmode"></Input>
+                                            </Col>
+                                            <Col span="1" class="sb-ft-icon">
+                                            <Icon class="subject-icon" @click.native="handleDelCde(ia.val)" type="close"></Icon>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </div>
+                                <div class="margin-top-10">
+                                    <Button @click="handleAddCde" type="info">添加填空</Button>
+                                </div>
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>解析</span>
+                                        <span>这里填写该问题对应的答案解释</span>
+                                    </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <Input v-model="SubjectParam.Analysis" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </Modal>
-                </div>
+                    </div>
+                </Modal>
+            </div>
+            <div class="box-head">
+
                 <div class="head-search">
                     <Row>
                         <Col span="22">

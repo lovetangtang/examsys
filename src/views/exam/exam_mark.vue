@@ -5,11 +5,11 @@
 <template>
     <div>
         <Card>
+            <div class="head-btn">
+                <Button @click="handleExport" type="primary" icon="ios-upload-outline">导出信息</Button>
+                <Button type="warning" @click="handleDelSubject" icon="android-delete" :disabled="disable">删除</Button>
+            </div>
             <div class="box-head">
-                <div class="head-btn">
-                    <Button @click="handleExport" type="primary" icon="ios-upload-outline">导出信息</Button>
-                    <Button type="warning" @click="handleDelSubject" icon="android-delete" :disabled="disable">删除</Button>
-                </div>
                 <div class="head-search">
                     <Row>
                         <Col span="22">
@@ -258,21 +258,12 @@
             },
             // 展开编辑窗体
             showEdit (params) {
-                // var rq = {
-                //     action: 'getpapersubject',
-                //     KeyID: params.row.KeyID
-                // };
-                // GetPaperSubject(rq).then(response => {
-                //     this.$router.push({
-                //         name: 'paperedit',
-                //         query: {
-                //             type: params.row.AssemblyType,
-                //             pdata: response.data,
-                //             row: params.row
-                //         }
-                //     });
-                //     // this.$refs.papersubject.setPaperSubject(params.row.AssemblyType, response.data);
-                // });
+                this.$router.push({
+                    name: 'mypaper',
+                    query: {
+                        KeyID: params.row.KeyID
+                    }
+                });
             },
             // 移除数据
             remove (params) {

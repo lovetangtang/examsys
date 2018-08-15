@@ -99,9 +99,30 @@
                             </div>
                         </div>
                         <Modal title="编辑" :loading="EditModeloading" @on-cancel="handlecancel" ok-text="保存" v-model="autMode" width="400" @on-ok="handleSave">
-                            <Form :model="saveData" :label-width="80">
-                                <FormItem label="用户工号：">
-                                    <Input v-model="saveData.UserID" placeholder=""></Input>
+                            <Form :model="saveData" :rules="rules" :label-width="100">
+                                <FormItem label="字典名称：" prop="ItemName">
+                                    <Input v-model="saveData.ItemName" placeholder=""></Input>
+                                </FormItem>
+                                <FormItem label="字典编号：" prop="ItemNo">
+                                    <Input v-model="saveData.ItemNo" placeholder=""></Input>
+                                </FormItem>
+                                <FormItem label="完整名称：">
+                                    <Input v-model="saveData.AllName" placeholder=""></Input>
+                                </FormItem>
+                                <FormItem label="状态：">
+                                    <RadioGroup v-model="saveData.Status">
+                                        <Radio label="0">启用</Radio>
+                                        <Radio label="1">禁用</Radio>
+                                    </RadioGroup>
+                                </FormItem>
+                                <FormItem label="是否默认：">
+                                    <RadioGroup v-model="saveData.IsDefault">
+                                        <Radio label="true">是</Radio>
+                                        <Radio label="false">否</Radio>
+                                    </RadioGroup>
+                                </FormItem>
+                                <FormItem label="显示顺序：">
+                                    <InputNumber :min="0" v-model="saveData.ShowIndex"></InputNumber>
                                 </FormItem>
                                 <FormItem label="备注：">
                                     <Input v-model="saveData.Remark" placeholder=""></Input>
@@ -142,6 +163,23 @@
                 chekcData: [], // 表格选中项
                 total: null, // 表格数据总条数
                 formItem: {}, // 表单数据源
+                rules: {
+                    ItemName: [{
+                        required: true,
+                        message: '字典名称不能为空',
+                        trigger: 'blur'
+                    }],
+                    ItemNo: [{
+                        required: true,
+                        message: '字典编号不能为空',
+                        trigger: 'blur'
+                    }],
+                    password: [{
+                        required: true,
+                        message: '密码不能为空',
+                        trigger: 'blur'
+                    }]
+                },
                 listQuery: { // 查询条件
                     start: 0,
                     limit: 10,
@@ -155,10 +193,14 @@
                     action: 'getitemtype'
                 },
                 saveData: {
-                    action: 'save',
-                    UserID: '',
+                    action: 'saveitemlist',
+                    ItemName: '',
                     KeyID: 0,
-                    Remark: ''
+                    ItemType: '',
+                    AllName: '',
+                    Status: '0',
+                    IsDefault: 'false',
+                    ShowIndex: 0
                 },
                 columnstype: [{
                     title: '分类编号',
@@ -181,9 +223,6 @@
                     title: '完整名称',
                     key: 'AllName'
                 }, {
-                    title: '备注',
-                    key: 'Remark'
-                }, {
                     title: '状态',
                     key: 'Status',
                     width: 65,
@@ -195,11 +234,14 @@
                 }, {
                     title: '显示顺序',
                     key: 'Index'
+                }, {
+                    title: '备注',
+                    key: 'Remark'
                 },
                 {
                     title: '操作',
                     key: 'action',
-                    width: 85,
+                    width: 135,
                     align: 'center',
                     render: (h, params) => {
                         return h('div', [
@@ -216,7 +258,18 @@
                                         this.showEdit(params);
                                     }
                                 }
-                            }, '编辑')
+                            }, '编辑'),
+                            h('Button', {
+                                props: {
+                                    type: 'error',
+                                    size: 'small'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.remove(params);
+                                    }
+                                }
+                            }, '删除')
                         ]);
                     }
                 }
@@ -295,21 +348,12 @@
             },
             // 展开编辑窗体
             showEdit (params) {
-                // var rq = {
-                //     action: 'getpapersubject',
-                //     KeyID: params.row.KeyID
-                // };
-                // GetPaperSubject(rq).then(response => {
-                //     this.$router.push({
-                //         name: 'paperedit',
-                //         query: {
-                //             type: params.row.AssemblyType,
-                //             pdata: response.data,
-                //             row: params.row
-                //         }
-                //     });
-                //     // this.$refs.papersubject.setPaperSubject(params.row.AssemblyType, response.data);
-                // });
+                let dt = params.row;
+                this.saveData = dt;
+                this.saveData.Status = dt.Status + '';
+                this.saveData.IsDefault = dt.IsDefault + '';
+                this.saveData.action = 'saveitemlist';
+                this.autMode = true;
             },
             // 移除数据
             remove (params) {
@@ -383,6 +427,10 @@
             },
             // 新增
             handleAddUser () {
+                if (this.listQuery.ItemType === '') {
+                    this.$Message.error('请选择字典分类');
+                    return;
+                }
                 this.autMode = true;
             },
             // 取消
@@ -391,6 +439,7 @@
             },
             // 修改保存试卷
             handleSave () {
+                this.saveData.ItemType = this.listQuery.ItemType;
                 this.$Modal.confirm({
                     title: '提示',
                     content: '确定要保存吗？',

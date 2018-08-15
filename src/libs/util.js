@@ -10,7 +10,7 @@ let util = {
 
 };
 util.title = function (title, vm) {
-    let iTitle = '在线考试系统';
+    let iTitle = '在线考试后台系统';
     if (title) {
         iTitle += ' - ' + (title.i18n ? vm.$t(title.i18n) : title);
     }

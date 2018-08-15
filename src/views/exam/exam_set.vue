@@ -6,12 +6,12 @@
 <template>
     <div>
         <Card>
+            <div class="head-btn">
+                <Button @click="handleCreatExam" type="primary" icon="android-add">创建考试</Button>
+                <Button @click="handleExport" type="primary" icon="ios-upload-outline">导出信息</Button>
+                <Button type="warning" @click="handleDelSubject" icon="android-delete" :disabled="disable">删除</Button>
+            </div>
             <div class="box-head">
-                <div class="head-btn">
-                    <Button @click="handleCreatExam" type="primary" icon="android-add">创建考试</Button>
-                    <Button @click="handleExport" type="primary" icon="ios-upload-outline">导出信息</Button>
-                    <Button type="warning" @click="handleDelSubject" icon="android-delete" :disabled="disable">删除</Button>
-                </div>
                 <div class="head-search">
                     <Row>
                         <Col span="22">
@@ -277,9 +277,11 @@
                     this.disable = true;
                     this.loading = true;
                     this.listQuery.ExamBeginTime = JSON.stringify(this.ExamBeginTime);
-                    console.log(this.ExamBeginTime);
-                    if (this.ExamBeginTime.length === 0 || this.ExamBeginTime[0] === null || this.ExamBeginTime[1] ===
-                        null) {
+                    if (this.ExamBeginTime.length === 0 ||
+                        this.ExamBeginTime[0] === null ||
+                        this.ExamBeginTime[1] === null ||
+                        this.ExamBeginTime[0] === '' ||
+                        this.ExamBeginTime[1] === '') {
                         this.listQuery.ExamBeginTime = '';
                     };
                     GetList(this.listQuery).then(response => {
@@ -299,7 +301,9 @@
             // 展开编辑窗体
             showEdit (params) {
                 this.examMode = true;
-                this.$refs.examcmpts.setExaminfo(params.row);
+                let dt = {};
+                dt = JSON.parse(JSON.stringify(params.row));
+                this.$refs.examcmpts.setExaminfo(dt);
             },
             // 移除数据
             remove (params) {
@@ -395,7 +399,12 @@
                             });
                         }, 1000);
                     } else {
-                        this.EditModeloading = true;
+                        this.EditModeloading = false;
+                        this.$nextTick(() => {
+                            this.EditModeloading = true;
+                        });
+                        this.examMode = false;
+                        this.fetchData();
                     }
                 });
             }
