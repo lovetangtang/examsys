@@ -24,7 +24,7 @@ export function Dellist (keyids) {
         url: '/Data/System/iteminfo.ashx',
         method: 'post',
         data: {
-            action: 'dellist',
+            action: 'Deliteminfo',
             keyids: keyids
         }
     });
