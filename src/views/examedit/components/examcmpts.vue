@@ -347,7 +347,7 @@
                     ExamEndDate: '', // 考试结束日期
                     ExamBeginTime: '', // 考试开始时间
                     ExamEndTime: '', // 考试结束时间
-                    action: 'save',
+                    action: 'SaveExamList',
                     LateDate: '',
                     LateTime: '',
                     AdHandoverTime: -1,
@@ -423,7 +423,7 @@
                 // this.examrqparams.AdHandoverDate = em.AdHandoverTime;
                 // this.examrqparams.AdHandoverTime = this.getTimes(em.AdHandoverTime);
 
-                this.examrqparams.action = 'save';
+                this.examrqparams.action = 'SaveExamList';
                 this.paperinfo = em;
 
                 this.showbtn = 'none';

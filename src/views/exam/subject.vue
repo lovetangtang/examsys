@@ -414,7 +414,7 @@
                     SubjectType: '0', // 试题分类绑定值
                     LoreType: '', // 知识分类绑定值
                     AboutBllMode: 'GN', // 关联业务下拉框绑定值
-                    action: 'save',
+                    action: 'SaveSubjectList',
                     DegreeMode: 0 // 试题难度下拉框绑定值
                 },
                 formItem: {}, // 表单数据源
@@ -664,10 +664,10 @@
                 this.onsbclasschange(data.SubjecSubClass);
                 let subjectComSaveList = { // 编辑录入后台的通用参数
                     SubjectClassMode: data.SubjecSubClass, // 题型下拉框绑定值
-                    SubjectType: data.SubjectType, // 试题分类绑定值
+                    SubjectType: data.SubjectType + '', // 试题分类绑定值
                     LoreType: data.LoreType, // 知识分类绑定值
                     AboutBllMode: data.AboutBll, // 关联业务下拉框绑定值
-                    action: 'save',
+                    action: 'SaveSubjectList',
                     KeyID: data.KeyID,
                     DegreeMode: data.Degree // 试题难度下拉框绑定值
                 };
@@ -935,16 +935,7 @@
                     }, 1000);
                     return false;
                 }
-                if (this.SubjectParam.RightAnswer === '') {
-                    this.$Message.error('正确答案不能为空');
-                    setTimeout(() => {
-                        this.EditModeloading = false;
-                        this.$nextTick(() => {
-                            this.EditModeloading = true;
-                        });
-                    }, 1000);
-                    return false;
-                }
+
                 this.EditModeloading = true;
                 // 问答题等题型才有候选答案
                 if (this.subjectComSaveList.SubjectClassMode === 40 || this.subjectComSaveList.SubjectClassMode === 30) {
@@ -989,7 +980,6 @@
                 if (this.subjectComSaveList.SubjectClassMode === 12) {
                     this.SubjectParam.RightAnswer = this.moreSelRightAnswer.join('|');
                 }
-
                 // 单选题参数
                 let arrySelOpt = [];
                 if (this.subjectComSaveList.SubjectClassMode === 11 || this.subjectComSaveList.SubjectClassMode === 12) {
@@ -999,12 +989,23 @@
                     }
                 }
                 arrySelOpt = arrySelOpt.filter(item => item);
-
                 this.subjectComSaveList.SelectionOption = arrySelOpt.join('|');
-
+                if (arrySelOpt.length > 0) {
+                    this.SubjectParam.SelectionOption = this.subjectComSaveList.SelectionOption;
+                }
                 // 参数
                 let subjectList = Object.assign({}, this.subjectComSaveList, this.CdeAnswerParam, this.SubjectParam);
-
+    
+                if (this.SubjectParam.RightAnswer === '' && this.subjectComSaveList.SubjectClassMode !== 30) {
+                    this.$Message.error('正确答案不能为空');
+                    setTimeout(() => {
+                        this.EditModeloading = false;
+                        this.$nextTick(() => {
+                            this.EditModeloading = true;
+                        });
+                    }, 1000);
+                    return false;
+                }
                 this.$Modal.confirm({
                     title: '提示',
                     content: '确定要保存吗？',
@@ -1036,7 +1037,7 @@
                     SubjectType: 0, // 试题分类绑定值
                     LoreType: '', // 知识分类绑定值
                     AboutBllMode: 'GN', // 关联业务下拉框绑定值
-                    action: 'save',
+                    action: 'SaveSubjectList',
                     DegreeMode: 0 // 试题难度下拉框绑定值
                 };
                 let CdeAnswerList = [{ // 候选答案组件，支持动态添加

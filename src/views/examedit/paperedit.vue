@@ -396,7 +396,7 @@
               examrqParam: { // 需要传入后台的参数
                   KeyID: 0,
                   PaperName: '', // 试卷名称
-                  action: 'save',
+                  action: 'SavePaperList',
                   PaperType: '', // 试卷分类
                   TotalScore: 0, // 总分
                   SubjectNum: 0, // 总题数
@@ -524,7 +524,7 @@
               let examrqParam = { // 需要传入后台的参数
                   KeyID: row.KeyID,
                   PaperName: row.PaperName, // 试卷名称
-                  action: 'save',
+                  action: 'SavePaperList',
                   PaperType: row.PaperType, // 试卷分类
                   TotalScore: row.TotalScore, // 总分
                   SubjectNum: row.SubjectNum, // 总题数

@@ -13,7 +13,7 @@ export function DelExamList (keyids) {
         url: '/Data/exam/examinfo.ashx',
         method: 'post',
         data: {
-            action: 'dellist',
+            action: 'DelExamList',
             keyids: keyids
         }
     });

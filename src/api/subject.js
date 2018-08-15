@@ -13,7 +13,7 @@ export function DelSubjectList (keyids) {
         url: '/Data/Exam/subjectinfo.ashx',
         method: 'post',
         data: {
-            action: 'dellist',
+            action: 'DelSubjectList',
             keyids: keyids
         }
     });

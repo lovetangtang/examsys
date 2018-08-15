@@ -99,7 +99,7 @@
                             </div>
                         </div>
                         <Modal title="编辑" :loading="EditModeloading" @on-cancel="handlecancel" ok-text="保存" v-model="autMode" width="400" @on-ok="handleSave">
-                            <Form :model="saveData" :rules="rules" :label-width="100">
+                            <Form :model="saveData" ref="ruleform" :rules="rules" :label-width="100">
                                 <FormItem label="字典名称：" prop="ItemName">
                                     <Input v-model="saveData.ItemName" placeholder=""></Input>
                                 </FormItem>
@@ -193,7 +193,7 @@
                     action: 'getitemtype'
                 },
                 saveData: {
-                    action: 'saveitemlist',
+                    action: 'SaveItemList',
                     ItemName: '',
                     KeyID: 0,
                     ItemType: '',
@@ -352,7 +352,7 @@
                 this.saveData = dt;
                 this.saveData.Status = dt.Status + '';
                 this.saveData.IsDefault = dt.IsDefault + '';
-                this.saveData.action = 'saveitemlist';
+                this.saveData.action = 'SaveItemList';
                 this.autMode = true;
             },
             // 移除数据
@@ -383,7 +383,7 @@
             // 页面跳转
             changePage (val) {
                 this.listQuery.start = this.listQuery.limit * (val - 1);
-                this.fetchData();
+                this.fetchitemData();
             },
             // 分页数量
             onpagesizechange (val) {
@@ -391,7 +391,7 @@
                     return;
                 }
                 this.listQuery.limit = val;
-                this.fetchData();
+                this.fetchitemData();
             },
             // 监听选中项
             handleRowChange (option) {
@@ -440,28 +440,41 @@
             // 修改保存试卷
             handleSave () {
                 this.saveData.ItemType = this.listQuery.ItemType;
-                this.$Modal.confirm({
-                    title: '提示',
-                    content: '确定要保存吗？',
-                    okText: '确定',
-                    loading: true,
-                    cancelText: '取消',
-                    onOk: () => {
-                        SaveItemList(this.saveData).then(response => {
-                            this.$Modal.remove();
-                            this.autMode = false;
-                            this.fetchData();
-                            this.handlecancel();
-                            this.$Notice.success({
-                                title: response.msg,
-                                desc: '',
-                                duration: 2
-                            });
+                let _self = this;
+                this.$refs.ruleform.validate((valid) => {
+                    if (valid) {
+                        _self.$Modal.confirm({
+                            title: '提示',
+                            content: '确定要保存吗？',
+                            okText: '确定',
+                            loading: true,
+                            cancelText: '取消',
+                            onOk: () => {
+                                SaveItemList(_self.saveData).then(response => {
+                                    _self.$Modal.remove();
+                                    _self.autMode = false;
+                                    _self.fetchData();
+                                    _self.handlecancel();
+                                    _self.$Notice.success({
+                                        title: response.msg,
+                                        desc: '',
+                                        duration: 2
+                                    });
+                                });
+                            },
+                            onCancel: () => {
+                                _self.EditModeloading = false;
+                                _self.saveData = _self.$options.data().saveData;
+                            }
                         });
-                    },
-                    onCancel: () => {
-                        this.EditModeloading = false;
-                        this.saveData = this.$options.data().saveData;
+                    } else {
+                        setTimeout(() => {
+                            _self.EditModeloading = false;
+                            _self.$nextTick(() => {
+                                _self.EditModeloading = false;
+                            });
+                        }, 1000);
+                        return false;
                     }
                 });
             }

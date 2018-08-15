@@ -46,7 +46,7 @@
                 </div>
             </div>
             <Modal title="编辑" :loading="EditModeloading" @on-cancel="handlecancel" ok-text="保存" v-model="autMode" width="400" @on-ok="handleSave">
-                <Form :model="saveData" :rules="rules" :label-width="100">
+                <Form :model="saveData" :rules="rules" ref="ruleform" :label-width="100">
                     <FormItem label="用户工号：" prop="UserID">
                         <Input v-model="saveData.UserID" placeholder=""></Input>
                     </FormItem>
@@ -95,7 +95,7 @@
                     }]
                 },
                 saveData: {
-                    action: 'save',
+                    action: 'SaveLoginAuthority',
                     UserID: '',
                     KeyID: 0,
                     Remark: ''
@@ -294,31 +294,44 @@
                     this.disable = true;
                 }
             },
-            // 修改保存试卷
+            // 保存登录员工权限
             handleSave () {
-                this.$Modal.confirm({
-                    title: '提示',
-                    content: '确定要保存吗？',
-                    okText: '确定',
-                    loading: true,
-                    cancelText: '取消',
-                    onOk: () => {
-                        SaveLoginAuthority(this.saveData).then(response => {
-                            this.$Modal.remove();
-                            this.autMode = false;
-                            this.handlecancel();
-                            this.$Notice.success({
-                                title: response.msg,
-                                desc: '',
-                                duration: 2
-                            });
-                            this.fetchData();
+                let _self = this;
+                this.$refs.ruleform.validate((valid) => {
+                    if (valid) {
+                        _self.$Modal.confirm({
+                            title: '提示',
+                            content: '确定要保存吗？',
+                            okText: '确定',
+                            loading: true,
+                            cancelText: '取消',
+                            onOk: () => {
+                                SaveLoginAuthority(_self.saveData).then(response => {
+                                    _self.$Modal.remove();
+                                    _self.autMode = false;
+                                    _self.handlecancel();
+                                    _self.$Notice.success({
+                                        title: response.msg,
+                                        desc: '',
+                                        duration: 2
+                                    });
+                                    _self.fetchData();
+                                });
+                            },
+                            onCancel: () => {
+                                _self.EditModeloading = false;
+                                _self.saveData = _self.$options.data().saveData;
+                                _self.fetchData();
+                            }
                         });
-                    },
-                    onCancel: () => {
-                        this.EditModeloading = false;
-                        this.saveData = this.$options.data().saveData;
-                        this.fetchData();
+                    } else {
+                        setTimeout(() => {
+                            _self.EditModeloading = false;
+                            _self.$nextTick(() => {
+                                _self.EditModeloading = false;
+                            });
+                        }, 1000);
+                        return false;
                     }
                 });
             }

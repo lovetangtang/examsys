@@ -540,7 +540,7 @@
                 examrqParam: { // 需要传入后台的参数
                     KeyID: 0,
                     PaperName: '', // 试卷名称
-                    action: 'save',
+                    action: 'SavePaperList',
                     PaperType: '', // 试卷分类
                     TotalScore: 0, // 总分
                     SubjectNum: 0, // 总题数

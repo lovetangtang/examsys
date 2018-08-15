@@ -13,7 +13,7 @@ export function DelLoginAuthority (keyids) {
         url: '/Data/exam/loginauthority.ashx',
         method: 'post',
         data: {
-            action: 'dellist',
+            action: 'DelLoginAuthority',
             keyids: keyids
         }
     });
