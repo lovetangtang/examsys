@@ -231,7 +231,7 @@
                                                     </div>
                                                 </Tooltip>
                                             </template>
-                                            <Checkbox style="margin-left:6px" v-model="tk.Isleak" v-if="tk.SubjecSubClass===30">允许漏选</Checkbox>
+                                            <Checkbox style="margin-left:6px" v-model="tk.Isleak" v-if="tk.SubjecSubClass===12">允许漏选</Checkbox>
                                             </Col>
                                         </Row>
                                     </div>

@@ -113,19 +113,23 @@
                     align: 'center'
                 }, {
                     title: '考试名称',
+                    width: 180,
                     key: 'ExamName'
                 }, {
-                    title: '用户工号',
+                    title: '工号',
+                    width: 65,
                     key: 'UserID'
                 }, {
                     title: '姓名',
                     key: 'UserName'
                 }, {
-                    title: '考试成绩',
+                    title: '分数',
+                    width: 85,
                     sortable: true,
                     key: 'Score'
                 }, {
                     title: '及格状态',
+                    width: 85,
                     key: 'IsPass',
                     render: (h, params) => {
                         let sc = params.row.IsPass;
@@ -151,7 +155,7 @@
                         return it;
                     }
                 }, {
-                    title: '人工判分状态',
+                    title: '人工判分',
                     key: 'IsJudgment',
                     render: (h, params) => {
                         let sc = params.row.IsJudgment;
@@ -159,7 +163,7 @@
                         return v;
                     }
                 }, {
-                    title: '系统判分状态',
+                    title: '系统判分',
                     key: 'JudgmentStatus',
                     render: (h, params) => {
                         let sc = params.row.JudgmentStatus;

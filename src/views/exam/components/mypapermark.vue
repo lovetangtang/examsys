@@ -149,24 +149,26 @@
                                         <Row>
                                             <Col span="20">
                                             <p class="ft-nm">
-                                                <span class="fc-blue">{{si+1}}.</span>{{sb.Stem}}({{sb.DefaultScore}}分)</p>
+                                                <span class="fc-blue">{{si+1}}.</span>
+                                                <span v-html="fun_cltkstemstyle(sb.Stem)"></span>
+                                                <span>({{sb.DefaultScore}}分)</span>
+                                            </p>
                                             <Form class="examline-bottom" ref="formInline" :label-width="30">
                                                 <template v-for="(tk,ti) in sb.Stem.split('()').length-1">
                                                     <div class="margin-bottom-10 margin-top-10">
                                                         <Input disabled v-model="sb.tkanswer[ti].value">
                                                         <span slot="prepend">
-                                                            <span>&nbsp;{{ti+1}}&nbsp;</span>
+                                                          <span>&nbsp;{{fun_tknrfh(ti+1)}}&nbsp;</span>
                                                         </span>
                                                         </Input>
                                                     </div>
                                                 </template>
                                                 <div class="analysis">
                                                     <div class="analysis-row word-wrap">
-                                                         <p class="margin-top-20">答案： {{sb.CdeAnswer1}} {{sb.CdeAnswer2}} {{sb.CdeAnswer3}}
-                                                                    {{sb.CdeAnswer4}} {{sb.CdeAnswer5}} {{sb.CdeAnswer6}}
-                                                                    {{sb.CdeAnswer7}} {{sb.CdeAnswer8}} {{sb.CdeAnswer9}}
-                                                                    {{sb.CdeAnswer10}}
-                                                                    <p class="margin-top-10">解析：{{sb.Analysis}}</p>
+                                                        <p class="margin-top-20">答案： {{sb.CdeAnswer1}} {{sb.CdeAnswer2}} {{sb.CdeAnswer3}} {{sb.CdeAnswer4}}
+                                                            {{sb.CdeAnswer5}} {{sb.CdeAnswer6}} {{sb.CdeAnswer7}} {{sb.CdeAnswer8}}
+                                                            {{sb.CdeAnswer9}} {{sb.CdeAnswer10}}
+                                                            <p class="margin-top-10">解析：{{sb.Analysis}}</p>
                                                     </div>
                                                 </div>
                                             </Form>
@@ -343,6 +345,57 @@
                         break;
                     case 'true':
                         return '及格';
+                        break;
+                    default:
+                        break;
+                }
+            },
+            // 处理填空题的题干填空显示样式
+            fun_cltkstemstyle (str) {
+                let arrystr = str.split('()');
+                let stem = '';
+                stem = str;
+                for (let i = 0; i < arrystr.length; i++) {
+                    let fh = this.fun_tknrfh(i + 1);
+                    let tkdiv = '<span style="border-bottom:1px #000 solid; padding-left:20px;  padding-right:20px;">' +
+                        fh + '</span>';
+                    stem = stem.replace(/\(\)/, tkdiv);
+                }
+                return stem;
+                console.log(stem);
+            },
+            // 填空符号
+            fun_tknrfh (v) {
+                switch (v) {
+                    case 1:
+                        return '①';
+                        break;
+                    case 2:
+                        return '②';
+                        break;
+                    case 3:
+                        return '③';
+                        break;
+                    case 4:
+                        return '④';
+                        break;
+                    case 5:
+                        return '⑤';
+                        break;
+                    case 6:
+                        return '⑥';
+                        break;
+                    case 7:
+                        return '⑦';
+                        break;
+                    case 8:
+                        return '⑧';
+                        break;
+                    case 9:
+                        return '⑨';
+                        break;
+                    case 10:
+                        return '⑩';
                         break;
                     default:
                         break;

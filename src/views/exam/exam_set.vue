@@ -141,12 +141,11 @@
                     align: 'center'
                 }, {
                     title: '考试名称',
-                    width: 105,
+                    width: 170,
                     key: 'ExamName'
                 },
                 {
                     title: '考试分类',
-                    width: 95,
                     key: 'ExamType',
                     render: (h, params) => {
                         let sc = params.row.ExamType;
@@ -154,8 +153,7 @@
                     }
                 }, {
                     title: '考试模式',
-                    sortable: true,
-                    width: 110,
+                    width: 90,
                     key: 'ExamMode',
                     render: (h, params) => {
                         let sc = params.row.ExamMode;
@@ -164,6 +162,7 @@
                     }
                 }, {
                     title: '总分',
+                    width: 65,
                     key: 'TotalScore'
                 }, {
                     title: '考试开始时间',
@@ -187,7 +186,7 @@
                     }
                 }, {
                     title: '创建人',
-                    sortable: true,
+                    width: 75,
                     key: 'InsertID'
                 }, {
                     title: '创建时间',
