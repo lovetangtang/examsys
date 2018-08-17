@@ -8,6 +8,14 @@ export function SaveMarkList (params) {
     });
 }
 
+export function SaveJudgmentList (params) {
+    return request({
+        url: '/Data/exam/examineescore.ashx',
+        method: 'post',
+        params
+    });
+}
+
 export function DelMarkList (keyids) {
     return request({
         url: '/Data/exam/examineescore.ashx',
@@ -29,7 +37,7 @@ export function GetList (params) {
 
 export function GetAwExamList (params) {
     return request({
-        url: '/Data/AnswerPaper/exam.ashx',
+        url: '/Data/exam/examineescore.ashx',
         method: 'post',
         params
     });

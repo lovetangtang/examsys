@@ -116,15 +116,16 @@
                     key: 'ExamName'
                 }, {
                     title: '用户工号',
-                    sortable: true,
                     key: 'UserID'
+                }, {
+                    title: '姓名',
+                    key: 'UserName'
                 }, {
                     title: '考试成绩',
                     sortable: true,
                     key: 'Score'
                 }, {
                     title: '及格状态',
-                    sortable: true,
                     key: 'IsPass',
                     render: (h, params) => {
                         let sc = params.row.IsPass;
@@ -261,7 +262,11 @@
                 this.$router.push({
                     name: 'mypaper',
                     query: {
-                        KeyID: params.row.KeyID
+                        ExamID: params.row.ExamID,
+                        UserID: params.row.UserID,
+                        UserName: params.row.UserName,
+                        IsPass: params.row.IsPass,
+                        Score: params.row.Score
                     }
                 });
             },

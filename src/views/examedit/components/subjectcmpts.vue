@@ -134,7 +134,7 @@
                 },
                 {
                     title: '题型',
-                    width: '78',
+                    width: 78,
                     sortable: true,
                     key: 'SubjecSubClass',
                     render: (h, params) => {
@@ -144,13 +144,13 @@
                     }
                 }, {
                     title: '题目内容',
-                    width: '260',
+                    width: 260,
                     sortable: true,
                     key: 'Stem'
                 }, {
                     title: '难度',
                     sortable: true,
-                    width: '78',
+                    width: 78,
                     key: 'Degree',
                     render: (h, params) => {
                         let sc = params.row.Degree;
@@ -168,7 +168,7 @@
                 }, {
                     title: '创建时间',
                     sortable: true,
-                    width: '135',
+                    width: 135,
                     key: 'InsertTime',
                     render: (h, params) => {
                         let it = params.row.InsertTime;

@@ -420,6 +420,10 @@
                 this.examrqparams.LateDate = em.LateTime;
                 this.examrqparams.LateTime = this.getTimes(em.LateTime);
 
+                this.examrqparams.Status = em.Status + '';
+                this.examrqparams.ExamMode = em.ExamMode + '';
+                this.examrqparams.AnsweMode = em.AnsweMode + '';
+
                 // this.examrqparams.AdHandoverDate = em.AdHandoverTime;
                 // this.examrqparams.AdHandoverTime = this.getTimes(em.AdHandoverTime);
 

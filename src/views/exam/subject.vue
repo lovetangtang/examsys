@@ -263,7 +263,9 @@
                                 <div class="margin-top-10">
                                     <div>
                                         <span>题干</span>
-                                        <span>这里填写题目描述 <span style="color:#ff9900">(需要填写的答案用()表示，注意()数量要与答案一致)</span></span>
+                                        <span>这里填写题目描述
+                                            <span style="color:#ff9900">(需要填写的答案用()表示，注意()数量要与答案一致)</span>
+                                        </span>
                                     </div>
                                     <div class="margin-top-4 width96-input">
                                         <Input v-model="SubjectParam.Stem" type="textarea" :autosize="{minRows: 3,maxRows: 12}" placeholder="" :rows="4"></Input>
@@ -284,6 +286,14 @@
                                 </div>
                                 <div class="margin-top-10">
                                     <Button @click="handleAddCde" type="info">添加填空</Button>
+                                </div>
+                                <div class="margin-top-10">
+                                    <div>
+                                        <span>默认分值</span>
+                                    </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <InputNumber :min="0" v-model="SubjectParam.DefaultScore"></InputNumber>
+                                    </div>
                                 </div>
                                 <div class="margin-top-10">
                                     <div>
@@ -995,7 +1005,7 @@
                 }
                 // 参数
                 let subjectList = Object.assign({}, this.subjectComSaveList, this.CdeAnswerParam, this.SubjectParam);
-    
+
                 if (this.SubjectParam.RightAnswer === '' && this.subjectComSaveList.SubjectClassMode !== 30) {
                     this.$Message.error('正确答案不能为空');
                     setTimeout(() => {

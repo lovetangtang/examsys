@@ -405,7 +405,6 @@ util.getPassName = function (val) {
 
 // 人工判分名称
 util.getIsJudgmentName = function (val) {
-    console.log(val);
     switch (val) {
         case false:
             return '未判分';
