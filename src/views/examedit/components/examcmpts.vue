@@ -71,7 +71,7 @@
                     </FormItem>
 
                     <FormItem label="允许提前：">
-                        <InputNumber v-model="examrqparams.AdHandoverTime" :min="0"></InputNumber> 分钟交卷 (-1默认不限制)
+                        <InputNumber v-model="examrqparams.AdHandoverTime" :min="-1"></InputNumber> 分钟交卷 (-1默认不限制)
                     </FormItem>
 
                     <!-- <FormItem label="允许提前交卷时间：">
@@ -163,13 +163,13 @@
                         </Tooltip>
                     </FormItem>
                     <FormItem label="答题次数：">
-                        <InputNumber v-model="examrqparams.AnsweNumLimit" :min="0"></InputNumber> (-1默认不限制)
+                        <InputNumber v-model="examrqparams.AnsweNumLimit" :min="-1"></InputNumber> (-1默认不限制)
                     </FormItem>
                     <FormItem label="切换页面超过：">
-                        <InputNumber v-model="examrqparams.SwitchNumLimit" :min="0"></InputNumber> 次强制交卷，-1默认不限制
+                        <InputNumber v-model="examrqparams.SwitchNumLimit" :min="-1"></InputNumber> 次强制交卷，-1默认不限制
                     </FormItem>
                     <FormItem label="单题答题时间：">
-                        <InputNumber v-model="examrqparams.OneAnsweSecond" :min="0"></InputNumber> 分钟
+                        <InputNumber v-model="examrqparams.OneAnsweSecond" :min="-1"></InputNumber> 分钟
                         <Tooltip placement="bottom">
                             <Icon class="cursor" type="help-circled"></Icon>
                             <div slot="content">

@@ -615,4 +615,11 @@ util.isArrayFn = function (value) {
     }
 };
 
+// 判断json是否为空
+util.isEmptyObject = function (e) {
+    var t;
+    for (t in e) { return !1; }
+    return !0;
+};
+
 export default util;

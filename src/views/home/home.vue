@@ -81,12 +81,22 @@
                                 </Col>
                             </Row>
                             <Row>
-                                <Col span="12">
+                                <Col span="24">
                                 <div>
                                     考试时长：{{item.AnsweTime}}分钟
                                 </div>
                                 </Col>
-                                <Col span="12" class="tx-r">
+                            </Row>
+                            <Row>
+                                <Col span="18">
+                                <div>
+                                    <Row>
+                                        <Col span="5">考试说明：</Col>
+                                        <Col span="19">{{item.ExamExplain}}</Col>
+                                    </Row>
+                                </div>
+                                </Col>
+                                <Col span="6" class="tx-r">
                                 <span>{{item.ExamNum}}人已考</span>
                                 </Col>
                             </Row>
@@ -186,12 +196,22 @@
                                 </Col>
                             </Row>
                             <Row>
-                                <Col span="12">
+                                <Col span="24">
                                 <div>
                                     考试时长：{{item.AnsweTime}}分钟
                                 </div>
                                 </Col>
-                                <Col span="12" class="tx-r">
+                            </Row>
+                            <Row>
+                                <Col span="18">
+                                <div>
+                                    <Row>
+                                        <Col span="5">考试说明：</Col>
+                                        <Col span="19">{{item.ExamExplain}}</Col>
+                                    </Row>
+                                </div>
+                                </Col>
+                                <Col span="6" class="tx-r">
                                 <span>{{item.ExamNum}}人已考</span>
                                 </Col>
                             </Row>
@@ -199,7 +219,7 @@
                     </Card>
                     </Col>
                 </template>
-                 <template v-if="examlately.length===0">
+                <template v-if="examlately.length===0">
                     <Col :md="11" :style="{marginBottom: '10px'}">
                     <Card class="bd-left-true box-amt paper-bg">
                         <b class="card-user-infor-name"></b>

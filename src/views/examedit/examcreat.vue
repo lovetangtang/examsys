@@ -44,14 +44,15 @@
                     </Radio>
                     <div v-bind:style="{ display:showStauts.two}">
                         <Form class="margin-top-10" :model="formItem" :label-width="80">
-                            <FormItem label="试卷类型：">
+                            <!-- <FormItem label="试卷类型：">
                                 <RadioGroup v-model="examrqParam.PaperMode">
                                     <Radio label="0">模拟试卷</Radio>
                                     <Radio label="1">正式试卷</Radio>
                                 </RadioGroup>
-                            </FormItem>
+                            </FormItem> -->
                             <div class="margin-top-10">
                                 <Button @click="handleSelectPaper" type="ghost">选择试卷</Button>
+                                <span style="color: #ed4014;font-weight: bold;">{{examrqParam.PaperName}}</span>
                             </div>
                         </Form>
                         <div class="margin-top-10">
@@ -499,6 +500,10 @@
         <Modal :mask-closable="false" @on-cancel="handlecancelGroup" ok-text="确定" v-model="rdmmodal" width="600" @on-ok="handleSaveSubjectRule">
             <rdmgrouprule class="margin-top-20" ref="rdmgrouprule"></rdmgrouprule>
         </Modal>
+        <!-- 试卷选择窗口 -->
+        <Modal :mask-closable="false" @on-cancel="handlecancelPaper" ok-text="确定" v-model="papermodal" :styles="{top: '20px'}" width="900" @on-ok="handleSavePaper">
+            <papercmpts class="margin-top-20" ref="papercmpts"></papercmpts>
+        </Modal>
     </div>
 </template>
 <script>
@@ -510,22 +515,25 @@
     import subjectcmpts from './components/subjectcmpts';
     import rdmgrouprule from './components/rdmgrouprule';
     import examcmpts from './components/examcmpts';
+    import papercmpts from './components/papercmpts';
     export default {
         name: 'examedit',
         components: {
             subjectcmpts,
             rdmgrouprule,
-            examcmpts
+            examcmpts,
+            papercmpts
         },
         data () {
             return {
                 current: 0,
-                creatType: 0,
+                creatType: '0',
                 tkkey: -1,
                 formItem: {}, // 表单数据源
                 data: [],
                 Letter: util.Letter,
                 subjectmodal: false, // 题库窗口打开状态
+                papermodal: false, // 试卷窗口打开状态
                 rdmmodal: false, // 随机组卷窗口
                 SubjecSubClass: -1,
                 EditModeloading: true, // 编辑窗口确定按钮加载状态
@@ -561,6 +569,7 @@
                     three: 'none',
                     four: 'none'
                 },
+                selectPaperData: {},
                 showStauts: {
                     one: 'block',
                     two: 'none'
@@ -675,44 +684,54 @@
                 if (this.validcontent(v)) {
                     return;
                 };
+                if (this.showStauts.two === 'block' && (v === 1 || v === 2)) {
+                    return;
+                }
                 this.current = v;
                 this.showView();
             },
             // 验证表单
             validcontent (val) {
-                switch (val) {
-                    case 0:
-                        if (this.examrqParam.PaperName === '') {
-                            this.$Message.error('请填写试卷名称');
-                            return true;
-                        }
-                        if (this.examrqParam.PaperType === '') {
-                            this.$Message.error('请选择试卷分类');
-                            return true;
-                        }
-                        break;
-                    case 1:
-                        if (this.examrqParam.AssemblyType === -1) {
-                            this.$Message.error('请选择组卷方式');
-                            return true;
-                        }
-                        break;
-                    case 2:
-                        if (this.subjectTitleSel.length === 0 || (this.subjectTitleSel[0].danxList.length === 0 &&
-                                this.subjectTitleSel[0].duoxList.length === 0 &&
-                                this.subjectTitleSel[0].tkList.length === 0 &&
-                                this.subjectTitleSel[0].pdList.length === 0 &&
-                                !(this.subjectTitleSel[0].sbgroupList && this.subjectTitleSel[0].sbgroupList.SimpleTkSum)
-                        )) {
-                            this.$Message.error('请选择题库');
-                            return true;
-                        }
-                        break;
-                    case 3:
+                if (this.showStauts.one === 'block') {
+                    switch (val) {
+                        case 0:
+                            if (this.examrqParam.PaperName === '') {
+                                this.$Message.error('请填写试卷名称');
+                                return true;
+                            }
+                            if (this.examrqParam.PaperType === '') {
+                                this.$Message.error('请选择试卷分类');
+                                return true;
+                            }
+                            break;
+                        case 1:
+                            if (this.examrqParam.AssemblyType === -1) {
+                                this.$Message.error('请选择组卷方式');
+                                return true;
+                            }
+                            break;
+                        case 2:
+                            if (this.subjectTitleSel.length === 0 || (this.subjectTitleSel[0].danxList.length === 0 &&
+                                    this.subjectTitleSel[0].duoxList.length === 0 &&
+                                    this.subjectTitleSel[0].tkList.length === 0 &&
+                                    this.subjectTitleSel[0].pdList.length === 0 &&
+                                    !(this.subjectTitleSel[0].sbgroupList && this.subjectTitleSel[0].sbgroupList.SimpleTkSum)
+                            )) {
+                                this.$Message.error('请选择题库');
+                                return true;
+                            }
+                            break;
+                        case 3:
 
-                        break;
-                    default:
-                        break;
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    if (util.isEmptyObject(this.selectPaperData)) {
+                        this.$Message.error('请选择试卷信息');
+                        return true;
+                    }
                 }
                 return false;
             },
@@ -721,10 +740,19 @@
                 if (this.validcontent(this.current)) {
                     return;
                 };
-                if (this.current === 3) {
-                    this.current = 0;
+                if (this.showStauts.two !== 'block') {
+                    if (this.current === 3) {
+                        this.current = 0;
+                    } else {
+                        this.current += 1;
+                    }
                 } else {
-                    this.current += 1;
+                    if (this.current === 3) {
+                        this.current = 0;
+                    } else {
+                        this.current = 3;
+                        this.$refs.examcmpts.setPaperinfo(this.selectPaperData);
+                    }
                 }
                 this.showView();
             },
@@ -964,7 +992,7 @@
             },
             // 选择试卷
             handleSelectPaper () {
-
+                this.papermodal = true;
             },
             // 选取题目并加载到当前页面
             handleSaveSubject () {
@@ -1083,6 +1111,15 @@
                     this.$refs.examcmpts.setPaperinfo(response.data);
                     this.next();
                 });
+            },
+            // 取消选择试卷窗口
+            handlecancelPaper () {
+                this.$refs.papercmpts.clearData();
+            },
+            // 保存选择试卷信息
+            handleSavePaper () {
+                this.selectPaperData = this.$refs.papercmpts.chekcData;
+                this.examrqParam = this.selectPaperData;
             }
         }
     };
