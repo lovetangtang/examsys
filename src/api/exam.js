@@ -8,6 +8,14 @@ export function SaveExamList (params) {
     });
 }
 
+export function openPaper (params) {
+    return request({
+        url: '/Data/exam/examinfo.ashx',
+        method: 'post',
+        params
+    });
+}
+
 export function DelExamList (keyids) {
     return request({
         url: '/Data/exam/examinfo.ashx',

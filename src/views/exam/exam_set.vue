@@ -98,6 +98,7 @@
 <script>
     import {
         GetList,
+        openPaper,
         DelExamList
     } from '@/api/exam';
     import util from '@/libs/util';
@@ -147,6 +148,7 @@
                 {
                     title: '考试分类',
                     key: 'ExamType',
+                    width: 90,
                     render: (h, params) => {
                         let sc = params.row.ExamType;
                         return util.GetItemValue(this, '100004', sc); ;
@@ -166,7 +168,6 @@
                     key: 'TotalScore'
                 }, {
                     title: '考试开始时间',
-                    sortable: true,
                     width: 135,
                     key: 'ExamBeginTime',
                     render: (h, params) => {
@@ -176,7 +177,6 @@
                     }
                 }, {
                     title: '考试结束时间',
-                    sortable: true,
                     width: 135,
                     key: 'ExamEndTime',
                     render: (h, params) => {
@@ -185,12 +185,19 @@
                         return it;
                     }
                 }, {
+                    title: '是否开卷',
+                    width: 90,
+                    key: 'IsShowAnswer',
+                    render: (h, params) => {
+                        let it = params.row.IsShowAnswer;
+                        return it === true ? '是' : '否';
+                    }
+                }, {
                     title: '创建人',
                     width: 75,
                     key: 'InsertID'
                 }, {
                     title: '创建时间',
-                    sortable: true,
                     width: 135,
                     key: 'ExmInsertTime',
                     render: (h, params) => {
@@ -202,10 +209,28 @@
                 {
                     title: '操作',
                     key: 'action',
-                    width: 135,
+                    width: 180,
+                    fixed: 'right',
                     align: 'center',
                     render: (h, params) => {
+                        let it = params.row.IsShowAnswer;
+                        let str = it === true ? '闭卷' : '开卷';
+                        let csstype = it === true ? 'warning' : 'success';
                         return h('div', [
+                            h('Button', {
+                                props: {
+                                    type: csstype,
+                                    size: 'small'
+                                },
+                                style: {
+                                    marginRight: '5px'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.openPaper(params);
+                                    }
+                                }
+                            }, str),
                             h('Button', {
                                 props: {
                                     type: 'primary',
@@ -303,6 +328,32 @@
                 let dt = {};
                 dt = JSON.parse(JSON.stringify(params.row));
                 this.$refs.examcmpts.setExaminfo(dt);
+            },
+            // 打开试卷
+            openPaper (params) {
+                let str = params.row.IsShowAnswer === true ? '闭卷' : '开卷';
+                let _self = this;
+                this.$Modal.confirm({
+                    title: '提示',
+                    content: '确定要' + str + '吗？',
+                    loading: true,
+                    onOk: () => {
+                        let rq = {
+                            action: 'openPaper',
+                            KeyID: params.row.KeyID
+                        };
+                        openPaper(rq).then(response => {
+                            _self.fetchData();
+                            _self.$Notice.success({
+                                title: response.msg,
+                                desc: '',
+                                duration: 2
+                            });
+                            _self.$Modal.remove();
+                        });
+                    },
+                    onCancel: () => {}
+                });
             },
             // 移除数据
             remove (params) {
