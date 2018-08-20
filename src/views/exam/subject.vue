@@ -297,6 +297,21 @@
                                 </div>
                                 <div class="margin-top-10">
                                     <div>
+                                        <span>填空设置</span>
+                                    </div>
+                                    <div class="margin-top-4 width96-input">
+                                        <RadioGroup v-model="SubjectParam.IsDisorder">
+                                            <Radio label="false">
+                                                <span>顺序填空</span>
+                                            </Radio>
+                                            <Radio label="true">
+                                                <span>无序填空</span>
+                                            </Radio>
+                                        </RadioGroup>
+                                    </div>
+                                </div>
+                                <div class="margin-top-10">
+                                    <div>
                                         <span>解析</span>
                                         <span>这里填写该问题对应的答案解释</span>
                                     </div>
@@ -477,6 +492,7 @@
                     Stem: '', // 题干
                     SelectionOption: '', // 单选
                     DefaultScore: 0, // 默认分值
+                    IsDisorder: 'false',
                     RightAnswer: '', // 正确答案
                     Analysis: '' // 答案解析
                 },
@@ -811,6 +827,7 @@
                     Stem: data.Stem, // 题干
                     DefaultScore: data.DefaultScore, // 默认分值
                     RightAnswer: data.RightAnswer, // 正确答案
+                    IsDisorder: data.IsDisorder + '', // 无序填空
                     Analysis: data.Analysis // 答案解析
                 };
                 this.subjectComSaveList = subjectComSaveList;
@@ -1070,6 +1087,7 @@
                 let SubjectParam = { // 试题录入后台的参数
                     Stem: '', // 题干
                     DefaultScore: 0, // 默认分值
+                    IsDisorder: 'false', // 默认顺序填空
                     RightAnswer: '', // 正确答案
                     Analysis: '' // 答案解析
                 };

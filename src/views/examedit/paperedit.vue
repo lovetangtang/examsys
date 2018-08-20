@@ -73,8 +73,8 @@
                             <div class="trebox-ct2">
                                 <div class="tre-title">
                                     <Row>
-                                        <Col span="8">
-                                        <Input v-model="tk.StemRk" size="small" placeholder="" style="width: 180px"></Input>
+                                        <Col span="5">
+                                        <Input v-model="tk.StemRk" size="small" placeholder="" style="width: 150px"></Input>
                                         <Tooltip placement="bottom">
                                             <Icon class="cursor" type="help-circled"></Icon>
                                             <div slot="content">
@@ -84,10 +84,11 @@
                                             </div>
                                         </Tooltip>
                                         </Col>
-                                        <Col span="16">
-                                        <span>每题</span>
+                                        <Col span="12">
+                                        <span>  每题</span>
                                         <InputNumber :min="0" v-model="tk.Score" size="small" style="width: 70px;margin-left:6px"></InputNumber>
                                         <span style="margin-left:6px">分</span>
+
                                         <Checkbox v-model="tk.Disorder" style="margin-left:6px">试题乱序</Checkbox>
                                         <template v-if="tk.SubjecSubClass===11 ||tk.SubjecSubClass===12">
                                             <Tooltip placement="bottom">
@@ -100,6 +101,20 @@
                                             </Tooltip>
                                         </template>
                                         <Checkbox style="margin-left:6px" v-model="tk.Isleak" v-if="tk.SubjecSubClass===12">允许漏选</Checkbox>
+                                        <Checkbox style="margin-left:6px" v-model="tk.IsFullScore" v-if="tk.SubjecSubClass===30">全对得分</Checkbox>
+                                        </Col>
+                                        <Col span="7">
+                                        <div>
+                                            <Tooltip placement="bottom">
+                                                <span>单题答题时间</span>
+                                                <InputNumber :min="-1" v-model="tk.OneAnsweSecond" size="small" style="width: 70px;margin-left:6px"></InputNumber>
+                                                <span style="margin-left:6px">秒</span>
+                                                <Icon class="cursor" type="help-circled"></Icon>
+                                                <div slot="content">
+                                                    <p>默认-1不限制(该功能暂时未开发)</p>
+                                                </div>
+                                            </Tooltip>
+                                        </div>
                                         </Col>
                                     </Row>
                                 </div>
@@ -203,9 +218,13 @@
                                                         <Col span="19">
                                                         <div class="tresbleft">
                                                             <p>{{sb.Stem}}</p>
-                                                            <p class="margin-top-10 checkColor">
+                                                            <p v-if="sb.RightAnswer==='true'" class="margin-top-10 checkColor">
                                                                 <Icon type="checkmark"></Icon> 正确</p>
-                                                            <p class="margin-top-10">
+                                                            <p v-else class="margin-top-10">
+                                                                <Icon type="checkmark"></Icon> 正确</p>
+                                                            <p v-if="sb.RightAnswer==='false'" class="margin-top-10 checkColor">
+                                                                <Icon type="close-round"></Icon> 错误</p>
+                                                            <p v-else class="margin-top-10">
                                                                 <Icon type="close-round"></Icon> 错误</p>
                                                             <p class="margin-top-20">答案：{{sb.RightAnswer}}</p>
                                                             <p class="margin-top-10">解析：{{sb.Analysis}}</p>
@@ -547,6 +566,8 @@
                         Score: 0, // 分数
                         SubjecSubClass: parseInt(dt[i].SubjecSubClass), // 题型
                         Disorder: dt[i].IsSbDisorder, // 试题排序方式
+                        OneAnsweSecond: dt[i].OneAnsweSecond, // 单题时间限制
+                        IsFullScore: dt[i].IsFullScore, // 是否全对得分
                         OptionOrder: dt[i].IsSbDisorder, // 选项排序
                         sTSelSum: dt[i].IsOptionOrder, // 每个大类题型有好多题
                         StemRk: util.getSubjectTypeName(parseInt(dt[i].SubjecSubClass)), // 题干描述
@@ -603,7 +624,6 @@
                     }
                     this.subjectTitleSel.push(json);
                 }
-                console.log(JSON.stringify(this.subjectTitleSel));
                 this.trboxStatus.show1 = 'none';
                 this.trboxStatus.show2 = 'block';
             },

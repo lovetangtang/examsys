@@ -1,4 +1,4 @@
-<style lang="less">
+<style lang="less" scoped>
     @import '../../styles/common.less';
     @import './examcreat.less';
 </style>
@@ -206,7 +206,7 @@
                                 <div class="trebox-ct2">
                                     <div class="tre-title">
                                         <Row>
-                                            <Col span="8">
+                                            <Col span="5">
                                             <Input v-model="tk.StemRk" size="small" placeholder="" style="width: 180px"></Input>
                                             <Tooltip placement="bottom">
                                                 <Icon class="cursor" type="help-circled"></Icon>
@@ -217,7 +217,7 @@
                                                 </div>
                                             </Tooltip>
                                             </Col>
-                                            <Col span="16">
+                                            <Col span="12">
                                             <span>每题</span>
                                             <InputNumber :min="0" v-model="tk.Score" size="small" style="width: 70px;margin-left:6px"></InputNumber>
                                             <span style="margin-left:6px">分</span>
@@ -233,6 +233,20 @@
                                                 </Tooltip>
                                             </template>
                                             <Checkbox style="margin-left:6px" v-model="tk.Isleak" v-if="tk.SubjecSubClass===12">允许漏选</Checkbox>
+                                            <Checkbox style="margin-left:6px" v-model="tk.IsFullScore" v-if="tk.SubjecSubClass===30">全对得分</Checkbox>
+                                            </Col>
+                                            <Col span="7">
+                                            <div>
+                                                <Tooltip placement="bottom">
+                                                    <span>单题答题时间</span>
+                                                    <InputNumber :min="-1" v-model="tk.OneAnsweSecond" size="small" style="width: 70px;margin-left:6px"></InputNumber>
+                                                    <span style="margin-left:6px">秒</span>
+                                                    <Icon class="cursor" type="help-circled"></Icon>
+                                                    <div slot="content">
+                                                        <p>默认-1不限制(该功能暂时未开发)</p>
+                                                    </div>
+                                                </Tooltip>
+                                            </div>
                                             </Col>
                                         </Row>
                                     </div>
@@ -501,7 +515,8 @@
             <rdmgrouprule class="margin-top-20" ref="rdmgrouprule"></rdmgrouprule>
         </Modal>
         <!-- 试卷选择窗口 -->
-        <Modal :mask-closable="false" @on-cancel="handlecancelPaper" ok-text="确定" v-model="papermodal" :styles="{top: '20px'}" width="900" @on-ok="handleSavePaper">
+        <Modal :mask-closable="false" @on-cancel="handlecancelPaper" ok-text="确定" v-model="papermodal" :styles="{top: '20px'}" width="900"
+            @on-ok="handleSavePaper">
             <papercmpts class="margin-top-20" ref="papercmpts"></papercmpts>
         </Modal>
     </div>
@@ -806,6 +821,8 @@
                     SubjecSubClass: parseInt(name), // 题型
                     Disorder: false, // 试题排序方式
                     OptionOrder: false, // 选项排序
+                    OneAnsweSecond: -1, // 单题时间限制
+                    IsFullScore: false, // 是否全对得分
                     sTSelSum: 0, // 每个大类题型有好多题
                     StemRk: util.getSubjectTypeName(parseInt(name)), // 题干描述
                     Isleak: false // 多选题是否允许漏选
