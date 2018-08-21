@@ -93,8 +93,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="split-pane-right-con" slot="right" style="height: 100%;">
-                        <div class="logcontent-box"> {{logcontent}}</div>
+                    <div class="split-pane-right-con" slot="right" style="" >
+                        <div style="white-space: pre;max-height:500px;word-wrap:break-word;word-break:break-all" class="logcontent-box"> {{logcontent}}</div>
                     </div>
                 </split-pane>
             </div>
@@ -115,7 +115,7 @@
         },
         data () {
             return {
-                triggerOffset: 75,
+                triggerOffset: 65,
                 loading: true, // 表格加载状态
                 tableHeight: 450, // 表格高度
                 total: null, // 表格数据总条数
@@ -209,6 +209,7 @@
                     this.loading = true;
                     GetList(this.listQuery).then(response => {
                         this.data = response.data;
+                        console.log(this.data);
                         this.loading = false;
                         this.total = response.count;
                     });
@@ -237,7 +238,9 @@
             },
             // 监听选中项
             handeclickrow (now, old) {
-                this.logcontent = now.NVC_TEXT;
+                let str = now.NVC_TEXT;
+                // str = str.replace(/\r\n/g, '<br>');
+                this.logcontent = str;
             }
         }
     };

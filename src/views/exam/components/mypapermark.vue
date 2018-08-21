@@ -44,7 +44,7 @@
                                                 <Radio :label="parseInt(1)">错误</Radio>
                                             </RadioGroup>
                                             <div class="margin-top-10">
-                                                <InputNumber :min="0" v-model="sb.MyScore"></InputNumber> 分
+                                                <InputNumber :min="0" :max="sb.DefaultScore" v-model="sb.MyScore"></InputNumber> 分
                                             </div>
                                             </Col>
                                         </Row>
@@ -87,7 +87,7 @@
                                                 <Radio :label="parseInt(1)">错误</Radio>
                                             </RadioGroup>
                                             <div class="margin-top-10">
-                                                <InputNumber :min="0" v-model="sb.MyScore"></InputNumber> 分
+                                                <InputNumber :min="0" :max="sb.DefaultScore" v-model="sb.MyScore"></InputNumber> 分
                                             </div>
                                             </Col>
                                         </Row>
@@ -129,7 +129,7 @@
                                                 <Radio :label="parseInt(1)">错误</Radio>
                                             </RadioGroup>
                                             <div class="margin-top-10">
-                                                <InputNumber :min="0" v-model="sb.MyScore"></InputNumber> 分
+                                                <InputNumber :min="0" :max="sb.DefaultScore" v-model="sb.MyScore"></InputNumber> 分
                                             </div>
                                             </Col>
                                         </Row>
@@ -180,7 +180,7 @@
                                                 <Radio :label="parseInt(1)">错误</Radio>
                                             </RadioGroup>
                                             <div class="margin-top-10">
-                                                <InputNumber :min="0" v-model="sb.MyScore"></InputNumber> 分
+                                                <InputNumber :min="0" :max="sb.DefaultScore" v-model="sb.MyScore"></InputNumber> 分
                                             </div>
                                             </Col>
                                         </Row>
@@ -213,7 +213,7 @@
                                                 <Radio :label="parseInt(1)">错误</Radio>
                                             </RadioGroup>
                                             <div class="margin-top-10">
-                                                <InputNumber :min="0" v-model="sb.MyScore"></InputNumber> 分
+                                                <InputNumber :min="0" :max="sb.DefaultScore" v-model="sb.MyScore"></InputNumber> 分
                                             </div>
                                             </Col>
                                         </Row>
@@ -226,7 +226,7 @@
                 </div>
                 </Col>
                 <Col :md="4" style="padding-left:39px">
-                <div class="box-rate-top">
+                <div class="box-rate-top" style="-webkit-transform: translateZ(0);">
                     <div class="box-exame">
                         <div class="emrate-time">
                             <p class="item-lable"> 用户名</p>
@@ -340,10 +340,10 @@
             // 获取答题状态
             fun_getispass (v) {
                 switch (v) {
-                    case 'false':
+                    case false:
                         return '未及格';
                         break;
-                    case 'true':
+                    case true:
                         return '及格';
                         break;
                     default:
