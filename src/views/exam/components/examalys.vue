@@ -1,6 +1,6 @@
 <style lang="less">
-    @import '../../styles/common.less';
-    @import "./subject.less";
+    @import '../../../styles/common.less';
+    @import "../exam_mark.less";
 </style>
 <template>
     <div>
@@ -10,30 +10,22 @@
                 <Button type="warning" @click="handleDelSubject" icon="android-delete" :disabled="disable">删除</Button>
             </div>
             <div class="box-head">
-
                 <div class="head-search">
                     <Row>
                         <Col span="22">
                         <Form :model="listQuery" label-position="right">
                             <Row>
                                 <Col span="5">
-                                <FormItem label="试卷名称" :label-width="60">
-                                    <Input @on-enter="fetchData" v-model="listQuery.Stem"></Input>
-                                </FormItem>
-                                </Col>
-                                <Col span="4">
-                                <FormItem label="试卷分类" :label-width="70">
-                                    <Select @on-change="fetchData" v-model="listQuery.PaperType" style="width:110px">
-                                        <Option v-for="item in PaperTypeList" :value="item.ItemNo" :key="item.ItemNo">{{ item.ItemName }}</Option>
-                                    </Select>
+                                <FormItem label="用户工号" :label-width="60">
+                                    <Input @on-enter="fetchData" v-model="listQuery.UserID"></Input>
                                 </FormItem>
                                 </Col>
                                 <Col span="8">
-                                <FormItem label="试卷类型" :label-width="90">
-                                    <RadioGroup @on-change="fetchData" v-model="listQuery.PaperMode">
+                                <FormItem label="及格状态" :label-width="90">
+                                    <RadioGroup @on-change="fetchData" v-model="listQuery.IsPass">
                                         <Radio label="-1">全部</Radio>
-                                        <Radio label="0">模拟试卷</Radio>
-                                        <Radio label="1">正式试卷</Radio>
+                                        <Radio label="true">及格</Radio>
+                                        <Radio label="false">未及格</Radio>
                                     </RadioGroup>
                                 </FormItem>
                                 </Col>
@@ -83,11 +75,10 @@
 <script>
     import {
         GetList,
-        DelPaperList,
-        GetPaperSubject
-    } from '@/api/paper';
+        DelMarkList
+    } from '@/api/exam_mark';
     import util from '@/libs/util';
-    import papersubject from '../examedit/components/papersubject';
+    import papersubject from '../../examedit/components/papersubject';
     export default {
         name: 'exam_paper',
         components: {
@@ -106,72 +97,76 @@
                     start: 0,
                     limit: 10,
                     pageindex: 1,
-                    PaperType: -1,
-                    PaperMode: -1,
-                    Status: -1,
-                    action: 'getpapelist',
-                    PaperName: ''
+                    UserID: '',
+                    IsPass: -1,
+                    action: 'getuserexamlist',
+                    ExamName: '-1'
                 },
                 columns: [{
                     type: 'selection',
                     width: 60,
                     align: 'center'
                 }, {
-                    title: '试卷名称',
-                    sortable: true,
-                    width: 155,
-                    key: 'PaperName'
+                    title: '工号',
+                    width: 65,
+                    key: 'UserID'
                 }, {
-                    title: '试卷分类',
-                    sortable: true,
-                    key: 'PaperType',
-                    render: (h, params) => {
-                        let sc = params.row.PaperType;
-                        return util.GetItemValue(this, '100001', sc);
-                    }
+                    title: '姓名',
+                    key: 'UserName'
                 }, {
-                    title: '试卷类型',
+                    title: '分数',
+                    width: 85,
                     sortable: true,
-                    width: 110,
-                    key: 'PaperMode',
+                    key: 'Score'
+                }, {
+                    title: '及格状态',
+                    width: 85,
+                    key: 'IsPass',
                     render: (h, params) => {
-                        let sc = params.row.PaperMode;
-                        let v = util.getPaperModeName(parseInt(sc));
+                        let sc = params.row.IsPass;
+                        let v = util.getPassName(sc);
                         return v;
                     }
                 }, {
-                    title: '组卷方式',
+                    title: '交卷时间',
                     sortable: true,
-                    width: 110,
-                    key: 'AssemblyType',
+                    key: 'SubmitTime',
                     render: (h, params) => {
-                        let sc = params.row.AssemblyType;
-                        let v = util.getAssemblyType(sc);
-                        return v;
-                    }
-                }, {
-                    title: '总分',
-                    sortable: true,
-                    key: 'TotalScore'
-                }, {
-                    title: '创建人',
-                    sortable: true,
-                    width: 90,
-                    key: 'InsertID'
-                }, {
-                    title: '创建时间',
-                    sortable: true,
-                    width: 135,
-                    key: 'InsertTime',
-                    render: (h, params) => {
-                        let it = params.row.InsertTime;
+                        let it = params.row.SubmitTime;
                         it = it.substring(it, it.length - 3);
                         return it;
+                    }
+                }, {
+                    title: '答卷时间',
+                    sortable: true,
+                    key: 'AnswerTime',
+                    render: (h, params) => {
+                        let it = params.row.AnswerTime;
+                        it = it.substring(it, it.length - 3);
+                        return it;
+                    }
+                }, {
+                    title: '人工判分',
+                    key: 'IsJudgment',
+                    render: (h, params) => {
+                        let sc = params.row.IsJudgment;
+                        let v = util.getIsJudgmentName(sc);
+                        return v;
+                    }
+                }, {
+                    title: '系统判分',
+                    key: 'JudgmentStatus',
+                    render: (h, params) => {
+                        let sc = params.row.JudgmentStatus;
+                        let v = util.getJudgmentStatusName(sc);
+                        return v;
                     }
                 },
                 {
                     title: '操作',
                     key: 'action',
+                    width: 135,
+                    fixed: 'right',
                     align: 'center',
                     render: (h, params) => {
                         return h('div', [
@@ -188,7 +183,7 @@
                                         this.showEdit(params);
                                     }
                                 }
-                            }, '编辑'),
+                            }, '判分'),
                             h('Button', {
                                 props: {
                                     type: 'error',
@@ -260,20 +255,15 @@
             },
             // 展开编辑窗体
             showEdit (params) {
-                var rq = {
-                    action: 'getpapersubject',
-                    KeyID: params.row.KeyID
-                };
-                GetPaperSubject(rq).then(response => {
-                    this.$router.push({
-                        name: 'paperedit',
-                        query: {
-                            type: params.row.AssemblyType,
-                            pdata: response.data,
-                            row: params.row
-                        }
-                    });
-                    // this.$refs.papersubject.setPaperSubject(params.row.AssemblyType, response.data);
+                this.$router.push({
+                    name: 'mypaper',
+                    query: {
+                        ExamID: params.row.ExamID,
+                        UserID: params.row.UserID,
+                        UserName: params.row.UserName,
+                        IsPass: params.row.IsPass,
+                        Score: params.row.Score
+                    }
                 });
             },
             // 移除数据
@@ -292,7 +282,7 @@
             },
             // 删除题库的公共方法
             delSubject (keyids) {
-                DelPaperList(keyids).then(response => {
+                DelMarkList(keyids).then(response => {
                     this.fetchData();
                     this.$Notice.success({
                         title: response.msg,
@@ -346,8 +336,12 @@
             },
             // 导出信息
             handleExport () {
+                if (this.listQuery.ExamName === '' || this.listQuery.ExamName === undefined) {
+                    this.$Message.error('请选择考试');
+                    return;
+                }
                 this.$refs.table.exportCsv({
-                    filename: '试卷信息',
+                    filename: this.listQuery.ExamName + '-考生成绩',
                     original: false
                 });
             },

@@ -8,6 +8,7 @@
             <div class="head-btn">
                 <Button @click="handleOpenEidtWindow" type="primary" icon="android-add">手动录入</Button>
                 <Button @click="handleMoreExport" type="primary" icon="android-add">批量录入</Button>
+                <Button @click="handleExport" type="primary" icon="ios-upload-outline">导出信息</Button>
                 <Button type="warning" @click="handleDelSubject" icon="android-delete" :disabled="disable">删除试题</Button>
                 <Modal :loading="EditModeloading" @on-cancel="handlecancel" ok-text="保存" v-model="subjectmodal" :styles="{top: '20px'}" width="900"
                     @on-ok="handleSaveSubject">
@@ -1206,6 +1207,13 @@
                     CdeAnswer10: '' // 候选答案10
                 };
                 this.CdeAnswerParam = CdeAnswerParam;
+            },
+            // 导出信息
+            handleExport () {
+                this.$refs.table.exportCsv({
+                    filename: '题库信息',
+                    original: false
+                });
             },
             // 批量导入
             handleMoreExport () {

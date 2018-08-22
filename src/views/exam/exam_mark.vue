@@ -344,8 +344,9 @@
             },
             // 导出信息
             handleExport () {
-                this.$Modal.info({
-                    content: '正在开发...'
+                this.$refs.table.exportCsv({
+                    filename: '考生成绩',
+                    original: false
                 });
             },
             // 取消

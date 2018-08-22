@@ -120,11 +120,11 @@ export const appRouter = [
                 component: () => import('@/views/exam/exam_mark.vue')
             },
             {
-                path: 'area-linkage',
+                path: 'examanalysis',
                 icon: 'arrow-move',
-                name: 'area-linkage',
+                name: 'examanalysis',
                 title: '统计分析',
-                component: () => import('@/views/my-components/area-linkage/area-linkage.vue')
+                component: () => import('@/views/exam/examanalysis.vue')
             }
         ]
     },
