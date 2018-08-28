@@ -248,6 +248,7 @@
                     console.log(error);
                 }
             },
+            //表格高度自适应
             scrollHeightResize () {
                 if (this.$refs.table && this.$refs.table.$el) {
                     this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 145;

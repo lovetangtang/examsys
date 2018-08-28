@@ -111,7 +111,7 @@
                                                 <span style="margin-left:6px">秒</span>
                                                 <Icon class="cursor" type="help-circled"></Icon>
                                                 <div slot="content">
-                                                    <p>默认-1不限制(该功能暂时未开发)</p>
+                                                    <p>默认-1不限制(跟逐题模式配合使用才生效)</p>
                                                 </div>
                                             </Tooltip>
                                         </div>
@@ -566,7 +566,7 @@
                         Score: 0, // 分数
                         SubjecSubClass: parseInt(dt[i].SubjecSubClass), // 题型
                         Disorder: dt[i].IsSbDisorder, // 试题排序方式
-                        OneAnsweSecond: dt[i].OneAnsweSecond, // 单题时间限制
+                        OneAnsweSecond: dt[i].OneAnsweSecond || -1, // 单题时间限制
                         IsFullScore: dt[i].IsFullScore, // 是否全对得分
                         OptionOrder: dt[i].IsSbDisorder, // 选项排序
                         sTSelSum: dt[i].IsOptionOrder, // 每个大类题型有好多题
@@ -856,6 +856,7 @@
             /** ********************************随机组卷方法**********************************************/
             // 随机组卷模式选择试题
             handleSelSubjectRule (v, tkkey) {
+                console.log(JSON.stringify(this.subjectTitleSel[tkkey].sbgroupList));
                 this.rdmmodal = true;
                 this.tkkey = tkkey;
                 this.SubjecSubClass = parseInt(v);

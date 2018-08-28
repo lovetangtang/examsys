@@ -168,7 +168,7 @@
                     <FormItem label="切换页面超过：">
                         <InputNumber v-model="examrqparams.SwitchNumLimit" :min="-1"></InputNumber> 次强制交卷，-1默认不限制
                     </FormItem>
-                    <FormItem label="单题答题时间：">
+                    <!-- <FormItem label="单题答题时间：">
                         <InputNumber v-model="examrqparams.OneAnsweSecond" :min="-1"></InputNumber> 分钟
                         <Tooltip placement="bottom">
                             <Icon class="cursor" type="help-circled"></Icon>
@@ -179,7 +179,7 @@
                                 <p>能作答</p>
                             </div>
                         </Tooltip>
-                    </FormItem>
+                    </FormItem> -->
                     <FormItem label="考试状态：">
                         <RadioGroup v-model="examrqparams.Status">
                             <Radio label="0">启用考试</Radio>
@@ -464,8 +464,8 @@
                                 resolve(false);
                                 return false;
                             }
-                            if (checknode.length === 0) {
-                                _this.$Message.error('请选择可考部门');
+                            if (checknode.length === 0 && _this.examrqparams.AllowExamUser === '') {
+                                _this.$Message.error('可考部门或可考人员不能为空');
                                 resolve(false);
                                 return false;
                             }

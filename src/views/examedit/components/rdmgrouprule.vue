@@ -3,8 +3,8 @@
     <Form :model="subjectComSaveList" :label-width="80">
       <FormItem label="试题类型：">
         <RadioGroup @on-change="fetchData" v-model="subjectComSaveList.SubjectType">
-          <Radio label="0">模拟试题</Radio>
-          <Radio label="1">正式试题</Radio>
+          <Radio :label="0">模拟试题</Radio>
+          <Radio :label="1">正式试题</Radio>
         </RadioGroup>
       </FormItem>
 
@@ -18,7 +18,7 @@
         </Col>
         <Col span="8">
         <FormItem label="关联业务：">
-          <Select @on-change="fetchData"  size="small" v-model="subjectComSaveList.AboutBllMode" style="width:110px">
+          <Select @on-change="fetchData"  size="small" v-model="subjectComSaveList.AboutBll" style="width:110px">
             <Option v-for="item in AboutBllList" :value="item.ItemNo" :key="item.ItemNo">{{ item.ItemName }}</Option>
           </Select>
         </FormItem>
@@ -58,9 +58,9 @@
               UsualMaxSum: 0,
               HardMaxSum: 0,
               subjectComSaveList: { // 编辑录入后台的通用参数
-                  SubjectType: 0, // 试题分类绑定值
+                  SubjectType: '0', // 试题分类绑定值
                   LoreType: '-1', // 知识分类绑定值
-                  AboutBllMode: '-1', // 关联业务下拉框绑定值
+                  AboutBll: '-1', // 关联业务下拉框绑定值
                   action: 'getdegreesum',
                   SubjecSubClass: -1,
                   SimpleTkSum: 0,
@@ -103,6 +103,7 @@
           // 设置表单数据
           setsubjectComSaveList (data) {
               this.subjectComSaveList = data;
+              this.subjectComSaveList.action = 'getdegreesum';
           },
           // 刷新数据
           fetchData () {
@@ -117,6 +118,7 @@
               }
           },
           setSumData (v) {
+              console.log(JSON.stringify(v));
               this.subjectComSaveList.SubjecSubClass = v;
               this.fetchData();
           },

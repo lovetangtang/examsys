@@ -3,8 +3,8 @@
     @import "./mypapermark.less";
 </style>
 <template>
-    <div>
-        <Row class="mg-top20" type="flex" justify="center">
+    <div >
+        <Row class="mg-top20" id="print" type="flex" justify="center">
             <Col span="22">
             <Row :gutter="50">
                 <Col span="20">
@@ -226,7 +226,7 @@
                 </div>
                 </Col>
                 <Col :md="4" style="padding-left:39px">
-                <div class="box-rate-top" style="-webkit-transform: translateZ(0);">
+                <div :class="[!btnshow ? ratePosClass : '', rateClass]"  style="-webkit-transform: translateZ(0)">
                     <div class="box-exame">
                         <div class="emrate-time">
                             <p class="item-lable"> 用户名</p>
@@ -247,18 +247,13 @@
                             </p>
                         </div>
                     </div>
-                    <Button type="primary" @click="handlersubmit" style="width:100%">保存</Button>
+                    <Button v-show="btnshow" type="primary" @click="handlersubmit" style="width:100%">保存</Button>
+                    <Button v-show="btnshow" type="primary" @click="doPrint" style="width:100%;margin-top:10px">打印</Button>
                 </div>
                 </Col>
             </Row>
             </Col>
         </Row>
-        <template>
-            <Spin size="large" fix v-if="pageSpinShow"></Spin>
-            <BackTop :height="100" :bottom="10">
-                <div class="top">返回顶端</div>
-            </BackTop>
-        </template>
     </div>
 </template>
 <script>
@@ -274,17 +269,20 @@
         },
         data () {
             return {
-                ansmodal: false,
-                pageSpinShow: true,
-                Letter: util.Letter,
-                subjectData: [],
-                answerCardlist: [],
-                listQuery: {
+                ansmodal: false, // 未知
+                pageSpinShow: true, // 加载状态
+                rateClass: 'box-rate-top',
+                ratePosClass: 'pos-abs',
+                Letter: util.Letter, // 大小写字母
+                btnshow: true,
+                subjectData: [], // 题库数据源
+                answerCardlist: [], // 答题卡数据列表
+                listQuery: {// 查询后台传递参数
                     action: 'getuserpapermark',
                     UserID: 0,
                     ExamID: 0
                 },
-                saveData: {
+                saveData: {// 保存后台传递参数
 
                 },
                 Examinfo: {},
@@ -292,7 +290,7 @@
                     radio: 'male',
                     checkbox: []
                 },
-                myInfo: {}
+                myInfo: {}// 用户信息
             };
         },
         watch: {
@@ -475,6 +473,41 @@
                     },
                     onCancel: () => {}
                 });
+            },
+            doPrint () {
+                // let newWindow = window.open(); //  打开新窗口
+                // let codestr = document.getElementById('print').innerHTML; //  获取需要生成pdf页面的div代码
+                // console.log(codestr);
+                // newWindow.document.write(codestr); //  向文档写入HTML表达式或者JavaScript代码
+                // newWindow.document.close(); //  关闭document的输出流, 显示选定的数据
+                // newWindow.print(); //  打印当前窗口
+                // return true;
+                this.btnshow = false;
+                this.rate_style = this.rate_print;
+                setTimeout(() => {
+                    let subOutputRankPrint = document.getElementById('print');
+                    var elements = subOutputRankPrint.getElementsByTagName('input');
+                    for (let i = 0; i < elements.length; i++) {
+                        if (elements[i].type === 'text') {
+                            elements[i].setAttribute('value', elements[i].value);
+                        }
+                    }
+                    let newContent = subOutputRankPrint.innerHTML;
+                    let oldContent = document.body.innerHTML;
+                    document.body.innerHTML = newContent;
+                    document.body.style.height = 'auto';
+                    window.print();
+                    window.location.reload();
+                    document.body.innerHTML = oldContent;
+                    this.btnshow = true;
+                    this.rate_style = this.rate_normal;
+                }, 500);
+    
+                return false;
+            },
+            // pdf打印
+            handlepdfPrint () {
+    
             },
             fun_submitscore () {
                 let arrysb = [];

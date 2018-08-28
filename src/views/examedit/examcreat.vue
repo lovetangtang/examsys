@@ -207,7 +207,7 @@
                                     <div class="tre-title">
                                         <Row>
                                             <Col span="5">
-                                            <Input v-model="tk.StemRk" size="small" placeholder="" style="width: 180px"></Input>
+                                            <Input v-model="tk.StemRk" size="small" placeholder="" style="width: 150px"></Input>
                                             <Tooltip placement="bottom">
                                                 <Icon class="cursor" type="help-circled"></Icon>
                                                 <div slot="content">
@@ -243,7 +243,7 @@
                                                     <span style="margin-left:6px">秒</span>
                                                     <Icon class="cursor" type="help-circled"></Icon>
                                                     <div slot="content">
-                                                        <p>默认-1不限制(该功能暂时未开发)</p>
+                                                        <p>默认-1不限制(跟逐题模式配合使用才生效)</p>
                                                     </div>
                                                 </Tooltip>
                                             </div>
