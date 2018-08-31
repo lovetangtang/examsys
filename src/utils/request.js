@@ -9,7 +9,7 @@ import {
 
 // 创建axios实例
 const service = axios.create({
-    baseURL: 'http://192.168.0.97:51984', // 'http://' + window.location.host, // process.env.BASE_API, // 'http://192.168.0.97:51984', // api的base_url
+    baseURL: 'http://localhost:51984', // 'http://' + window.location.host, // process.env.BASE_API, // 'http://192.168.0.97:51984', // api的base_url
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
     },

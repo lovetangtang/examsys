@@ -141,6 +141,16 @@ export const appRouter = [
         ]
     },
     {
+        path: '/testfile',
+        icon: 'android-checkbox',
+        name: 'testfile',
+        title: '测试',
+        component: Main,
+        children: [
+            { path: 'test', title: '测试', name: 'test', icon: 'compose', component: () => import('@/views/test/test.vue') }
+        ]
+    },
+    {
         path: '/tables',
         icon: 'ios-grid-view',
         name: 'tables',
